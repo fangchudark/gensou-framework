@@ -34,7 +34,7 @@ A special type used in conditional statements, with only two possible values: `f
 
 ## Details  
   
-### **-[Variable Name]**  
+### **\-[Variable Name]**  
   
 Declares a variable without initializing it.  
   
@@ -64,7 +64,7 @@ If not initialized, the variable's default type is a string, and its value is em
   
 ---
 
-### **-[Variable Name]=[Value]**  
+### **\-[Variable Name]=[Value]**  
   
 Assigns a value to a variable. This can modify the value of an existing variable or declare and initialize a new one with a value, which could also be another variable.  
   
@@ -112,7 +112,7 @@ Assigns a value to a variable. This can modify the value of an existing variable
 
 ---
 
-### **-[Variable Name]=[Valid Mathematical Expression]**  
+### **\-[Variable Name]=[Valid Mathematical Expression]**  
   
 This command assigns the result of an expression to a variable, with automatic type conversion:  
 

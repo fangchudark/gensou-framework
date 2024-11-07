@@ -14,7 +14,7 @@ Console commands are used in game development to debug code, locate bugs, and te
   
 ## Details
 
-### **-@[text]**
+### **\-@[text]**
   
 This command allows you to print text to the console and supports variable interpolation and escape characters:
 
@@ -68,7 +68,7 @@ The result of 1+1 is 2
 
 ---
 
-### **-@[valid mathematical expression]**  
+### **\-@[valid mathematical expression]**  
   
 This command supports calculating mathematical expressions in the console (addition, subtraction, multiplication, division, and modulo). The line must contain only the expression and comments, without other content:
 
@@ -116,7 +116,7 @@ Console output:
 
 ---
 
-### **-@\<n>**
+### **\-@\<n>**
   
 This command supports printing multiple lines to the console, where n represents the number of lines to print.  
   
