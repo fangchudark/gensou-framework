@@ -17,8 +17,8 @@ namespace GensouLib.GenScript
     public class ScriptReader
     {
         /// <summary> 
-        /// 读取脚本（同步）<br/>
-        /// Reads the script (synchronously)  
+        /// 读取脚本<br/>
+        /// Reads the script 
         /// </summary>
         /// <param name="filePath">
         /// 文件路径<br/>
@@ -31,6 +31,10 @@ namespace GensouLib.GenScript
         /// For Unity platform use Path.Combine(Application.dataPath,"path","to","script.gs") 
         /// </remark>
         /// </param>
+        /// <returns>
+        /// 如果读取文件成功返回读取到的脚本文本内容，否则返回空字符串。 <br/>
+        /// If the file was read successfully, the script text content was returned; otherwise, an empty string was returned.
+        /// </returns>
         public static string ReadScript(string filePath)
         {
             string content = null;
@@ -47,7 +51,7 @@ namespace GensouLib.GenScript
             catch (Exception e)
             {
                 GD.Print("Error reading file: " + e.Message);
-                return null; // 或者处理错误
+                return null;
             }
             finally
             {
@@ -71,31 +75,63 @@ namespace GensouLib.GenScript
 #endif
             return content;
         }
-
+#if UNITY_5_3_OR_NEWER
         /// <summary>
-        /// 初始化脚本读取器并加载入口脚本。<br/>
-        /// Initializes the script reader and loads the entry script. 
+        /// 读取并执行脚本。<br/>
+        /// Read and execute the script. 
         /// </summary>
+        /// <param name="script">
+        /// 脚本文件名 <br/>
+        /// Script file name
+        /// </param>
         /// <remarks>         
-        /// 读取入口脚本: main.gs <br/>
-        /// Reads the entry script: main.gs <br/>
-        /// Godot平台入口脚本应在: res://Scripts/main.gs <br/>      
-        /// Godot platform entry script should be located at: res://Scripts/main.gs <br/>
-        /// Unity平台入口脚本应在: Assets/Scripts/main.gs <br/>
-        /// Unity platform entry script should be located at: Assets/Scripts/main.gs 
+        /// 默认读取入口脚本: start.gs <br/>
+        /// By default, reads the entry script: start.gs  <br/>
+        /// Godot平台脚本应在: res://Scripts/scriptfile.gs <br/>      
+        /// Godot platform scripts should be located at: res://Scripts/scriptfile.gs <br/>
+        /// Unity平台脚本应在: Assets/Scripts/scriptfile.gs <br/>
+        /// Unity platform scripts should be located at: Assets/Scripts/scriptfile.gs 
         /// </remarks>
-        public static void Initialization()
+        public static void ReadAndExecute(string script="start")
         {
-#if GODOT
-            string filePath = "res://Scripts/main.gs";
-#elif UNITY_5_3_OR_NEWER
-            string filePath = Path.Combine(Application.dataPath, "Scripts", "main.gs"); // Unity 中的路径
-#endif
+            string filePath = Path.Combine(Application.dataPath, "Scripts", script+".gs"); // Unity 中的路径
             string scriptContent = ReadScript(filePath);
             if (scriptContent != null)
             {
                 BaseInterpreter.ParseScript(scriptContent);
             }
         }
+#elif GODOT
+        /// <summary>
+        /// 读取并执行脚本。<br/>
+        /// Read and execute the script. 
+        /// </summary>
+        /// <param name="node">
+        /// 挂载到自动加载的脚本初始化器节点。<br/>
+        /// Mount to the autoloaded script initializer node.
+        /// </param>
+        /// <param name="script">
+        /// 脚本文件名 <br/>
+        /// Script file name
+        /// </param>
+        /// <remarks>         
+        /// 默认读取入口脚本: start.gs <br/>
+        /// By default, reads the entry script: start.gs  <br/>
+        /// Godot平台脚本应在: res://Scripts/scriptfile.gs <br/>      
+        /// Godot platform scripts should be located at: res://Scripts/scriptfile.gs <br/>
+        /// Unity平台脚本应在: Assets/Scripts/scriptfile.gs <br/>
+        /// Unity platform scripts should be located at: Assets/Scripts/scriptfile.gs 
+        /// </remarks>
+        public static void ReadAndExecute(Node node, string script="start")
+        {
+            string filePath = "res://Scripts/"+script+".gs";
+
+            string scriptContent = ReadScript(filePath);
+            if (scriptContent != null)
+            {
+                BaseInterpreter.ParseScript(scriptContent, node);
+            }
+        }
+#endif
     }
 }

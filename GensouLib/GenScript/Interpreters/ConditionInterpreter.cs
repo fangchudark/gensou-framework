@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static GensouLib.GenScript.Interpreters.VariableInterpreter;
 
 namespace GensouLib.GenScript.Interpreters
 {
@@ -13,10 +14,8 @@ namespace GensouLib.GenScript.Interpreters
     /// This class specifically handles condition commands (-when:). <br/>
     /// 通过解析条件表达式，控制命令的执行流程。<br/>
     /// It parses condition expressions to control the execution flow of commands. <br/>
-    /// 可供其他类继承和扩展，以支持更多条件处理逻辑。<br/>
-    /// This class can be inherited and extended by other classes to support additional condition handling logic. 
     /// </remarks>
-    public class ConditionInterperter : BaseInterpreter
+    public class ConditionInterpreter : BaseInterpreter
     {
         /// <summary> 
         /// 处理条件命令 <br/>
@@ -43,10 +42,11 @@ namespace GensouLib.GenScript.Interpreters
             // 查找运算符
             string getedOperator = FindOperator(condition, conditionOperator);
             // 切割条件表达式
-            var expression = condition.Split(getedOperator, StringSplitOptions.RemoveEmptyEntries);
+            var expression = condition.Split(getedOperator, StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
             // 检查表达式的合法性
             if (!IsValidExpression(expression, getedOperator, conditionOperator))
             {
+                ScriptConsole.PrintErr("The condition expression is invalid. Command ignored. (条件表达式不合法，命令已忽略)");
                 return false;
             }
             // 如果匹配到条件运算符
@@ -79,11 +79,10 @@ namespace GensouLib.GenScript.Interpreters
             if (!string.IsNullOrEmpty(getedOperator) && // 运算符不为空的情况下才进行检查
                 (expression.Length != 2 || // 表达式长度不等于2（必须包含左右两个操作数）
                 expression.Any(e => string.IsNullOrWhiteSpace(e)) ||  // 表达式中存在空白元素（为空或仅包含空格）
-                expression[0].Contains("=") || expression[1].Contains("=") || // 左右操作数中不应包含等号
+                expression[0].Contains('=') || expression[1].Contains('=') || // 左右操作数中不应包含等号
                 expression.Any(e => e.StartsWith(getedOperator) || e.EndsWith(getedOperator)) || // 操作数不应以运算符开头或结尾
                 expression.Any(e => operators.Any(op => e.Contains(op))))) // 操作数中不应包含其他运算符
             {
-                ScriptConsole.PrintErr("The condition expression is invalid. Command ignored. (条件表达式不合法，命令已忽略)");
                 return false;
             }
             // 有效表达式，返回true
@@ -94,10 +93,10 @@ namespace GensouLib.GenScript.Interpreters
         // 若两个操作数均为数值或表达式，或一方为数值/变量且另一方为表达式，则视为数值比较。
         private static bool IsNumericComparison(string left, string right)
         {
-            return (double.TryParse(left, out _) && double.TryParse(right, out _)) || // 左右都是数字或
+            return (TryParseNumeric(left, out _) && TryParseNumeric(right, out _)) || // 左右都是数字或
               (CheckExpression(left) && CheckExpression(right)) || // 左右都是表达式或
-              (CheckExpression(left) && (CheckVariableName(right) || double.TryParse(right, out _))) || // 左是表达式，右是数字或变量或
-              ((CheckVariableName(left) || double.TryParse(left, out _)) && CheckExpression(right));  // 左是数字或变量，右是表达式              
+              (CheckExpression(left) && (CheckVariableName(right) || TryParseNumeric(right, out _))) || // 左是表达式，右是数字或变量或
+              ((CheckVariableName(left) || TryParseNumeric(left, out _)) && CheckExpression(right));  // 左是数字或变量，右是表达式              
         }
         
         // 处理条件检查，通过比较给定表达式中的两个值（数值或变量）来确定条件是否满足。
@@ -105,13 +104,13 @@ namespace GensouLib.GenScript.Interpreters
         // 否则，将它们作为变量直接进行比较。
         private static bool ProcessCheckCondition(string[] expression, string op)
         {
-            var left = expression[0]; // 左操作数
-            var right = expression[1]; // 右操作数
+            var left = expression[0].Trim(); // 左操作数
+            var right = expression[1].Trim(); // 右操作数
             // 如果左右操作数均为数学表达式或数值以及数值类型变量，执行数值比较
             if (IsNumericComparison(left, right))
             {
                 // 解析左右操作数（可以为表达式或数值以及数值类型变量）
-                if (EvaluateNumbers(left, right, out double leftValueToCompare, out double rightValueToCompare))
+                if (EvaluateNumbers(left, right, out object leftValueToCompare, out object rightValueToCompare))
                 {
                     return CompareValues(leftValueToCompare, rightValueToCompare, op); // 比较数值
                 }
@@ -143,14 +142,14 @@ namespace GensouLib.GenScript.Interpreters
 
                 if (leftValue is double or long && rightValue is double or long) // 数值比较
                 {
-                    return CompareValues(Convert.ToDouble(leftValue), Convert.ToDouble(rightValue), op); // 转换为浮点型进行比较
+                    return CompareValues(leftValue, rightValue, op); 
                 }
                 // 类型不兼容，调用错误处理并返回 false
                 HandleIncompatibleComparison(left, right, leftValue, rightValue);
                 return false;
             }
 
-            // 若左右操作数包含非变量值，作为字符串或布尔值处理
+            // 左右操作数包含非变量值处理
             return EvaluateNoVariable(left, right, op);
         }
 
@@ -169,7 +168,7 @@ namespace GensouLib.GenScript.Interpreters
                 return CompareBooleans(boolValueLeft, boolValueRight, op);
             }
             // 左右都是数字
-            if (double.TryParse(left, out double numberValueLeft) && double.TryParse(right, out double numberValueRight))
+            if (TryParseNumeric(left, out object numberValueLeft) && TryParseNumeric(right, out object numberValueRight))
             {
                 return CompareValues(numberValueLeft, numberValueRight, op);
             }
@@ -208,7 +207,7 @@ namespace GensouLib.GenScript.Interpreters
                 ScriptConsole.PrintErr("A standalone mathematical expression is not a valid condition.（单独的数学表达式不被视为条件）");
             }
             // 检测并警告意外的赋值操作
-            if (condition.Contains("=")) 
+            if (condition.Contains('=')) 
             {
                 ScriptConsole.PrintErr("Unexpected assignment operation, if you expect an equal comparison, use \"==\".(意外的赋值操作，若期望进行等于比较，使用“==”)");
             }
@@ -262,7 +261,7 @@ namespace GensouLib.GenScript.Interpreters
             {
                 bool boolValue => CompareBooleanWithValue(boolValue, value, variableName, op, side),
                 string stringValue => CompareStringWithValue(stringValue, value, variableName, op, side),
-                double numberValue => CompareNumberWithValue(numberValue, value, variableName, op, side),
+                object numberValue => CompareNumberWithValue(numberValue, value, variableName, op, side),
                 _ => false,
             };
         }
@@ -314,10 +313,10 @@ namespace GensouLib.GenScript.Interpreters
 
         // 比较一个数值类型变量与一个非变量操作数的值
         // 如果非变量操作数不能被解析为数值，则根据变量操作数位置（左侧或右侧）报告不兼容的比较
-        private static bool CompareNumberWithValue(double numberValue, string value, string variableName, string op, string side)
+        private static bool CompareNumberWithValue(object numberValue, string value, string variableName, string op, string side)
         {
             // 尝试将非变量操作数解析为数值
-            if (double.TryParse(value, out double parsedValue))
+            if (TryParseNumeric(value, out object parsedValue))
             {
                 return CompareValues(numberValue, parsedValue, op);
             }
@@ -345,13 +344,13 @@ namespace GensouLib.GenScript.Interpreters
                 return;
             }
             // 左右操作数是布尔间数值的比较
-            if ((bool.TryParse(left, out _) && double.TryParse(right, out _)) || (double.TryParse(left, out _) && bool.TryParse(right, out _)))
+            if ((bool.TryParse(left, out _) && TryParseNumeric(right, out _)) || (TryParseNumeric(left, out _) && bool.TryParse(right, out _)))
             {
                 ScriptConsole.PrintErr("Cannot compare Boolean value and numeric value. Command ignored.(不能将布尔值和数值比较，命令已忽略)");
                 return;
             }
             // 数值与字符串的比较
-            if ((double.TryParse(left, out _) && right.StartsWith("\"") && right.EndsWith("\"")) || (double.TryParse(right, out _) && left.StartsWith("\"") && left.EndsWith("\"")))
+            if ((TryParseNumeric(left, out _) && right.StartsWith("\"") && right.EndsWith("\"")) || (TryParseNumeric(right, out _) && left.StartsWith("\"") && left.EndsWith("\"")))
             {
                 ScriptConsole.PrintErr("Cannot compare numeric value and string. Command ignored.(不能将数值和字符串比较，命令已忽略)");
                 return;
@@ -381,7 +380,7 @@ namespace GensouLib.GenScript.Interpreters
                 return;
             }
             // 左侧是数值类型变量，右侧是其他类型的非变量操作数
-            if (leftValue is double)
+            if (leftValue is double or long)
             {
                 HandleNumericIncompatibleComparison(left, right);
                 return;
@@ -399,7 +398,7 @@ namespace GensouLib.GenScript.Interpreters
                 return;
             }
             // 右侧是数值类型变量，左侧是其他类型的非变量操作数
-            if (rightValue is double)
+            if (rightValue is double or long)
             {
                 HandleNumericIncompatibleComparison(right, left);
                 return;
@@ -418,7 +417,7 @@ namespace GensouLib.GenScript.Interpreters
         // 布尔值变量与其他类型的非变量操作数的不兼容比较
         private static void HandleBooleanIncompatibleComparison(string variable, string other)
         {
-            if (double.TryParse(other, out _)) // 布尔变量与数值比较
+            if (TryParseNumeric(other, out _)) // 布尔变量与数值比较
             {
                  ScriptConsole.PrintErr($"Cannot compare Boolean type variable: {variable} with a numeric value. Command ignored.(不能将布尔类型变量：{variable} 用以和数值比较，命令已忽略)");           
             }
@@ -444,7 +443,7 @@ namespace GensouLib.GenScript.Interpreters
             {
                 ScriptConsole.PrintErr($"Cannot compare numeric value variable: {variable} with a Boolean value. Command ignored.(不能将数值类型变量：{variable} 用以和布尔值比较，命令已忽略)");  
             }
-            else if (!double.TryParse(other, out _)) // 数值类型变量与字符串比较（无法被解析为数值则视作字符串）
+            else if (!TryParseNumeric(other, out _)) // 数值类型变量与字符串比较（无法被解析为数值则视作字符串）
             {
                 if (other.StartsWith("\"") && other.EndsWith("\""))
                 {
@@ -466,7 +465,7 @@ namespace GensouLib.GenScript.Interpreters
             {
                 ScriptConsole.PrintErr($"Cannot compare string type variable: {variable} with a Boolean value. Command ignored.(不能将字符串类型变量：{variable} 用以和布尔值比较，命令已忽略)");
             }
-            else if (double.TryParse(other, out _)) // 字符串变量与数值比较
+            else if (TryParseNumeric(other, out _)) // 字符串变量与数值比较
             {
                 ScriptConsole.PrintErr($"Cannot compare string type variable: {variable} with a numeric value. Command ignored.(不能将字符串类型变量：{variable} 用以和数值比较，命令已忽略)");            
             }
@@ -481,13 +480,13 @@ namespace GensouLib.GenScript.Interpreters
         // 处理数值比较
         // 尝试将左右操作数解析为数值。如果解析成功，返回true以及解析后的值；
         // 否则返回false。
-        private static bool EvaluateNumbers(string left, string right, out double leftValueToCompare, out double rightValueToCompare)
+        private static bool EvaluateNumbers(string left, string right, out object leftValueToCompare, out object rightValueToCompare)
         {
             // 解析左表达式
-            if (TryGetExpressionValue(left, out double leftValue))
+            if (TryGetExpressionValue(left, out object leftValue))
             {
                 // 解析右表达式
-                if (TryGetExpressionValue(right, out double rightValue))
+                if (TryGetExpressionValue(right, out object rightValue))
                 {
                     leftValueToCompare = leftValue;
                     rightValueToCompare = rightValue;
@@ -495,8 +494,8 @@ namespace GensouLib.GenScript.Interpreters
                 }
             }
             
-            leftValueToCompare = double.NaN;
-            rightValueToCompare = double.NaN;
+            leftValueToCompare = null;
+            rightValueToCompare = null;
             return false;
         }
 
@@ -505,9 +504,9 @@ namespace GensouLib.GenScript.Interpreters
         // 否则，如果是已定义变量且是数值则返回true以及变量值
         // 否则，如果是数字则返回true以及该数字
         // 最后根据传入的表达式输出对应错误提示并返回false
-        private static bool TryGetExpressionValue(string expression, out double value)
+        private static bool TryGetExpressionValue(string expression, out object value)
         {
-            value = double.NaN;
+            value = null;
 
             bool varIsNumber = true; // 标记变量是否是数值
             // 如果是数学表达式
@@ -516,7 +515,7 @@ namespace GensouLib.GenScript.Interpreters
                 // 解析表达式
                 var postfix = InfixToPostfix(expression);
                 var result = EvaluatePostfix(postfix);
-                if (double.TryParse(result, out double parsedValue))
+                if (TryParseNumeric(result, out object parsedValue))
                 {
                     value = parsedValue;
                     return true;
@@ -527,14 +526,14 @@ namespace GensouLib.GenScript.Interpreters
             }
             else if (TryGetVariableValue(expression, out object varValue))// 如果是已定义变量
             {
-                if (varValue is double)
+                if (varValue is double or long)
                 {
-                    value = Convert.ToDouble(varValue);
+                    value = varValue;
                     return true;
                 }
                 varIsNumber = false; // 如果不是数值类型变量则标记它
             }
-            else if (double.TryParse(expression, out double number)) // 如果是数字
+            else if (TryParseNumeric(expression, out object number)) // 如果是数字
             {
                 value = number;
                 return true;
@@ -581,19 +580,68 @@ namespace GensouLib.GenScript.Interpreters
         }
 
         // 数值间的比较
-        private static bool CompareValues(double leftValue, double rightValue, string comparisonOperator)
+        private static bool CompareValues(object leftValue, object rightValue, string comparisonOperator)
         {
-            return comparisonOperator switch
+            if (leftValue is long leftLong && rightValue is long rightLong)
             {
-                ">" => leftValue > rightValue,
-                "<" => leftValue < rightValue,
-                ">=" => leftValue >= rightValue,
-                "<=" => leftValue <= rightValue,
-                "==" => leftValue == rightValue,
-                "!=" => leftValue != rightValue,
-                _ => false
-            };
+                return comparisonOperator switch
+                {
+                    ">" => leftLong > rightLong,
+                    "<" => leftLong < rightLong,
+                    ">=" => leftLong >= rightLong,
+                    "<=" => leftLong <= rightLong,
+                    "==" => leftLong == rightLong,
+                    "!=" => leftLong != rightLong,
+                    _ => false
+                };
+            }
+            else if (leftValue is double leftDouble && rightValue is double rightDouble)
+            {
+                return comparisonOperator switch
+                {
+                    ">" => leftDouble > rightDouble,
+                    "<" => leftDouble < rightDouble,
+                    ">=" => leftDouble >= rightDouble,
+                    "<=" => leftDouble <= rightDouble,
+                    "==" => leftDouble == rightDouble,
+                    "!=" => leftDouble != rightDouble,
+                    _ => false
+                };
+            }
+            else if (leftValue is long longValue && rightValue is double doubleValue)
+            {
+                return comparisonOperator switch
+                {
+                    ">" => longValue > doubleValue,
+                    "<" => longValue < doubleValue,
+                    ">=" => longValue >= doubleValue,
+                    "<=" => longValue <= doubleValue,
+                    "==" => longValue == doubleValue,
+                    "!=" => longValue != doubleValue,
+                    _ => false
+                };
+            }
+            else if (leftValue is double doubleValue2 && rightValue is long longValue2)
+            {
+                return comparisonOperator switch
+                {
+                    ">" => doubleValue2 > longValue2,
+                    "<" => doubleValue2 < longValue2,
+                    ">=" => doubleValue2 >= longValue2,
+                    "<=" => doubleValue2 <= longValue2,
+                    "==" => doubleValue2 == longValue2,
+                    "!=" => doubleValue2 != longValue2,
+                    _ => false
+                };
+            }
+            else
+            {
+                return false;
+            }
         }
-               
+
+
+
+
     }
 }
