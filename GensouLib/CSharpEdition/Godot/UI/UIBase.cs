@@ -21,9 +21,9 @@ namespace GensouLib.Godot.UI
         /// 打开指定UI,添加到指定节点。<br/>
         /// Opens the specified UI and adds it to the specified node.
         /// </summary>
-        /// <param name="uiPath">
-        /// 要打开的UI场景路径。<br/>
-        /// The path to the UI scene to open.
+        /// <param name="ui">
+        /// 要打开的UI，UI应在<c>res://UI/</c>下<br/>
+        /// The filename of the UI to open,The UI UI should be located at <c>res://UI/</c>
         /// </param>
         /// <param name="node">
         /// 目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用<c>GetTree().CurrentScene</c>。<br/>
@@ -33,9 +33,9 @@ namespace GensouLib.Godot.UI
         /// 若实例化成功或是已开启的UI则返回该实例，否则返回null。<br/>
         /// Returns the instance if instantiation is successful or the UI is already opened; otherwise, returns null.
         /// </returns>
-        public static Control OpenUI(string uiPath, Node node)
+        public static Control OpenUI(string ui, Node node)
         {
-            if (InstantiatedUI.TryGetValue(uiPath, out Control existingInstance))
+            if (InstantiatedUI.TryGetValue(ui, out Control existingInstance))
             {
                 if (!existingInstance.Visible)
                 {
@@ -43,16 +43,16 @@ namespace GensouLib.Godot.UI
                 }
                 else
                 {
-                    GD.PushWarning($"UI: {uiPath} exists and is active. (UI: {uiPath} 已存在且处于激活状态");
+                    GD.PushWarning($"UI: {ui} exists and is active. (UI: {ui} 已存在且处于激活状态");
                 }
                 return existingInstance;
             }
-
-            PackedScene packedScene = ResourceLoader.Load<PackedScene>(uiPath);
+            string path = "res://UI/"+ui+".tscn";
+            PackedScene packedScene = ResourceLoader.Load<PackedScene>(path);
 
             if (packedScene == null)
             {
-                GD.PushError($"UI failed to load, possibly with wrong path: {uiPath}. (UI加载失败，可能路径错误：{uiPath})");
+                GD.PushError($"UI failed to load, possibly with wrong path: {ui}. (UI加载失败，可能路径错误：{ui})");
                 return null;
             }
 
@@ -60,12 +60,12 @@ namespace GensouLib.Godot.UI
 
             if (instance == null)
             {
-                GD.PushError($"Failed to instantiate UI: {uiPath}.(实例化UI失败：{uiPath})");
+                GD.PushError($"Failed to instantiate UI: {ui}.(实例化UI失败：{ui})");
                 return null;            
             }
             node.AddChild(instance);
 
-            InstantiatedUI.Add(uiPath, instance);
+            InstantiatedUI.Add(ui, instance);
             return instance;
         }
 
@@ -73,28 +73,28 @@ namespace GensouLib.Godot.UI
         /// 关闭指定UI<br/>
         /// Closes the specified UI.
         /// </summary>
-        /// <param name="uiPath">
-        /// 要关闭的 UI 的场景路径。<br/>
-        /// The path to the UI scene to close.
+        /// <param name="ui">
+        /// 要关闭的 UI 。<br/>
+        /// The filename of the UI to close.
         /// </param>
         /// <param name="destroy">
         /// 是否销毁 UI 实例，默认为 false。设置为 true 将销毁 UI 并释放其资源。<br/>
         /// Whether to destroy the UI instance. Default is false. Set to true to destroy and release its resources.
         /// </param>
-        public static void CloseUI(string uiPath,  bool destroy = false)
+        public static void CloseUI(string ui,  bool destroy = false)
         {
-            if (InstantiatedUI.TryGetValue(uiPath, out Control instance))
+            if (InstantiatedUI.TryGetValue(ui, out Control instance))
             {
                 if (instance == null)
                 {
-                    GD.PushError($"UI:{uiPath} instance is null, cannot close. (UI: {uiPath} 实例为空，无法关闭)");
+                    GD.PushError($"UI:{ui} instance is null, cannot close. (UI: {ui} 实例为空，无法关闭)");
                     return;
                 }
                 
                 if (destroy)
                 {
                     instance.QueueFree();
-                    InstantiatedUI.Remove(uiPath);
+                    InstantiatedUI.Remove(ui);
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace GensouLib.Godot.UI
             }
             else
             {
-                GD.PushError($"UI:{uiPath}, does not exist or is not opened. (UI:{uiPath}，不存在或未开启)");
+                GD.PushError($"UI:{ui}, does not exist or is not opened. (UI:{ui}，不存在或未开启)");
             }
         }
 
@@ -111,18 +111,18 @@ namespace GensouLib.Godot.UI
         /// 获取已实例化的UI <br/>
         /// Gets the instantiated UI
         /// </summary>
-        /// <param name="ui_path">
-        /// 要获取实例的 UI 场景文件路径 <br/>
-        /// The path to get the UI scene instance.
+        /// <param name="ui">
+        /// 要获取实例的 UI <br/>
+        /// The filename of the UI to get the UI instance.
         /// </param>
         /// <returns>
         /// 如果获取到UI，则返回其实例，否则返回null <br/>
         /// If UI is retrieved, the instance is returned; otherwise, null is returned
         /// </returns>
-        public static Control GetInstantiatedUI(string ui_path)
+        public static Control GetInstantiatedUI(string ui)
         {
-            if (InstantiatedUI.ContainsKey(ui_path)) 
-                return InstantiatedUI[ui_path];
+            if (InstantiatedUI.ContainsKey(ui)) 
+                return InstantiatedUI[ui];
             return null;
         }
 

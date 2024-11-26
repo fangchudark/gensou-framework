@@ -12,74 +12,74 @@ static var _instantiated_ui: Dictionary = {}
 ## 打开指定UI,添加到指定节点。[br]
 ## Opens the specified UI and adds it to the specified node. [br]
 ## [br]
-## [param ui_path] : [br]
-## 要打开的UI场景路径。[br]
-## The path to the UI scene to open. [br]
+## [param ui] : [br]
+## 要打开的UI，UI应在[code]res://UI/[/code]下[br]
+## The filename of the UI to open,The UI UI should be located at [code]res://UI/[/code][br]
 ## [param node] : [br]
 ## 目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用[code]get_tree().current_scene[/code]。[br]
 ## The target root node. The UI will be added as a child of this node. To add it to the current scene, use [code]get_tree().current_scene[/code].[br]
 ## [br]
 ## 若实例化成功或是已开启的UI则返回该实例，否则返回null。[br]
 ## Returns the instance if instantiation is successful or the UI is already opened; otherwise, returns null.[br]
-static func open_ui(ui_path: String, node: Node) -> Control:
-	if _instantiated_ui.has(ui_path):
-		if not _instantiated_ui[ui_path].visible:
-			_instantiated_ui[ui_path].visible = true
+static func open_ui(ui: String, node: Node) -> Control:
+	if _instantiated_ui.has(ui):
+		if not _instantiated_ui[ui].visible:
+			_instantiated_ui[ui].visible = true
 		else:
-			push_error("UI: %s exists and is active. (UI: %s 已存在且处于激活状态)" % [ui_path,ui_path])
-		return _instantiated_ui[ui_path]
-
-	var packed_scence = ResourceLoader.load(ui_path)
+			push_error("UI: %s exists and is active. (UI: %s 已存在且处于激活状态)" % [ui,ui])
+		return _instantiated_ui[ui]
+	var path = "res://UI/"+ui+".tscn"
+	var packed_scence = ResourceLoader.load(path)
 	if packed_scence == null:
-		push_error("UI failed to load, possibly with wrong path: %s. (UI加载失败，可能路径错误或资源未加载：%s)" % [ui_path,ui_path])
+		push_error("UI failed to load, possibly with wrong path: %s. (UI加载失败，可能路径错误或资源未加载：%s)" % [ui,ui])
 		return null
 
 	var instance = packed_scence.instantiate()
 	if instance == null:
-		push_error("Failed to instantiate UI: %s.(实例化UI失败：%s)" % [ui_path,ui_path])
+		push_error("Failed to instantiate UI: %s.(实例化UI失败：%s)" % [ui,ui])
 		return null
 	node.add_child(instance)
 
-	_instantiated_ui[ui_path] = instance
+	_instantiated_ui[ui] = instance
 	return instance
 
 
 ## 关闭指定UI。[br]
 ## Closes the specified UI. [br]
 ## [br]
-## [param ui_path] : [br] 
-## 要关闭的 UI 的场景路径。[br]
-## The path to the UI scene to close. [br]
+## [param ui] : [br] 
+## 要关闭的 UI。[br]
+## The filename of the UI to close. [br]
 ## [param destroy] : [br]
 ## 是否销毁 UI 实例，默认为 false。设置为 true 将销毁 UI 并释放其资源。[br]
 ## Whether to destroy the UI instance. Default is false. Set to true to destroy and release its resources.[br]
-static func close_ui(ui_path: String, destroy: bool = false) -> void:
-	if _instantiated_ui.has(ui_path):
-		var instance = _instantiated_ui[ui_path]
+static func close_ui(ui: String, destroy: bool = false) -> void:
+	if _instantiated_ui.has(ui):
+		var instance = _instantiated_ui[ui]
 		if instance == null:
-			push_error("UI: %s instance is null, cannot close. (UI: %s 实例为空，无法关闭)" % [ui_path,ui_path])
+			push_error("UI: %s instance is null, cannot close. (UI: %s 实例为空，无法关闭)" % [ui,ui])
 			return
 		if destroy:
 			instance.queue_free()
-			_instantiated_ui.erase(ui_path)
+			_instantiated_ui.erase(ui)
 		else:
 			instance.visible = false
 	else:
-		push_error("UI: %s , does not exist or is not opened. (UI: %s ，不存在或未开启)" % [ui_path,ui_path])
+		push_error("UI: %s , does not exist or is not opened. (UI: %s ，不存在或未开启)" % [ui,ui])
 
 
 ## 获取已实例化的UI [br]
 ## Gets the instantiated UI [br]
 ## [br]
-## [param ui_path"] : [br]
-## 要获取实例的 UI 场景文件路径 [br]
-## The path to get the UI scene instance. [br]
+## [param ui"] : [br]
+## 要获取实例的 UI [br]
+## The filename of the UI to get instance. [br]
 ## [br]
 ## 如果获取到UI，则返回其实例，否则返回null [br]
 ## If UI is retrieved, the instance is returned; otherwise, null is returned
-static func get_instantiated_ui(ui_path: String) -> Control:
-	if _instantiated_ui.has(ui_path):
-		return _instantiated_ui[ui_path]
+static func get_instantiated_ui(ui: String) -> Control:
+	if _instantiated_ui.has(ui):
+		return _instantiated_ui[ui]
 	return null
 
 

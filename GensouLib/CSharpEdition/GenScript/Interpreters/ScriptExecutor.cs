@@ -44,7 +44,7 @@ namespace GensouLib.GenScript.Interpreters
 #endif
         {
             // 检查并处理条件命令
-            if (command.Contains("-when:"))
+            if (command.Contains("-when="))
             {
                 ProcessConditionCommand(command);
                 return;  // 条件命令已处理，不再继续执行其他命令
@@ -56,7 +56,7 @@ namespace GensouLib.GenScript.Interpreters
 
         private static void ProcessConditionCommand(string command)
         {
-            string[] code = command.Split(new string[] { "-when:" }, StringSplitOptions.None);
+            string[] code = command.Split(new string[] { "-when=" }, StringSplitOptions.None);
 
             if (code.Length < 2)
             {

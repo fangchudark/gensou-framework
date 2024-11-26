@@ -24,7 +24,7 @@ namespace GensouLib.Unity.UI
         /// Opens the specified UI.
         /// </summary>
         /// <param name="ui">
-        /// 要打开的 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件后缀的UI预制件文件名。<br/>
+        /// 要打开的 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件扩展名的UI预制件文件名。<br/>
         /// The UI to open. If the UI prefab's address has been manually modified in Addressables, pass the address; otherwise, pass the UI prefab's filename without the file extension.
         /// </param>
         /// <remarks>
@@ -71,7 +71,7 @@ namespace GensouLib.Unity.UI
         /// Closes the specified UI.
         /// </summary>
         /// <param name="ui">
-        /// 要关闭的已开启 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件后缀的UI预制件文件名。<br/>
+        /// 要关闭的已开启 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件扩展名的UI预制件文件名。<br/>
         /// The UI to close.If the UI prefab's address has been manually modified in Addressables, pass the address; otherwise, pass the UI prefab's filename without the file extension.
         /// </param>
         /// <param name="destroy">
@@ -111,7 +111,7 @@ namespace GensouLib.Unity.UI
         /// Gets the instantiated UI
         /// </summary>
         /// <param name="ui">
-        /// 要获取的 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件后缀的UI预制件文件名。< <br/>
+        /// 要获取的 UI。若在Addressables中手动修改了UI预制件的地址则传入该地址，否则传入不带文件扩展名的UI预制件文件名。< <br/>
         /// The UI instance to get. If the UI prefab's address has been manually modified in Addressables, pass the address; otherwise, pass the UI prefab's filename without the file extension.
         /// </param>
         /// <returns>

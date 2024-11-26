@@ -32,8 +32,8 @@ namespace GensouLib.GenScript
         /// </remark>
         /// </param>
         /// <returns>
-        /// 如果读取文件成功返回读取到的脚本文本内容，否则返回空字符串。 <br/>
-        /// If the file was read successfully, the script text content was returned; otherwise, an empty string was returned.
+        /// 如果读取文件成功返回读取到的脚本文本内容，否则返回null。 <br/>
+        /// If the file was read successfully, the script text content was returned; otherwise, null was returned.
         /// </returns>
         public static string ReadScript(string filePath)
         {
@@ -50,7 +50,7 @@ namespace GensouLib.GenScript
             }
             catch (Exception e)
             {
-                GD.Print("Error reading file: " + e.Message);
+                GD.PushError("Error reading file: " + e.Message);
                 return null;
             }
             finally

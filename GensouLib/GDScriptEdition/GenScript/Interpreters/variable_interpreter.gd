@@ -25,8 +25,8 @@ static var key_words: PackedStringArray = [
 static var variable_list: Dictionary = {}
 
 
-## 处理变量字符串赋值和初始化[br]
-## Handles variable string assignment and initialization.[br]
+## 处理变量字符串赋值[br]
+## Handles variable string assignment.[br]
 ## 该方法解析赋值语句中的变量名和值表达式，并根据赋值类型（字符串或表达式）进行适当处理。 [br]
 ## This method parses the variable name and value expression in an assignment statement and processes it according to whether the value is a string or an expression. [br]
 ## [br]
@@ -51,25 +51,15 @@ static func handle_variable_assignment(code: String) -> void:
 	
 	# 如果赋值表达式不是字符串，则检查并处理表达式
 	if not check_expression(value_expression):
-		assign_value(var_name, value_expression)  # 如果是有效的赋值表达式，进行赋值
+		_assign_value(var_name, value_expression)  # 如果是有效的赋值表达式，进行赋值
 		return
 		
 	# 处理复杂表达式赋值
-	process_expression_assignment(var_name, value_expression)  # 处理更复杂的表达式赋值
+	_process_expression_assignment(var_name, value_expression)  # 处理更复杂的表达式赋值
 
 
-## 处理变量赋值 [br]
-## Handles variable assignment. [br]
-## 该方法根据输入的变量名和值，将值进行类型检查和处理后赋值给指定的变量名。 [br]
-## This method assigns a value to the specified variable name after performing type checks and processing. [br]
-## [br]
-## [param var_name] : [br]
-## 变量名，用于标识存储值的变量。 [br]
-## The name of the variable used to store the value. [br]
-## [param value] : [br]
-## 待赋值的字符串形式值，将根据内容类型进行处理。 [br]
-## The string-form value to be assigned, which will be processed based on its type.
-static func assign_value(var_name: String, value: String) -> void:
+# 变量赋值
+static func _assign_value(var_name: String, value: String) -> void:
 	# 初始化要赋值的变量
 	var value_to_assign = value
 
@@ -95,18 +85,8 @@ static func assign_value(var_name: String, value: String) -> void:
 	variable_list[var_name] = value_to_assign
 
 
-## 有表达式的变量赋值 [br]
-## Variable assignment with an expression. [br]
-## 该方法解析表达式并计算其结果，然后将结果赋值给指定变量。 [br]
-## This method parses the expression, evaluates its result, and assigns the result to the specified variable. [br]
-## [br]
-## [param var_name] : [br]
-## 目标变量名，用于存储计算结果。 [br]
-## The name of the target variable to store the evaluated result. [br]
-## [param value_expression] : [br]
-## 表达式，描述需要赋值的计算逻辑。 [br]
-## The expression describing the computation to be assigned.
-static func process_expression_assignment(var_name: String, value_expression: String) -> void:
+# 有表达式的变量赋值
+static func _process_expression_assignment(var_name: String, value_expression: String) -> void:
 	# 将中缀表达式转换为后缀表达式
 	var postfix_expression = intfix_to_postfix(value_expression)
 	# 评估后缀表达式获取结果
@@ -436,7 +416,7 @@ static func check_expression(expression: String) -> bool:
 		return false
 	
 	var regex = RegEx.new() # 创建正则表达式对象，用于匹配表达式中的数字或变量名
-	regex.compile(r"(?<=^|[(+\-*/%])-\d+(\.\d+)?|(?<=^|[(+\-*/%])-\p{L}[\p{L}\p{N}_]*|\d+(\.\d+)?|[\p{L}][\p{L}\p{N}_]*")
+	regex.compile(r"[^\+\-\*/%\s]+")
 	for part in regex.search_all(expression): # 遍历表达式中的每一部分，如果它不是有效的数字且也不是已定义的变量名，则返回 false
 		var op = part.get_string()
 		if not op.is_valid_float() and not check_variable_name(op):

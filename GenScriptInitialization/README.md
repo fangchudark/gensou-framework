@@ -13,6 +13,10 @@
 将`GenScriptInitialization.cs`脚本添加到自动加载  
 （项目 -> 项目设置 -> 全局 -> 自动加载）
 
+## GDScript
+
+与Godot的设置方法相同
+
 ---
 
 # How to Use
@@ -28,6 +32,10 @@ Create a GameObject in your main scene and attach the `GenScriptInitialization.c
 Add the `GenScriptInitialization.cs` script to autoload  
 (Project -> Project Settings -> Global -> Autoload)
 
+## GDScript
+
+Same setup method as Godot
+
 ---
 
 # 使い方
@@ -42,3 +50,7 @@ Add the `GenScriptInitialization.cs` script to autoload
 
 `GenScriptInitialization.cs`スクリプトをオートロードに追加してください  
 （プロジェクト -> プロジェクト設定 -> グローバル -> オートロード）
+
+## GDScript
+
+Godotと同じセットアップ方法

@@ -349,8 +349,8 @@ static func _exaluate_numbers(left: String, right: String) -> Dictionary:
 		var right_value = _try_get_expression_value(right) # 解析右表达式
 		if right_value["success"]: 
 			return {
-				"left_value_to_compare":left_value,
-				"right_value_to_compare":right_value,
+				"left_value_to_compare":left_value["result"],
+				"right_value_to_compare":right_value["result"],
 				"success":true
 			}
 	return {

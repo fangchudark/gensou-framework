@@ -2,21 +2,38 @@
 
 To start using Genscript, first [set up the Genscript initialization script correctly](/GenScriptInitialization/README.md).
 
-Next, create a folder named `Scripts` in your project directory and add a main script file `main.gs` within it.
+Next, create a folder named `Scripts` in your project directory and add a main script file `strat.gs` within it.
 
-- **Unity**: Place the `main.gs` file under `Assets/Scripts/`.
-- **Godot**: Place the `main.gs` file under `res://Scripts/`.
+- **Unity**: Place the `strat.gs` file under `Assets/Scripts/`.
+- **Godot**: Place the `strat.gs` file under `res://Scripts/`.
 
 # Table of Contents
 
-* **Commands**  
-  
-  * **[Console Commands](Command/Console.md)**  
-    
-  * **[Variable Commands](Command/Variable.md)**  
-    
-  * **[Conditional Commands](Command/When.md)**
+This directory lists all commands and keywords documentation for Genscript, making it convenient for developers to reference.  
 
-* **Others**  
+**Note**: **Keyword** documentation is designed for users with programming experience and is not recommended for beginners.
+
+
+---
+
+* **Categories**  
   
-  * **[Comments](Others/Comment.md)**
+  * **[Console Commands](Category/Console.md)**  
+    
+  * **[Variable Commands](Category/Variable.md)**  
+    
+  * **[Condition Commands](Category/Condition.md)**  
+    
+* **Keywords(Not Recommended for Beginners)**  
+  
+  * **[when](KeyWords/when.md)**
+
+    * Parameter: Command execution condition
+
+  * **[release](KeyWords/release.md)**
+
+    * Command: Remove a variable from memory
+
+* **Others**
+
+    * [Comments](Others/Comment.md)

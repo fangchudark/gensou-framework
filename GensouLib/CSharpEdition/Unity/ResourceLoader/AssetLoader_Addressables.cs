@@ -63,7 +63,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// 返回已加载的资源，类型为指定的 <typeparamref name="T"/>，如果资源未加载，则返回 null。<br/>
         /// Returns the loaded asset of type <typeparamref name="T"/>. If the resource is not loaded, returns null.
         /// </returns>
-        public static T GetLoadedAsset<T>(string address) where T : Object
+        public static T GetLoadedAsset<T>(string address) where T : UnityEngine.Object
         {
             return loadedAssets.TryGetValue(address, out var asset) ? asset as T : null;
         }
@@ -176,7 +176,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// 此方法同步加载指定资源，若资源已加载则立即返回。适用于 <c>Addressables</c> 资源加载方式。<br/>
         /// This method synchronously loads the specified resource. If the resource is already loaded, it returns immediately. Suitable for <c>Addressables</c> resource loading.
         /// </remarks>
-        public static void LoadResource<T>(string address)
+        public static void LoadResource<T>(string address) where T : UnityEngine.Object
         {
             if (loadedAssets.ContainsKey(address)) return;
 
@@ -212,7 +212,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// 该方法将异步加载指定的资源，并在加载完成后可以通过任务的状态检查结果，如果是已加载的资源将会立即返回。适用于 <c>Addressables</c> 资源加载方式。<br/>
         /// This method asynchronously loads the resource and allows checking the result once the task completes. If the resource is already loaded, it returns immediately. Suitable for <c>Addressables</c> resource loading.
         /// </remarks>
-        public static async Task LoadResourceAsync<T>(string address)
+        public static async Task LoadResourceAsync<T>(string address) where T : UnityEngine.Object
         {
             if (loadedAssets.ContainsKey(address)) return;
          

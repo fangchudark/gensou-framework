@@ -28,21 +28,10 @@ namespace GensouLib.GenScript.Interpreters
         /// 变量字典，键为变量名，值为变量值<br/>
         /// Variable dictionary, where the key is the variable name and the value is the variable value.  
         /// </summary>
-        public static Dictionary<string, object> VariableList { get; set; } = new(); // 存储变量名及其对应的值
+        public static Dictionary<string, object> VariableList = new(); // 存储变量名及其对应的值
 
-        /// <summary> 
-        /// 有表达式的变量赋值 <br/>
-        /// Variable assignment with an expression. 
-        /// </summary>
-        /// <param name="varName"> 
-        /// 变量名<br/>
-        /// The name of the variable.  
-        /// </param>
-        /// <param name="valueExpression"> 
-        /// 赋值表达式<br/>
-        /// The expression to assign to the variable.  
-        /// </param>
-        public static void ProcessExpressionAssignment(string varName, string valueExpression)
+        // 有表达式的变量赋值
+        private static void ProcessExpressionAssignment(string varName, string valueExpression)
         {
             var postfixExpression = InfixToPostfix(valueExpression); // 转换中缀表达式为后缀表达式
             var result = EvaluatePostfix(postfixExpression); // 计算后缀表达式的结果
@@ -85,8 +74,8 @@ namespace GensouLib.GenScript.Interpreters
         }
 
         /// <summary> 
-        /// 处理变量字符串赋值和初始化<br/>
-        /// Handles variable string assignment and initialization.  
+        /// 处理变量赋值<br/>
+        /// Handles variable assignment.  
         /// </summary>
         /// <param name="code"> 
         /// 命令标识符后的代码<br/>
@@ -120,7 +109,7 @@ namespace GensouLib.GenScript.Interpreters
                     return;
                 }
             }
-            // 赋值处理（如果赋值表达式包含等号则视作是字符串赋值）
+            // 赋值处理（如果赋值表达式包含引号则视作是字符串赋值）
             if (!CheckExpression(valueExpression))
             {
                 AssignValue(varName, valueExpression);
@@ -159,19 +148,8 @@ namespace GensouLib.GenScript.Interpreters
             }
         }
         
-        /// <summary> 
-        /// 处理变量赋值  <br/>
-        /// Handles variable assignment.
-        /// </summary>
-        /// <param name="varName"> 
-        /// 变量名 <br/>
-        /// The name of the variable.
-        /// </param>
-        /// <param name="value"> 
-        /// 值<br/>
-        /// The value to assign to the variable. 
-        /// </param>
-        public static void AssignValue(string varName, string value)
+        // 变量赋值 
+        private static void AssignValue(string varName, string value)
         {
             bool hasDecimalPoint = Regex.IsMatch(value, @"-?\d+\.\d+");
 

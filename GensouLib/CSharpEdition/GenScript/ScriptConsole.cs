@@ -1,6 +1,6 @@
 #if GODOT
 using Godot;
-#elif UNITY_EDITOR
+#elif UNITY_5_3_OR_NEWER
 using UnityEngine;
 #endif
 
@@ -26,7 +26,7 @@ namespace GensouLib.GenScript
             
 #if GODOT
                 GD.Print(formattedMessage);
-#elif UNITY_EDITOR
+#elif UNITY_5_3_OR_NEWER
                 Debug.Log(formattedMessage);
 #endif
         }
@@ -45,7 +45,7 @@ namespace GensouLib.GenScript
             
 #if GODOT
                 GD.PushError(formattedMessage);
-#elif UNITY_EDITOR
+#elif UNITY_5_3_OR_NEWER
                 Debug.LogError(formattedMessage);
 #endif
         }

@@ -54,14 +54,14 @@ namespace GensouLib.Unity.ResourceLoader
         /// The type of the asset, such as GameObject, Texture, etc.
         /// </typeparam>
         /// <param name="path">
-        /// 资源路径，Resources文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 资源路径，Resources文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the resource within the Resources folder, excluding file extensions and using forward slashes: <c>path/to/resource</c>.
         /// </param>
         /// <returns>
         /// 返回已加载的资源，类型为指定的 <typeparamref name="T"/>，如果资源未加载，则返回 null。<br/>
         /// Returns the loaded asset of type <typeparamref name="T"/>. If the resource is not loaded, returns null.
         /// </returns>
-        public static T GetLoadedAsset<T>(string path) where T : Object
+        public static T GetLoadedAsset<T>(string path) where T : UnityEngine.Object
         {
             return loadedAssets.TryGetValue(path, out var asset) ? asset as T : null;
         }
@@ -71,7 +71,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// Instantiate the GameObject. If the resource is already loaded, it will be instantiated directly; if not, it will be loaded and then instantiated.
         /// </summary>
         /// <param name="path">
-        /// 资源路径，Resources文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 资源路径，Resources文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the resource within the Resources folder, excluding file extensions and using forward slashes: <c>path/to/resource</c>.
         /// </param>
         /// <param name="load">
@@ -106,7 +106,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// Asynchronously instantiates the GameObject. If the resource is already loaded, it will be instantiated directly; if not, it will be loaded and then instantiated.
         /// </summary>
         /// <param name="path">
-        /// 资源路径，Resources文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 资源路径，Resources文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the resource within the Resources folder, excluding file extensions and using forward slashes: <c>path/to/resource</c>.
         /// </param>
         /// <param name="load">
@@ -148,7 +148,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// The type of the resource, such as GameObject, Texture, etc.
         /// </typeparam>
         /// <param name="path">
-        /// 资源路径，Resources 文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 资源路径，Resources 文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the resource within the Resources folder, excluding file extensions, and using forward slashes: <c>path/to/resource</c>.
         /// </param>
         /// <remarks>
@@ -180,7 +180,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// The type of the resource, e.g., GameObject, Texture, etc.
         /// </typeparam>
         /// <param name="path">
-        /// 资源路径，Resources 文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 资源路径，Resources 文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the resource within the Resources folder, excluding file extensions, and using forward slashes: <c>path/to/resource</c>.
         /// </param>
         /// <returns>
@@ -232,7 +232,7 @@ namespace GensouLib.Unity.ResourceLoader
         /// Releases the specified loaded resource
         /// </summary>
         /// <param name="path">
-        /// 需要释放的已加载资源的路径，Resources 文件夹中的资源路径，不包含文件后缀名，使用正斜杠：<c>path/to/resource</c>。<br/>
+        /// 需要释放的已加载资源的路径，Resources 文件夹中的资源路径，不包含文件扩展名，使用正斜杠：<c>path/to/resource</c>。<br/>
         /// The path of the loaded resource within the Resources folder to be released, excluding file extensions, and using forward slashes: <c>path/to/resource</c>. 
         /// </param>
         public static void ReleaseResource(string path)

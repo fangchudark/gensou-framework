@@ -2,21 +2,39 @@
 
 Genscriptを使用するには、まず[Genscriptの初期化スクリプトを正しく設定](../../../GenScriptInitialization/README.md)してください。
 
-次に、プロジェクトフォルダに `Scripts` フォルダを作成し、その中にメインスクリプトファイル `main.gs` を追加します。
+次に、プロジェクトフォルダに `Scripts` フォルダを作成し、その中にメインスクリプトファイル `strat.gs` を追加します。
 
-- **Unity**：`main.gs` ファイルを `Assets/Scripts/` に配置してください。
-- **Godot**：`main.gs` ファイルを `res://Scripts/` に配置してください。
+- **Unity**：`strat.gs` ファイルを `Assets/Scripts/` に配置してください。
+- **Godot**：`strat.gs` ファイルを `res://Scripts/` に配置してください。
 
 # 目次
 
-* **コマンド**  
-  
-  * **[コンソールコマンド](Command/Console.md)**  
-    
-  * **[変数コマンド](Command/Variable.md)**  
-    
-  * **[条件コマンド](Command/When.md)**
+このディレクトリには、Genscript のすべてのコマンドおよびキーワードのドキュメントが記載されており、開発者が迅速に参照できるようになっています。  
 
-* **その他**  
+**注**：**キーワード**のドキュメントは、プログラミング経験のあるユーザー向けに作成されており、初心者には推奨されません。
+
+
+---
+
+* **カテゴリ**  
   
-  * **[コメント](Oters/Comment.md)**
+  * **[コンソールコマンド](Category/Console.md)**  
+    
+  * **[変数コマンド](Category/Variable.md)**  
+    
+  * **[条件コマンド](Category/Condition.md)**  
+    
+* **キーワード（初心者には非推奨）**  
+  
+  * **[when](KeyWords/when.md)**
+
+    * パラメータ：コマンド実行条件
+
+  * **[release](KeyWords/release.md)**
+
+    * コマンド：メモリから変数を削除
+
+* **その他**
+
+    * [コメント](Others/Comment.md)
+
