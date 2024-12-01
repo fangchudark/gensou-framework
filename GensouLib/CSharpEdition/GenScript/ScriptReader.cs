@@ -37,35 +37,18 @@ namespace GensouLib.GenScript
         /// </returns>
         public static string ReadScript(string filePath)
         {
-            string content = null;
-
 #if GODOT
-            FileAccess file = null;
-
-            try
+            using var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+            if (file == null) 
             {
-                // 打开文件
-                file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-                content = file.GetAsText();
-            }
-            catch (Exception e)
-            {
-                GD.PushError("Error reading file: " + e.Message);
+                GD.PushError("Cannot reading file");
                 return null;
             }
-            finally
-            {
-                // 确保文件被关闭
-                if (file != null)
-                {
-                    file.Close();
-                }
-            }
+            return file.GetAsText();
 #elif UNITY_5_3_OR_NEWER
             try
             {
-                // Unity读取文件
-                content = File.ReadAllText(filePath);
+                return File.ReadAllText(filePath);
             }
             catch (Exception e)
             {
@@ -73,7 +56,6 @@ namespace GensouLib.GenScript
                 return null;
             }
 #endif
-            return content;
         }
 #if UNITY_5_3_OR_NEWER
         /// <summary>
