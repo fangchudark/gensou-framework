@@ -268,7 +268,7 @@
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。 **
+**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 データを指定されたファイル名の `Json` ファイルとして保存します。
 
@@ -287,7 +287,7 @@
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。 **
+**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 指定した `Json` ファイルからデータを読み込みます。
 
@@ -309,7 +309,7 @@
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。 **
+**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 指定した `Json` ファイルにデータを追加します。
 
@@ -328,7 +328,7 @@
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。 **
+**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 指定した `Json` ファイルからデータを取得します。
 
@@ -347,6 +347,6 @@
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。 **
+**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 指定した `Json` ファイルからデータを削除します。
