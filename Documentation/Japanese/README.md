@@ -28,11 +28,17 @@
 
             - [AssetLoader](API/CSharp/Unity/GensouLib.Unity.ResourceLoader/AssetLoader.md)
 
+        - ### GensouLib.Unity.SaveSystem
+
+            - [SaveManager](API/CSharp/Unity/GensouLib.Unity.SaveSystem/SaveManager.md)
+
         - ### GensouLib.Unity.Tools
 
             - [AddressablesAutoConfigurator](API/CSharp/Unity/GensouLib.Unity.Tools/AddressablesAutoConfigurator.md)
 
             - [FrameworkSettings](API/CSharp/Unity/GensouLib.Unity.Tools/FrameworkSettings.md)
+
+            - [PackageInstaller](API/CSharp/Unity/GensouLib.Unity.Tools/PackageInstaller.md)
 
         - ### GensouLib.Unity.UI
 

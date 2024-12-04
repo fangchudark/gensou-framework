@@ -209,7 +209,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 新数据 <br/>
         /// The new data
         /// </param>
-        public static void AddDataToBin(string fileName, string key, object newData)
+        public static void AddDataToBinary(string fileName, string key, object newData)
         {
             LoadFromBinary(fileName);
             if (_LoadedData.ContainsKey(key))
@@ -240,7 +240,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 键 <br/>
         /// The key
         /// </param>
-        public static T GetDataFromBin<T>(string fileName, string key)
+        public static T GetDataFromBinary<T>(string fileName, string key)
         {
             LoadFromBinary(fileName);
 
@@ -266,7 +266,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 键 <br/>
         /// The key
         /// </param>
-        public static void DeleteDataFromBin(string fileName, string key)
+        public static void DeleteDataFromBinary(string fileName, string key)
         {
             LoadFromBinary(fileName);
 

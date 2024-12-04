@@ -1,13 +1,11 @@
-# FrameworkSettings
+# PackageInstaller
 
 Inherits: [EditorWindow](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/EditorWindow.html)
 
 ## Description
 
-Framework settings tool.
+A tool for quickly installing Unity Packages.
 
-Has the following features:
+- `Json.NET`
 
-- Switch resource loader
-
-- Enable `Json.NET`
+- `Addressables`
