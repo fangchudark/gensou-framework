@@ -1,7 +1,7 @@
 #if GODOT
-using System;
 using Godot;
 #endif
+using System;
 
 namespace GensouLib.GenScript.Interpreters
 {

@@ -209,11 +209,11 @@ namespace GensouLib.GenScript.Interpreters
                 return false;
             }
             // 分割表达式检查操作数是否合法
-            string[] parts = expression.Split(new char[] { '+', '-', '*', '/', '%' }, StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
+            string[] parts = expression.Split(new char[] { '+', '-', '*', '/', '%' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string part in parts)
             {
                 // 如果操作数不是数字且不是合法变量名，则返回false
-                if (!double.TryParse(part, out _) && !CheckVariableName(part))
+                if (!double.TryParse(part.Trim(), out _) && !CheckVariableName(part.Trim()))
                 {
                     return false;
                 }

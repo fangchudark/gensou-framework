@@ -56,7 +56,7 @@ namespace GensouLib.GenScript.Interpreters
 #endif
         {
             // 按行以换行符和回车分割
-            string[] lines = scriptContent.Split(new[] {'\n', '\r'},StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
+            string[] lines = scriptContent.Split(new[] {'\n', '\r'},StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in lines)
             {

@@ -42,7 +42,7 @@ namespace GensouLib.GenScript.Interpreters
             // 查找运算符
             string getedOperator = FindOperator(condition, conditionOperator);
             // 切割条件表达式
-            var expression = condition.Split(getedOperator, StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
+            var expression = condition.Split(getedOperator, StringSplitOptions.RemoveEmptyEntries);
             // 检查表达式的合法性
             if (!IsValidExpression(expression, getedOperator, conditionOperator))
             {
@@ -58,6 +58,7 @@ namespace GensouLib.GenScript.Interpreters
             return EvaluateSimpleCondition(condition);
         }
 
+#region Check condition expression
         // 遍历运算符列表查找运算符
         private static string FindOperator(string condition, List<string> operators)
         {
@@ -98,7 +99,9 @@ namespace GensouLib.GenScript.Interpreters
               (CheckExpression(left) && (CheckVariableName(right) || TryParseNumeric(right, out _))) || // 左是表达式，右是数字或变量或
               ((CheckVariableName(left) || TryParseNumeric(left, out _)) && CheckExpression(right));  // 左是数字或变量，右是表达式              
         }
-        
+#endregion
+
+#region Start compare 
         // 处理条件检查，通过比较给定表达式中的两个值（数值或变量）来确定条件是否满足。
         // 如果两个值均为数值，则解析并计算它们的数值，再根据指定的操作符进行比较；
         // 否则，将它们作为变量直接进行比较。
@@ -119,7 +122,9 @@ namespace GensouLib.GenScript.Interpreters
             // 如果左右操作数为变量，执行变量比较
             return CompareVariables(left, right, op);
         }
+#endregion
 
+#region Check and compare operand        
         // 比较两个变量的值，根据左右操作数的类型（布尔、字符串、数值）执行不同的比较逻辑。
         // 如果左右操作数都是有效变量：
         //   - 若类型相同，则根据类型（布尔、字符串或数值）执行相应的比较并返回结果；
@@ -215,7 +220,9 @@ namespace GensouLib.GenScript.Interpreters
             ScriptConsole.PrintErr($"Invalid argument: {condition}. Expected: Boolean variable, Boolean value, or conditional expression. Command ignored.（无效的参数：{condition}，期望：布尔类型变量，布尔值或条件表达式。命令已忽略）");
             return false;           
         }
+#endregion
 
+#region Compare variables and values
         // 检查是否仅有一侧操作数为变量，根据情况处理单侧为变量的比较
         // 如果左右操作数都符合或其一符合变量名规则但未定义则判定为不存在的变量
         // 最后处理类型不兼容的比较
@@ -332,7 +339,9 @@ namespace GensouLib.GenScript.Interpreters
             // 类型不兼容，返回false
             return false;
         }
-       
+#endregion
+
+#region Error Handling
         // 左右操作数进行比较时类型不兼容
         // 根据操作数的类型以及是否为变量输出对应的错误信息
         private static void HandleIncompatibleComparison(string left, string right, object leftValue = null, object rightValue = null)
@@ -477,6 +486,9 @@ namespace GensouLib.GenScript.Interpreters
             ScriptConsole.PrintErr($"Unexpected operand: {other}.(意外的操作数：{other} )");
         }
 
+#endregion
+
+#region Expression Parsing
         // 处理数值比较
         // 尝试将左右操作数解析为数值。如果解析成功，返回true以及解析后的值；
         // 否则返回false。
@@ -548,7 +560,9 @@ namespace GensouLib.GenScript.Interpreters
             ScriptConsole.PrintErr($"Numeric value variable: {expression} does not exist. Command ignored.(数值类型变量：{expression} 不存在，命令已忽略)");        
             return false;
         }
-        
+#endregion
+
+#region Compare values
         // 字符串间的比较
         private static bool CompareStrings(string leftValue, string rightValue, string comparisonOperator)
         {
@@ -639,9 +653,6 @@ namespace GensouLib.GenScript.Interpreters
                 return false;
             }
         }
-
-
-
-
+#endregion
     }
 }
