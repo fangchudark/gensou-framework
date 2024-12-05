@@ -25,6 +25,7 @@ namespace GensouLib.Unity.Tools
         {
             // 加载保存的选项索引
             currentOptionIndex = EditorPrefs.GetInt(PrefKey, 0);
+            selectedOptionIndex = EditorPrefs.GetInt(PrefKey, 0);
             enableNewtonsoftJson = EditorPrefs.GetBool(PrefKey1, false);
         }
 
@@ -40,7 +41,7 @@ namespace GensouLib.Unity.Tools
 
             GUILayout.Label("Switch loading method(切换加载方式)");
             // 下拉菜单
-            selectedOptionIndex = EditorGUILayout.Popup(currentOptionIndex, options);
+            selectedOptionIndex = EditorGUILayout.Popup(selectedOptionIndex, options);
 
             GUILayout.Space(10);
 
