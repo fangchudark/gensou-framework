@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace GensouLib.Unity.SaveSystem
 {
     /// <summary>
-    /// 存档管理器
+    /// 存档管理器 <br/>
     /// Save manager
     /// </summary>
     /// <remarks>
