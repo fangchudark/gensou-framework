@@ -6,6 +6,13 @@ using Godot.Collections;
 
 namespace GensouLib.Godot.SaveSystem
 {
+    /// <summary>
+    /// 存档管理器
+    /// Save manager
+    /// </summary>
+    /// <remarks>
+    /// 该类用于管理存档文件，包括读取、保存、删除等操作。<br/>
+    /// This class is used to manage save files, including reading, saving, and deleting operations.<br/>
     public class SaveManager
     {
         /// <summary>
