@@ -26,7 +26,7 @@ namespace GensouLib.Godot.SaveSystem
         /// 示例：<br/>
         /// Example:<br/>
         /// <code>
-        /// EncodedObjectAsId encodedObjectAsId = (EncodedObjectAsId)loadedData["MyObject"];
+        /// EncodedObjectAsId encodedObjectAsId = (EncodedObjectAsId)SaveManager.LoadedDataBinary["MyObject"];
         /// Node myObject = (Node)GodotObject.InstanceFromId(encodedObjectAsId.ObjectId);
         /// </code>
         /// </summary>
@@ -46,7 +46,7 @@ namespace GensouLib.Godot.SaveSystem
         /// 示例：<br/>
         /// Example:<br/>
         /// <code>
-        /// ulong objectId = loadedDataJson["MyObject"].AsUInt64();
+        /// ulong objectId = SaveManager.LoadedDataJson["MyObject"].AsUInt64();
         /// Node myObject = (Node)GodotObject.InstanceFromId(objectId);
         /// </code>
         /// </summary>

@@ -50,7 +50,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 示例：<br/>
         /// Example:
         /// <code>
-        /// JObject jObject = (JObject)LoadedDataJson["key"];
+        /// JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
         /// foreach (var property in jObject.Properties())
         /// {
         ///     Debug.Log(property.Name + " : " + property.Value);
@@ -61,7 +61,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 示例：<br/>
         /// Example:
         /// <code>
-        /// JArray jArray = (JArray)LoadedDataJson["key"];
+        /// JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
         /// foreach (var item in jArray.Children())
         /// {
         ///     Debug.Log(item.ToString());
