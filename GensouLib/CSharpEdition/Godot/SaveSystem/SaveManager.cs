@@ -15,8 +15,20 @@ namespace GensouLib.Godot.SaveSystem
         public static Dictionary<string, Variant> DataToSave { get; set; } = new();
 
         /// <summary>
-        /// 从二进制文件中加载的数据 <br/>
-        /// The data loaded from a binary file.
+        /// 从二进制文件中加载的数据。<br/>
+        /// The data loaded from a binary file.<br/>
+        /// 如果键对应的值是 Godot 对象，需要先将其转换为 <see cref="EncodedObjectAsId"/> 类型。<br/>
+        /// If the value corresponding to the key is a Godot object, convert it to the <see cref="EncodedObjectAsId"/> type.<br/>
+        /// 然后访问 <see cref="EncodedObjectAsId.ObjectId"/> 属性来获取对象的引用 ID。<br/>
+        /// Then access the <see cref="EncodedObjectAsId.ObjectId"/> property to retrieve the object reference ID.<br/>
+        /// 最后，使用 <see cref="GodotObject.InstanceFromId(ulong)"/> 方法根据引用 ID 获取对象实例。<br/>
+        /// Finally, use the <see cref="GodotObject.InstanceFromId(ulong)"/> method to get the object instance from the reference ID.<br/>
+        /// 示例：<br/>
+        /// Example:<br/>
+        /// <code>
+        /// EncodedObjectAsId encodedObjectAsId = (EncodedObjectAsId)loadedData["MyObject"];
+        /// Node myObject = (Node)GodotObject.InstanceFromId(encodedObjectAsId.ObjectId);
+        /// </code>
         /// </summary>
         public static Dictionary<string, Variant> LoadedDataBinary { get => _LoadedDataBinary;}
 
@@ -25,8 +37,18 @@ namespace GensouLib.Godot.SaveSystem
         private static Dictionary<string, Variant> _TempDataBinary = new();
 
         /// <summary>
-        /// 从JSON文件中加载的数据 <br/>
-        /// The data loaded from a JSON file.
+        /// 从 JSON 文件中加载的数据。<br/>
+        /// The data loaded from a JSON file.<br/>
+        /// 如果键对应的值是 Godot 对象，首先使用 <see cref="Variant.AsUInt64()"/> 获取其引用 ID。<br/>
+        /// If the value corresponding to the key is a Godot object, use <see cref="Variant.AsUInt64()"/> to retrieve its reference ID.<br/>
+        /// 然后使用 <see cref="GodotObject.InstanceFromId(ulong)"/> 方法根据引用 ID 获取对象实例。<br/>
+        /// Then use the <see cref="GodotObject.InstanceFromId(ulong)"/> method to get the object instance from the reference ID.<br/>
+        /// 示例：<br/>
+        /// Example:<br/>
+        /// <code>
+        /// ulong objectId = loadedDataJson["MyObject"].AsUInt64();
+        /// Node myObject = (Node)GodotObject.InstanceFromId(objectId);
+        /// </code>
         /// </summary>
         public static  Dictionary<string, Variant> LoadedDataJson { get => _LoadedDataJson;}
 
