@@ -4,11 +4,7 @@
 
 `SaveManager` はゲームのセーブデータを管理するためのクラスで、データの保存、読み込み、削除、追加、変更、検索、ディレクトリ作成などの機能を提供します。
 
-デフォルトではバイナリ形式でデータを保存しますが、`Json` 形式で保存したい場合は、[フレームワークツール](../GensouLib.Unity.Tools/PackageInstaller.md)または Unity Package Manager を使用して `Json.NET` パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効にしてください。
-
-バイナリ形式でデータを保存する場合、保存するデータは `[Serializable]` 属性が付与されたクラスに格納する必要があります。
-
-`Json` 形式でデータを保存する場合、Unity オブジェクトのシリアライズはサポートしていませんので、保存する Unity オブジェクトの状態（名前や位置など）を取り出して辞書に保存してください。
+このクラスのすべての I/O 操作は Godot の API に基づいて実装されています。ファイル パスのパス区切り文字としてスラッシュ `/` を使用してください。
 
 ## 静的プロパティ
 
@@ -37,12 +33,11 @@
 | [AddDataToJson](#savemanageradddatatojson) | Jsonファイルにデータを追加する。 |
 | [GetDataFromJson](#savemanagergetdatafromjson) | Jsonファイルからデータを取得する。 |
 | [DeleteDataFromJson](#savemanagerdeletedatafromjson) | Jsonファイルからデータを削除する。 |
-
 ---
 
 # SaveManager.DataToSave
 
-`public static Dictionary<string, object> DataToSave`
+`public static Dictionary<string, Variant> DataToSave`
 
 ## 説明
 
@@ -54,7 +49,7 @@
 
 # SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedDataBinary`
+`public static Dictionary<string, Variant> LoadedDataBinary`
 
 ## 説明
 
@@ -62,11 +57,22 @@
 
 キーはデータの検索に使用される識別子で、値は対応するデータです。
 
+キーに対応する値が `Godot` オブジェクトの場合、最初に `EncodedObjectAsId` 型に変換する必要があります。
+
+次に、`EncodedObjectAsId.ObjectId` プロパティにアクセスして、オブジェクトの参照 ID を取得します。
+
+最後に、`GodotObject.InstanceFromId(ulong)` メソッドを使用して、参照 ID に基づいてオブジェクト インスタンスを取得します。
+
+```csharp
+EncodedObjectAsId encodedObject = (EncodedObjectAsId)SaveManager.LoadedDataBinary["key"];
+Node node = (Node)GodotObject.InstanceFromId(encodedObject.ObjectId);
+```
+
 ---
 
 # SaveManager.LoadedDataJson
 
-`public static Dictionary<string, object> LoadedDataJson`
+`public static Dictionary<string, Variant> LoadedDataJson`
 
 ## 説明
 
@@ -74,26 +80,13 @@
 
 キーは `Json` ファイルに保存されたキー名で、値は対応するデータです。
 
-キーに対応する値が複数のプロパティを含むクラスまたはディクショナリである場合、それを `JObject` 型に変換し、`JObject.Properties` メソッドを使用してそのプロパティにアクセスします。
+キーに対応する値が `Godot` オブジェクトの場合、まず `Variant.AsUInt64()` を使用してその参照 ID を取得します。
+
+次に、`GodotObject.InstanceFromId(ulong)` メソッドを使用して、参照 ID に基づいてオブジェクト インスタンスを取得します。
 
 ```csharp
-JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
-foreach (var property in jObject.Properties())
-{
-    // do something with property
-    Debug.Log(property.Name + " : " + property.Value);
-}
-```
-
-キーに対応する値が配列またはリストの場合は、それを `JArray` 型に変換し、`JArray.Children` メソッドを使用してその要素にアクセスします。
-
-```csharp
-JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
-foreach (var item in jArray.Children())
-{
-    // do something with item
-    Debug.Log(item.ToString());
-}
+ulong objectId = SaveManager.LoadedDataJson["key"].AsUInt64();
+Node node = (Node)GodotObject.InstanceFromId(objectId);
 ```
 
 ---
@@ -106,7 +99,7 @@ foreach (var item in jArray.Children())
 
 セーブデータの保存先ディレクトリ。
 
-デフォルトは [`Application.persistentDataPath`](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Application-persistentDataPath.html) ですが、他のパスに変更することもできます。
+デフォルト値は[`user://`の絶対パス](https://docs.godotengine.org/ja/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user)であり、他のパスに変更できます。
 
 ---
 
@@ -208,7 +201,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.SaveAsBinary
 
-`public static void SaveAsBinary(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsBinary(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## パラメータ
 
@@ -245,7 +238,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.AddDataToBinary
 
-`public static void AddDataToBinary(string fileName, string key, object newData)`
+`public static void AddDataToBinary(string fileName, string key, Variant newData)`
 
 ## パラメータ
 
@@ -264,7 +257,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.GetDataFromBinary
 
-`public static T GetDataFromBinary<T>(string fileName, string key)`
+`public static T GetDataFromBinary<[MustBeVariant] T>(string fileName, string key)`
 
 ## パラメータ
 
@@ -301,7 +294,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.SaveAsJson
 
-`public static void SaveAsJson(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsJson(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## パラメータ
 
@@ -310,8 +303,6 @@ foreach (var item in jArray.Children())
 | `fileName` | 保存するファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
 
 ## 説明
-
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
 データを指定されたファイル名の `Json` ファイルとして保存します。
 
@@ -330,8 +321,6 @@ foreach (var item in jArray.Children())
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
-
 指定した `Json` ファイルからデータを読み込みます。
 
 読み込んだデータは [`LoadedDataJson`](#savemanagerloadeddatajson) プロパティに保存されます。
@@ -342,7 +331,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.AddDataToJson
 
-`public static void AddDataToJson(string fileName, string key, object newData)`
+`public static void AddDataToJson(string fileName, string key, Variant newData)`
 
 ## パラメータ
 
@@ -353,8 +342,6 @@ foreach (var item in jArray.Children())
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
-
 指定したファイル名で `Json` ファイルにデータを追加します。
 
 ファイルが存在しない場合は作成します。
@@ -363,7 +350,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.GetDataFromJson
 
-`public static T GetDataFromJson<T>(string fileName, string key)`
+`public static T GetDataFromJson<[MustBeVariant] T>(string fileName, string key)`
 
 ## パラメータ
 
@@ -374,37 +361,7 @@ foreach (var item in jArray.Children())
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
-
 指定した `Json` ファイルからデータを取得します。
-
-このメソッドは、文字列、数値 (`long`、`double`)、ブール値など、Json がシリアル化できる基本的な型のデータのみを取得できます。
-
-**C# コレクション タイプ、Unity オブジェクト、またはカスタム クラスを直接取得することはできません。**
-
-取得が必要な場合は、[`LoadedDataJson`](#savemanagerloadeddatajson)プロパティにアクセスして取得してください。
-
-`JSON` ファイルからデータを取得する場合、`Json.NET` の対応する型マッピング ルールは次のとおりです。
-
-- C# コレクション:
-
- - 辞書: `JObject`
-
- - 配列: `JArray`
-
- - リスト: `JArray`
-
-- カスタム クラス: `JObject`
-
-- 基本的なデータ型:
-
- - 整数型: `long`
-
- - 浮動小数点型: `double`
-
- - 文字列: `string`
-
- - ブール値: `bool`
 
 ## 戻り値
 
@@ -424,6 +381,9 @@ foreach (var item in jArray.Children())
 
 ## 説明
 
-**使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
-
 ファイルが存在し、指定されたキーが含まれている場合は、ファイルからデータを削除します。
+
+
+
+
+

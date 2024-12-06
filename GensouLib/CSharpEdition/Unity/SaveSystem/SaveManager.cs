@@ -183,7 +183,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 存档路径下的文件数量，如果不存在则返回0 <br/>
         /// The number of files in the save path, 0 if it does not exist.
         /// </returns>
-        public static int GetSaveFileCount(string extension = ".sav")
+        public static int GetSaveFilesCount(string extension = ".sav")
         {
             int count = 0;
             foreach (string file in Directory.GetFiles(SavePath))
@@ -208,7 +208,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 文件名 <br/>
         /// The file name
         /// </param>
-        public static void SaveAsBinary(object dataDictionary = null, string fileName = "SaveData.sav")
+        public static void SaveAsBinary(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")
         {
             dataDictionary ??= DataToSave;
             using FileStream fileStream = new(Path.Combine(SavePath, fileName), FileMode.Create);
@@ -361,7 +361,7 @@ namespace GensouLib.Unity.SaveSystem
         /// 文件名 <br/>
         /// The file name
         /// </param>
-        public static void SaveAsJson(object dataDictionary = null, string fileName = "SaveData.sav")
+        public static void SaveAsJson(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")
         {
             dataDictionary ??= DataToSave;
             var settings = new JsonSerializerSettings()
@@ -369,7 +369,7 @@ namespace GensouLib.Unity.SaveSystem
                 Formatting = Formatting.Indented,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 PreserveReferencesHandling = PreserveReferencesHandling.None,
-                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameHandling = TypeNameHandling.None,
                 NullValueHandling = NullValueHandling.Ignore
             };
             string json = JsonConvert.SerializeObject(dataDictionary, settings);

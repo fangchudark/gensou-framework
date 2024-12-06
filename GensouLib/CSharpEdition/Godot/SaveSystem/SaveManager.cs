@@ -211,19 +211,19 @@ namespace GensouLib.Godot.SaveSystem
         /// 保存为二进制文件 <br/>
         /// Save as a binary file.
         /// </summary>
-        /// <param name="data">
-        /// 需要保存的数据，为<c>null</c>时使用<see cref="DataToSave"/> <br/>
+        /// <param name="dataDictionary">
+        /// 需要保存的数据字典，为<c>null</c>时使用<see cref="DataToSave"/> <br/>
         /// The data to save, <c>null</c> means using <see cref="DataToSave"/>.
         /// </param>
         /// <param name="fileName">
         /// 文件名 <br/>
         /// The file name.
         /// </param>
-        public static void SaveAsBinary(Variant? data = null, string fileName = "SaveData.sav")
+        public static void SaveAsBinary(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")
         {
-            data ??= DataToSave;
+            dataDictionary ??= DataToSave;
             using var file = FileAccess.Open(SavePath.PathJoin(fileName), FileAccess.ModeFlags.Write);
-            file.StoreVar((Variant)data);
+            file.StoreVar(dataDictionary);
         }
 
         /// <summary>
@@ -371,11 +371,11 @@ namespace GensouLib.Godot.SaveSystem
         /// 文件名 <br/>
         /// The file name.
         /// </param>
-        public static void SaveAsJson(Variant? data = null, string fileName = "SaveData.sav")
+        public static void SaveAsJson(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")
         {
-            data ??= DataToSave;
+            dataDictionary ??= DataToSave;
             using var file = FileAccess.Open(SavePath.PathJoin(fileName), FileAccess.ModeFlags.Write);
-            file.StoreString(Json.Stringify((Variant)data, "\t"));
+            file.StoreString(Json.Stringify(dataDictionary, "\t"));
         }
 
         /// <summary>

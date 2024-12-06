@@ -4,11 +4,7 @@
 
 `SaveManager` is used to manage game save files, providing functionality for saving, reading, adding, deleting, modifying, querying, and creating directories.
 
-By default, data is saved in binary format. If you prefer to save in `Json` format, please install the `Json.NET` package via [framework tools](../GensouLib.Unity.Tools/PackageInstaller.md) or Unity Package Manager, and enable it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).
-
-When saving data in binary format, store the data in classes marked with the `[Serializable]` attribute.
-
-When saving in `Json` format, Unity objects cannot be serialized. Extract necessary states such as names, positions, etc., and store them in a dictionary.
+All I/O operations of this class are implemented based on Godot's API. Please use forward slash `/` as the path separator for file paths.
 
 ## Static Properties
 
@@ -42,7 +38,7 @@ When saving in `Json` format, Unity objects cannot be serialized. Extract necess
 
 # SaveManager.DataToSave
 
-`public static Dictionary<string, object> DataToSave`
+`public static Dictionary<string, Variant> DataToSave`
 
 ## Description
 
@@ -54,7 +50,7 @@ Before saving, ensure the data to be saved is stored in this dictionary.
 
 # SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedDataBinary`
+`public static Dictionary<string, Variant> LoadedDataBinary`
 
 ## Description
 
@@ -62,38 +58,36 @@ Read-only property, data loaded from binary file.
 
 The key is the identifier used to find the data, and the value is the corresponding data.
 
+If the value corresponding to the key is a `Godot` object, convert it to the `EncodedObjectAsId` type.
+
+Then access the `EncodedObjectAsId.ObjectId` property to retrieve the object reference ID.
+
+Finally, use the `GodotObject.InstanceFromId(ulong)` method to get the object instance from the reference ID.
+
+```csharp
+EncodedObjectAsId encodedObject = (EncodedObjectAsId)SaveManager.LoadedDataBinary["key"];
+Node node = (Node)GodotObject.InstanceFromId(encodedObject.ObjectId);
+```
+
 ---
 
 # SaveManager.LoadedDataJson
 
-`public static Dictionary<string, object> LoadedDataJson`
+`public static Dictionary<string, Variant> LoadedDataJson`
 
-## 描述
+## Description
 
 Read-only property, data loaded from `Json` file.
 
 The key is the key name saved to the `Json` file, and the value is the corresponding data.
 
-If the value corresponding to the key is a class containing multiple properties or a dictionary, convert it to type `JObject` and then use the `JObject.Properties` method to access its properties.
+If the value corresponding to the key is a `Godot` object, use `Variant.AsUInt64()` to retrieve its reference ID.
+
+Then use the `GodotObject.InstanceFromId(ulong)` method to get the object instance from the reference ID.
 
 ```csharp
-JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
-foreach (var property in jObject.Properties())
-{
-    // do something with the property
-    Debug.Log(property.Name + " : " + property.Value);
-}
-```
-
-If the value corresponding to the key is an array or list, convert it to the `JArray` type and then use the `JArray.Children` method to access its elements.
-
-```csharp
-JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
-foreach (var item in jArray.Children())
-{
-    // 处理元素
-    Debug.Log(item.ToString());
-}
+ulong objectId = SaveManager.LoadedDataJson["key"].AsUInt64();
+Node node = (Node)GodotObject.InstanceFromId(objectId);
 ```
 
 ---
@@ -106,7 +100,7 @@ foreach (var item in jArray.Children())
 
 This property specifies the save directory.
 
-The default value is [`Application.persistentDataPath`](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Application-persistentDataPath.html), but it can be modified to any other path.
+The default value is [absolute path of `user://`](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user), but it can be modified to any other path.
 
 ---
 
@@ -208,7 +202,7 @@ Returns the number of save files with the specified extension if they exist, oth
 
 # SaveManager.SaveAsBinary
 
-`public static void SaveAsBinary(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsBinary(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## Parameters
 
@@ -245,7 +239,7 @@ If the file does not exist, [`LoadedDataBinary`](#savemanagerloadeddatabinary) w
 
 # SaveManager.AddDataToBinary
 
-`public static void AddDataToBinary(string fileName, string key, object newData)`
+`public static void AddDataToBinary(string fileName, string key, Variant newData)`
 
 ## Parameters
 
@@ -264,7 +258,7 @@ If the file does not exist, it will be created.
 
 # SaveManager.GetDataFromBinary
 
-`public static T GetDataFromBinary<T>(string fileName, string key)`
+`public static T GetDataFromBinary<[MustBeVariant] T>(string fileName, string key)`
 
 ## Parameters
 
@@ -301,7 +295,7 @@ Deletes the data from the binary file if it exists and contains the specified ke
 
 # SaveManager.SaveAsJson
 
-`public static void SaveAsJson(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsJson(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## Parameters
 
@@ -310,8 +304,6 @@ Deletes the data from the binary file if it exists and contains the specified ke
 | `fileName` | The name of the file to save, including the extension. Default is `SaveData.sav`. |
 
 ## Description
-
-**Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
 
 Saves the data as a `Json` file with the specified file name.
 
@@ -330,8 +322,6 @@ If `dataDictionary` is null, it will use [`DataToSave`](#savemanagerdatatosave) 
 
 ## Description
 
-**Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
-
 Reads data from the specified `Json` file.
 
 The data is saved in the [`LoadedDataJson`](#savemanagerloadeddatajson) property.
@@ -342,7 +332,7 @@ If the file does not exist, [`LoadedDataJson`](#savemanagerloadeddatajson) will 
 
 # SaveManager.AddDataToJson
 
-`public static void AddDataToJson(string fileName, string key, object newData)`
+`public static void AddDataToJson(string fileName, string key, Variant newData)`
 
 ## Parameters
 
@@ -353,8 +343,6 @@ If the file does not exist, [`LoadedDataJson`](#savemanagerloadeddatajson) will 
 
 ## Description
 
-**Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
-
 Adds data to the specified `Json` file.
 
 If the file does not exist, it will be created.
@@ -363,7 +351,7 @@ If the file does not exist, it will be created.
 
 # SaveManager.GetDataFromJson
 
-`public static T GetDataFromJson<T>(string fileName, string key)`
+`public static T GetDataFromJson<[MustBeVariant] T>(string fileName, string key)`
 
 ## Parameters
 
@@ -374,41 +362,12 @@ If the file does not exist, it will be created.
 
 ## Description
 
-**Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
-
 Retrieves data from the specified `Json` file.
-
-This method can only obtain basic types of data that can be serialized by JSON, such as strings, numbers (`long`, `double`), and boolean values.
-
-**C# collection types, Unity objects, or custom classes cannot be directly obtained.**
-
-If you need to access them, please do so through the [`LoadedDataJson`](#savemanagerloadeddatajson) property.
-
-When retrieving data from a `JSON` file, the corresponding type mapping rules for `Json.NET` are as follows:
-
-- C# Collections:
-
-    - Dictionary: `JObject`
-  
-    - Array: `JArray`
-  
-    - List: `JArray`
-
-- Custom Classes: `JObject`
-
-- Basic Data Types:
-
-    - Integer: `long`
-
-    - Floating Point: `double`
-
-    - String: `string`
-    
-    - Boolean: `bool`
 
 ## Returns
 
 If the file exists and contains the specified key, it returns the corresponding data; otherwise, it returns the `default` value.
+
 
 ---
 
@@ -424,6 +383,9 @@ If the file exists and contains the specified key, it returns the corresponding 
 
 ## Description
 
-**Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
-
 Deletes the data from the `Json` file if it exists and contains the specified key.
+
+
+
+
+

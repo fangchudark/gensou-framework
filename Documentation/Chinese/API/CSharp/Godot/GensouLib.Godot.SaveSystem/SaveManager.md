@@ -4,11 +4,7 @@
 
 `SaveManager` 用于管理游戏存档，提供保存、读取、删增改查、创建目录等功能。
 
-默认使用二进制保存数据，如果需要使用`Json`保存请使用[框架工具](../GensouLib.Unity.Tools/PackageInstaller.md)或Unity Package Manager安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。
-
-使用二进制保存数据时，请将需要保存的数据存入标记为`[Serializable]`属性的类中。
-
-使用`Json`保存数据时，不支持序列化Unity对象，请将需要保存的Unity对象的状态如名称，位置等数据提取出来并存入字典中。
+该类的所有 I/O 操作均基于Godot的API实现，文件路径请使用正斜杠`/`作为路径分隔符。
 
 ## 静态属性
 
@@ -42,7 +38,7 @@
 
 # SaveManager.DataToSave
 
-`public static Dictionary<string, object> DataToSave`
+`public static Dictionary<string, Variant> DataToSave`
 
 ## 描述
 
@@ -54,7 +50,7 @@
 
 # SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedDataBinary`
+`public static Dictionary<string, Variant> LoadedDataBinary`
 
 ## 描述
 
@@ -62,11 +58,22 @@
 
 键为用于查找数据的标识，值为对应的数据。
 
+如果键对应的值是 `Godot` 对象，需要先将其转换为`EncodedObjectAsId`类型。
+
+然后访问`EncodedObjectAsId.ObjectId`属性来获取对象的引用 ID。
+
+最后，使用`GodotObject.InstanceFromId(ulong)`方法根据引用 ID 获取对象实例。
+
+```csharp
+EncodedObjectAsId encodedObject = (EncodedObjectAsId)SaveManager.LoadedDataBinary["key"];
+Node node = (Node)GodotObject.InstanceFromId(encodedObject.ObjectId);
+```
+
 ---
 
 # SaveManager.LoadedDataJson
 
-`public static Dictionary<string, object> LoadedDataJson`
+`public static Dictionary<string, Variant> LoadedDataJson`
 
 ## 描述
 
@@ -74,26 +81,13 @@
 
 键为保存到`Json`文件的键名，值为对应的数据。
 
-如果键对应的值是包含多个属性的类或字典，请将其转换为 `JObject` 类型，然后使用`JObject.Properties` 方法访问其属性。
+如果键对应的值是 `Godot` 对象，首先使用`Variant.AsUInt64()` 获取其引用 ID。
+
+然后使用`GodotObject.InstanceFromId(ulong)`方法根据引用 ID 获取对象实例。
 
 ```csharp
-JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
-foreach (var property in jObject.Properties())
-{
-    // 处理属性
-    Debug.Log(property.Name + " : " + property.Value);
-}
-```
-
-如果键对应的值是数组或列表，请将其转换为 `JArray` 类型，然后使用`JArray.Children` 方法访问其元素。
-
-```csharp
-JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
-foreach (var item in jArray.Children())
-{
-    // 处理元素
-    Debug.Log(item.ToString());
-}
+ulong objectId = SaveManager.LoadedDataJson["key"].AsUInt64();
+Node node = (Node)GodotObject.InstanceFromId(objectId);
 ```
 
 ---
@@ -106,7 +100,7 @@ foreach (var item in jArray.Children())
 
 存档目录。
 
-默认值为[`Application.persistentDataPath`](https://docs.unity.cn/cn/2022.3/ScriptReference/Application-persistentDataPath.html)，可修改为其他路径。
+默认值为[`user://`的绝对路径](https://docs.godotengine.org/zh-cn/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user)，可修改为其他路径。
 
 ---
 
@@ -208,7 +202,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.SaveAsBinary
 
-`public static void SaveAsBinary(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsBinary(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## 参数
 
@@ -245,7 +239,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.AddDataToBinary
 
-`public static void AddDataToBinary(string fileName, string key, object newData)`
+`public static void AddDataToBinary(string fileName, string key, Variant newData)`
 
 ## 参数
 
@@ -264,7 +258,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.GetDataFromBinary
 
-`public static T GetDataFromBinary<T>(string fileName, string key)`
+`public static T GetDataFromBinary<[MustBeVariant] T>(string fileName, string key)`
 
 ## 参数
 
@@ -301,7 +295,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.SaveAsJson
 
-`public static void SaveAsJson(Dictionary<string, object> dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void SaveAsJson(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## 参数
 
@@ -310,8 +304,6 @@ foreach (var item in jArray.Children())
 |`fileName`|要保存的文件名，包含扩展名，默认为`SaveData.sav`。|
 
 ## 描述
-
-**使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
 
 保存数据为指定文件名的`Json`文件。
 
@@ -330,8 +322,6 @@ foreach (var item in jArray.Children())
 
 ## 描述
 
-**使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
-
 读取指定文件名的`Json`文件中的数据。
 
 并将读取的数据保存到[`LoadedDataJson`](#savemanagerloadeddatajson)属性中。
@@ -342,7 +332,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.AddDataToJson
 
-`public static void AddDataToJson(string fileName, string key, object newData)`
+`public static void AddDataToJson(string fileName, string key, Variant newData)`
 
 ## 参数
 
@@ -353,8 +343,6 @@ foreach (var item in jArray.Children())
 
 ## 描述
 
-**使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
-
 向指定文件名的`Json`文件中添加数据。
 
 如果文件不存在则创建文件。
@@ -363,7 +351,7 @@ foreach (var item in jArray.Children())
 
 # SaveManager.GetDataFromJson
 
-`public static T GetDataFromJson<T>(string fileName, string key)`
+`public static T GetDataFromJson<[MustBeVariant] T>(string fileName, string key)`
 
 ## 参数
 
@@ -374,37 +362,7 @@ foreach (var item in jArray.Children())
 
 ## 描述
 
-**使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
-
 从指定文件名的`Json`文件中获取数据。
-
-此方法只能获取 Json 能够序列化的基本类型数据，如字符串、数字（`long`、`double`）和布尔值。
-
-**不能直接获取 C# 集合类型、Unity 对象或自定义类。**
-
-如果需要获取，请通过访问[`LoadedDataJson`](#savemanagerloadeddatajson)属性获取。
-
-从 `JSON` 文件获取数据时，`Json.NET` 对应的类型映射规则如下：
-
-- C# 集合：
-
-    - 字典：`JObject`
-  
-    - 数组：`JArray`
-  
-    - 列表：`JArray`
-
-- 自定义类：`JObject`
-
-- 基本数据类型：
-
-    - 整型：`long`
-
-    - 浮点型：`double`
-
-    - 字符串：`string`
-    
-    - 布尔值：`bool`
 
 ## 返回
 
@@ -423,8 +381,6 @@ foreach (var item in jArray.Children())
 |`key`|保存到`Json`文件的键名。|
 
 ## 描述
-
-**使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
 
 如果文件存在且包含指定键则从文件中删除数据。
 
