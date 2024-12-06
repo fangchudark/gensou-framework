@@ -14,7 +14,8 @@
 
 |[DataToSave](#savemanagerdatatosave)|需要保存的数据。|
 |:---|:---|
-|[LoadedData](#savemanagerloadeddata)|已读取的存档数据。|
+|[LoadedDataBinary](#savemanagerloadeddatabinary)|从二进制文件中加载的数据。|
+|[LoadedDataJson](#savemanagerloadeddatajson)|从`Json`文件中加载的数据。|
 |[SavePath](#savemanagersavepath)|存档目录。|
 
 ## 静态方法
@@ -51,15 +52,49 @@
 
 ---
 
-# SaveManager.LoadedData
+# SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedData`
+`public static Dictionary<string, object> LoadedDataBinary`
 
 ## 描述
 
-只读属性，已读取的存档数据。
+只读属性，从二进制文件中加载的数据。
 
-键为用于查找数据的标识或保存到`Json`文件的键名，值为对应的数据。
+键为用于查找数据的标识，值为对应的数据。
+
+---
+
+# SaveManager.LoadedDataJson
+
+`public static Dictionary<string, object> LoadedDataJson`
+
+## 描述
+
+只读属性，从`Json`文件中加载的数据。
+
+键为保存到`Json`文件的键名，值为对应的数据。
+
+如果键对应的值是包含多个属性的类或字典，请将其转换为 `JObject` 类型，然后使用`JObject.Properties` 方法访问其属性。
+
+```csharp
+JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
+foreach (var property in jObject.Properties())
+{
+    // 处理属性
+    Debug.Log(property.Name + " : " + property.Value);
+}
+```
+
+如果键对应的值是数组或列表，请将其转换为 `JArray` 类型，然后使用`JArray.Children` 方法访问其元素。
+
+```csharp
+JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
+foreach (var item in jArray.Children())
+{
+    // 处理元素
+    Debug.Log(item.ToString());
+}
+```
 
 ---
 
@@ -77,19 +112,19 @@
 
 # SaveManager.CreateDirectory
 
-`public static void CreatDirectory(string directory, bool creatAtLocalLow = false)`
+`public static void CreateDirectory(string directory, bool createAtLocalLow = false)`
 
 ## 参数
 
 |`directory`|要创建的目录路径。|
 |:---|:---|
-|`creatAtLocalLow`|是否创建在`C:\Users\用户名\AppData\LocalLow`目录下，默认为`false`。|
+|`createAtLocalLow`|是否创建在`C:\Users\用户名\AppData\LocalLow`目录下，默认为`false`。|
 
 ## 描述
 
 创建目录，并更改当前存档目录。
 
-如果`creatAtLocalLow`为`true`则在`C:\Users\用户名\AppData\LocalLow`下创建目录，此时`directory`参数应为相对路径。
+如果`createAtLocalLow`为`true`则在`C:\Users\用户名\AppData\LocalLow`下创建目录，此时`directory`参数应为相对路径。
 
 ---
 
@@ -202,9 +237,9 @@
 
 读取指定文件名的二进制文件中的数据。
 
-并将读取的数据保存到[`LoadedData`](#savemanagerloadeddata)属性中。
+并将读取的数据保存到[`LoadedDataBinary`](#savemanagerloadeddatabinary)属性中。
 
-如果文件不存在则[`LoadedData`](#savemanagerloadeddata)属性为空字典。
+如果文件不存在则[`LoadedDataBinary`](#savemanagerloadeddatabinary)属性为空字典。
 
 ---
 
@@ -299,9 +334,9 @@
 
 读取指定文件名的`Json`文件中的数据。
 
-并将读取的数据保存到[`LoadedData`](#savemanagerloadeddata)属性中。
+并将读取的数据保存到[`LoadedDataJson`](#savemanagerloadeddatajson)属性中。
 
-如果文件不存在则[`LoadedData`](#savemanagerloadeddata)属性为空字典。
+如果文件不存在则[`LoadedDataJson`](#savemanagerloadeddatajson)属性为空字典。
 
 ---
 
@@ -342,6 +377,34 @@
 **使用前请安装`Json.NET`包并在[框架设置](../GensouLib.Unity.Tools/FrameworkSettings.md)中启用它。**
 
 从指定文件名的`Json`文件中获取数据。
+
+此方法只能获取 Json 能够序列化的基本类型数据，如字符串、数字（`long`、`double`）和布尔值。
+
+**不能直接获取 C# 集合类型、Unity 对象或自定义类。**
+
+如果需要获取，请通过访问[`LoadedDataJson`](#savemanagerloadeddatajson)属性获取。
+
+从 `JSON` 文件获取数据时，`Json.NET` 对应的类型映射规则如下：
+
+- C# 集合：
+
+    - 字典：`JObject`
+  
+    - 数组：`JArray`
+  
+    - 列表：`JArray`
+
+- 自定义类：`JObject`
+
+- 基本数据类型：
+
+    - 整型：`long`
+
+    - 浮点型：`double`
+
+    - 字符串：`string`
+    
+    - 布尔值：`bool`
 
 ## 返回
 

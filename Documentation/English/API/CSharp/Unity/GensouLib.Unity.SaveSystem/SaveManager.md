@@ -14,7 +14,8 @@ When saving in `Json` format, Unity objects cannot be serialized. Extract necess
 
 | [DataToSave](#savemanagerdatatosave) | Data to be saved. |
 |:---|:---|
-| [LoadedData](#savemanagerloadeddata) | Loaded save data. |
+|[LoadedDataBinary](#savemanagerloadeddatabinary)|The data loaded from a binary file.|
+|[LoadedDataJson](#savemanagerloadeddatajson)|The data loaded from a `JSON` file.|
 | [SavePath](#savemannersavepath) | Save directory. |
 
 ## Static Methods
@@ -51,15 +52,49 @@ Before saving, ensure the data to be saved is stored in this dictionary.
 
 ---
 
-# SaveManager.LoadedData
+# SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedData`
+`public static Dictionary<string, object> LoadedDataBinary`
 
 ## Description
 
-A read-only property that contains the loaded save data.
+Read-only property, data loaded from binary file.
 
-The key is used to identify the data or specify the key name in the `Json` file, and the value is the corresponding data.
+The key is the identifier used to find the data, and the value is the corresponding data.
+
+---
+
+# SaveManager.LoadedDataJson
+
+`public static Dictionary<string, object> LoadedDataJson`
+
+## 描述
+
+Read-only property, data loaded from `Json` file.
+
+The key is the key name saved to the `Json` file, and the value is the corresponding data.
+
+If the value corresponding to the key is a class containing multiple properties or a dictionary, convert it to type `JObject` and then use the `JObject.Properties` method to access its properties.
+
+```csharp
+JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
+foreach (var property in jObject.Properties())
+{
+    // do something with the property
+    Debug.Log(property.Name + " : " + property.Value);
+}
+```
+
+If the value corresponding to the key is an array or list, convert it to the `JArray` type and then use the `JArray.Children` method to access its elements.
+
+```csharp
+JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
+foreach (var item in jArray.Children())
+{
+    // 处理元素
+    Debug.Log(item.ToString());
+}
+```
 
 ---
 
@@ -202,9 +237,9 @@ If `dataDictionary` is null, it will use [`DataToSave`](#savemanagerdatatosave) 
 
 Reads data from the specified binary file.
 
-The data is saved in the [`LoadedData`](#savemanagerloadeddata) property.
+The data is saved in the [`LoadedDataBinary`](#savemanagerloadeddatabinary) property.
 
-If the file does not exist, [`LoadedData`](#savemanagerloadeddata) will be an empty dictionary.
+If the file does not exist, [`LoadedDataBinary`](#savemanagerloadeddatabinary) will be an empty dictionary.
 
 ---
 
@@ -297,9 +332,9 @@ Saves the data as a `Json` file with the specified file name.
 
 Reads data from the specified `Json` file.
 
-The data is saved in the [`LoadedData`](#savemanagerloadeddata) property.
+The data is saved in the [`LoadedDataJson`](#savemanagerloadeddatajson) property.
 
-If the file does not exist, [`LoadedData`](#savemanagerloadeddata) will be an empty dictionary.
+If the file does not exist, [`LoadedDataJson`](#savemanagerloadeddatajson) will be an empty dictionary.
 
 ---
 
@@ -340,6 +375,34 @@ If the file does not exist, it will be created.
 **Before using this, make sure you have installed the `Json.NET` package and enabled it in the [framework settings](../GensouLib.Unity.Tools/FrameworkSettings.md).**
 
 Retrieves data from the specified `Json` file.
+
+This method can only obtain basic types of data that can be serialized by JSON, such as strings, numbers (`long`, `double`), and boolean values.
+
+**C# collection types, Unity objects, or custom classes cannot be directly obtained.**
+
+If you need to access them, please do so through the [`LoadedDataJson`](#savemanagerloadeddatajson) property.
+
+When retrieving data from a `JSON` file, the corresponding type mapping rules for `Json.NET` are as follows:
+
+- C# Collections:
+
+    - Dictionary: `JObject`
+  
+    - Array: `JArray`
+  
+    - List: `JArray`
+
+- Custom Classes: `JObject`
+
+- Basic Data Types:
+
+    - Integer: `long`
+
+    - Floating Point: `double`
+
+    - String: `string`
+    
+    - Boolean: `bool`
 
 ## Returns
 

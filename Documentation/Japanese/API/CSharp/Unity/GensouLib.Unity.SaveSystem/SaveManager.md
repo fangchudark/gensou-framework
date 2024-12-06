@@ -14,7 +14,8 @@
 
 | [DataToSave](#savemanagerdatatosave) | 保存するデータ。 |
 |:---|:---|
-| [LoadedData](#savemanagerloadeddata) | 読み込まれたセーブデータ。 |
+|[LoadedDataBinary](#savemanagerloadeddatabinary)|バイナリファイルから読み込まれたデータ。|
+|[LoadedDataJson](#savemanagerloadeddatajson)|`Json`ファイルから読み込まれたデータ。|
 | [SavePath](#savemangersavepath) | セーブデータのディレクトリ。 |
 
 ## 静的メソッド
@@ -51,13 +52,49 @@
 
 ---
 
-# SaveManager.LoadedData
+# SaveManager.LoadedDataBinary
 
-`public static Dictionary<string, object> LoadedData`
+`public static Dictionary<string, object> LoadedDataBinary`
 
 ## 説明
 
-読み込まれたセーブデータを格納するプロパティです。キーはデータを検索するための識別子または `Json` ファイルに保存するためのキー名、値は対応するデータです。
+読み取り専用属性、バイナリ ファイルからロードされたデータ。
+
+キーはデータの検索に使用される識別子で、値は対応するデータです。
+
+---
+
+# SaveManager.LoadedDataJson
+
+`public static Dictionary<string, object> LoadedDataJson`
+
+## 描述
+
+読み取り専用プロパティ。データは `Json` ファイルからロードされます。
+
+キーは `Json` ファイルに保存されたキー名で、値は対応するデータです。
+
+キーに対応する値が複数のプロパティを含むクラスまたはディクショナリである場合、それを `JObject` 型に変換し、`JObject.Properties` メソッドを使用してそのプロパティにアクセスします。
+
+```csharp
+JObject jObject = (JObject)SaveManager.LoadedDataJson["key"];
+foreach (var property in jObject.Properties())
+{
+    // do something with property
+    Debug.Log(property.Name + " : " + property.Value);
+}
+```
+
+キーに対応する値が配列またはリストの場合は、それを `JArray` 型に変換し、`JArray.Children` メソッドを使用してその要素にアクセスします。
+
+```csharp
+JArray jArray = (JArray)SaveManager.LoadedDataJson["key"];
+foreach (var item in jArray.Children())
+{
+    // do something with item
+    Debug.Log(item.ToString());
+}
+```
 
 ---
 
@@ -200,71 +237,77 @@
 
 指定したバイナリファイルからデータを読み込みます。
 
-読み込んだデータは [`LoadedData`](#savemanagerloadeddata) プロパティに保存されます。
+読み込んだデータは [`LoadedDataBinary`](#savemanagerloadeddatabinary) プロパティに保存されます。
 
-ファイルが存在しない場合、[`LoadedData`](#savemanagerloadeddata) プロパティは空の辞書になります。
+ファイルが存在しない場合、[`LoadedDataBinary`](#savemanagerloadeddatabinary) プロパティは空の辞書になります。
 
 ---
 
 # SaveManager.AddDataToBinary
 
-`public static void AddDataToBinary(object dataDictionary = null, string fileName = "SaveData.sav")`
+`public static void AddDataToBinary(string fileName, string key, object newData)`
 
 ## パラメータ
 
-| `dataDictionary` | 追加するデータの辞書。デフォルトは [`DataToSave`](#savemanagerdatatosave)。 |
+|`fileName`|データが追加されるバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
-| `fileName` | 追加するファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
+|`key`|データの検索に使用される識別子。 |
+|`newData`|追加されるデータ。 |
 
 ## 説明
 
-指定したバイナリファイルにデータを追加します。
+指定されたファイル名のバイナリ ファイルにデータを追加します。
 
-`dataDictionary` が空の場合、[`DataToSave`](#savemanagerdatatosave) のデータが追加されます。
+ファイルが存在しない場合は作成します。
 
 ---
 
 # SaveManager.GetDataFromBinary
 
-`public static void GetDataFromBinary(string fileName = "SaveData.sav")`
+`public static T GetDataFromBinary<T>(string fileName, string key)`
 
 ## パラメータ
 
-| `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
+|`T`|取得するデータのタイプ。 |
 |:---|:---|
+|`fileName`|データを取得するバイナリ ファイルの名前 (拡張子を含む)。 |
+|`key`|データの検索に使用される識別子。 |
 
 ## 説明
 
-指定したバイナリファイルからデータを取得します。
+指定されたファイル名のバイナリ ファイルからデータを取得します。
 
-データは [`LoadedData`](#savemanagerloadeddata) プロパティに格納されます。
+## 戻り値
+
+ファイルが存在し、指定されたキーが含まれている場合は、対応するデータが返されます。それ以外の場合は、`default` 値が返されます。
 
 ---
 
 # SaveManager.DeleteDataFromBinary
 
-`public static void DeleteDataFromBinary(string fileName = "SaveData.sav")`
+`public static void DeleteDataFromBinary(string fileName, string key)`
 
 ## パラメータ
 
-| `fileName` | 削除するファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
+|`fileName`|データを削除するバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
+|`key`|データの検索に使用される識別子。 |
 
 ## 説明
 
-指定したバイナリファイルからデータを削除します。
+ファイルが存在し、指定されたキーが含まれている場合は、ファイルからデータを削除します。
 
 ---
 
 # SaveManager.SaveAsJson
 
-`public static void SaveAsJson(object dataDictionary = null, string fileName = "SaveData.json")`
+`public static void SaveAsJson(object dataDictionary = null, string fileName = "SaveData.sav")`
 
 ## パラメータ
 
 | `dataDictionary` | 保存するデータの辞書。デフォルトは [`DataToSave`](#savemanagerdatatosave)。 |
 |:---|:---|
-| `fileName` | 保存するファイル名（拡張子込み）。デフォルトは `SaveData.json`。 |
+| `fileName` | 保存するファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
 
 ## 説明
 
@@ -278,11 +321,11 @@
 
 # SaveManager.LoadFromJson
 
-`public static void LoadFromJson(string fileName = "SaveData.json")`
+`public static void LoadFromJson(string fileName = "SaveData.sav")`
 
 ## パラメータ
 
-| `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.json`。 |
+| `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
 |:---|:---|
 
 ## 説明
@@ -291,40 +334,43 @@
 
 指定した `Json` ファイルからデータを読み込みます。
 
-読み込んだデータは [`LoadedData`](#savemanagerloadeddata) プロパティに保存されます。
+読み込んだデータは [`LoadedDataJson`](#savemanagerloadeddatajson) プロパティに保存されます。
 
-ファイルが存在しない場合、[`LoadedData`](#savemanagerloadeddata) プロパティは空の辞書になります。
+ファイルが存在しない場合、[`LoadedDataJson`](#savemanagerloadeddatajson) プロパティは空の辞書になります。
 
 ---
 
 # SaveManager.AddDataToJson
 
-`public static void AddDataToJson(object dataDictionary = null, string fileName = "SaveData.json")`
+`public static void AddDataToJson(string fileName, string key, object newData)`
 
 ## パラメータ
 
-| `dataDictionary` | 追加するデータの辞書。デフォルトは [`DataToSave`](#savemanagerdatatosave)。 |
+|`fileName`|データが追加される `Json` ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
-| `fileName` | 追加するファイル名（拡張子込み）。デフォルトは `SaveData.json`。 |
+|`key`|`Json` ファイルに保存されたキーの名前。 |
+|`newData`|追加されるデータ。 |
 
 ## 説明
 
 **使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
-指定した `Json` ファイルにデータを追加します。
+指定したファイル名で `Json` ファイルにデータを追加します。
 
-`dataDictionary` が空の場合、[`DataToSave`](#savemanagerdatatosave) のデータが追加されます。
+ファイルが存在しない場合は作成します。
 
 ---
 
 # SaveManager.GetDataFromJson
 
-`public static void GetDataFromJson(string fileName = "SaveData.json")`
+`public static T GetDataFromJson<T>(string fileName, string key)`
 
 ## パラメータ
 
-| `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.json`。 |
+|`T`|取得するデータのタイプ。 |
 |:---|:---|
+|`fileName`|データを取得する `Json` ファイルの名前 (拡張子を含む)。 |
+|`key`|`Json` ファイルに保存されたキーの名前。 |
 
 ## 説明
 
@@ -332,21 +378,52 @@
 
 指定した `Json` ファイルからデータを取得します。
 
-データは [`LoadedData`](#savemanagerloadeddata) プロパティに格納されます。
+このメソッドは、文字列、数値 (`long`、`double`)、ブール値など、Json がシリアル化できる基本的な型のデータのみを取得できます。
+
+**C# コレクション タイプ、Unity オブジェクト、またはカスタム クラスを直接取得することはできません。**
+
+取得が必要な場合は、[`LoadedDataJson`](#savemanagerloadeddatajson)プロパティにアクセスして取得してください。
+
+`JSON` ファイルからデータを取得する場合、`Json.NET` の対応する型マッピング ルールは次のとおりです。
+
+- C# コレクション:
+
+ - 辞書: `JObject`
+
+ - 配列: `JArray`
+
+ - リスト: `JArray`
+
+- カスタム クラス: `JObject`
+
+- 基本的なデータ型:
+
+ - 整数型: `long`
+
+ - 浮動小数点型: `double`
+
+ - 文字列: `string`
+
+ - ブール値: `bool`
+
+## 戻り値
+
+ファイルが存在し、指定されたキーが含まれている場合は、対応するデータが返されます。それ以外の場合は、`default`値が返されます。
 
 ---
 
 # SaveManager.DeleteDataFromJson
 
-`public static void DeleteDataFromJson(string fileName = "SaveData.json")`
+`public static void DeleteDataFromJson(string fileName, string key)`
 
 ## パラメータ
 
-| `fileName` | 削除するファイル名（拡張子込み）。デフォルトは `SaveData.json`。 |
+| `fileName` | 削除するファイル名（拡張子込み）。|
 |:---|:---|
+|`key`|`Json`ファイルに保存するキー名。|
 
 ## 説明
 
 **使用前に`Json.NET`パッケージをインストールし、[フレームワーク設定](../GensouLib.Unity.Tools/FrameworkSettings.md)で有効化してください。**
 
-指定した `Json` ファイルからデータを削除します。
+ファイルが存在し、指定されたキーが含まれている場合は、ファイルからデータを削除します。

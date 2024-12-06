@@ -93,11 +93,11 @@ namespace GensouLib.Unity.SaveSystem
         /// 是否创建在LocalLow目录下 <br/>
         /// Whether to create the directory in the LocalLow directory
         ///</param>
-        public static void CreatDirectory(string directory, bool creatAtLocalLow = false)
+        public static void CreateDirectory(string directory, bool createAtLocalLow = false)
         {
             if (!Directory.Exists(directory))
             {
-                if (creatAtLocalLow)
+                if (createAtLocalLow)
                 {
                     string appDataLocalLow = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "Low";
                     directory = Path.Combine(appDataLocalLow, directory);
