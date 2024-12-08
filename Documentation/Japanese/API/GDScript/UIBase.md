@@ -1,6 +1,6 @@
 # UIBase
 
-継承: [Object](https://docs.godotengine.org/zh-cn/stable/classes/class_object.html)
+継承: [Object](https://docs.godotengine.org/ja/stable/classes/class_object.html)
 
 ## 説明
 

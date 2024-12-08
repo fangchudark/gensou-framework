@@ -348,7 +348,7 @@ If the file does not exist, [`LoadedDataJson`](#savemanagerloadeddatajson) will 
 
 | `fileName` | The name of the `Json` file, including the extension. |
 |:---|:---|
-| `key` | The identifier used to find the data. |
+| `key` | The key to save to the `Json` file. |
 | `newData` | The data to add. |
 
 ## Description
@@ -370,7 +370,7 @@ If the file does not exist, it will be created.
 | `T` | The type of data to retrieve. |
 |:---|:---|
 | `fileName` | The name of the `Json` file, including the extension. |
-| `key` | The identifier used to find the data. |
+| `key` | The key to save to the `Json` file. |
 
 ## Description
 
@@ -420,7 +420,7 @@ If the file exists and contains the specified key, it returns the corresponding 
 
 | `fileName` | The name of the `Json` file, including the extension. |
 |:---|:---|
-| `key` | The identifier used to find the data. |
+| `key` | The key to save to the `Json` file. |
 
 ## Description
 

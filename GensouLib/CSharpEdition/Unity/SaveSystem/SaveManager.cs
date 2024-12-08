@@ -158,7 +158,7 @@ namespace GensouLib.Unity.SaveSystem
         /// </summary>
         /// <param name="extension">
         /// 扩展名 <br/>
-        /// The extension
+        /// The file extension
         /// </param>
         public static void DeleteAllSaveFiles(string extension = ".sav")
         {
@@ -177,7 +177,7 @@ namespace GensouLib.Unity.SaveSystem
         /// </summary>
         /// <param name="extension">
         /// 扩展名 <br/>
-        /// The extension
+        /// The file extension
         /// </param>
         /// <returns>
         /// 存档路径下的文件数量，如果不存在则返回0 <br/>

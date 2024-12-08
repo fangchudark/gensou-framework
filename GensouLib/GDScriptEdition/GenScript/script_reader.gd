@@ -20,9 +20,9 @@ static func read_script(file_path: String) -> String:
 	
 	if file:
 		content = file.get_as_text()
+		file.close()
 	else:
 		push_error("Error reading file!")
-	file.close()
 	return content
 
 ## 读取并执行脚本。[br]
