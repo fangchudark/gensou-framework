@@ -215,8 +215,6 @@ var node = instance_from_id(instance_id)
 
 データを指定されたファイル名のバイナリファイルとして保存します。
 
-`data_dictionary`が空の場合、[`data_to_save`](#savemanagerdata_to_save)のデータが保存されます。
-
 ---
 
 # SaveManager.load_from_binary
@@ -306,8 +304,6 @@ var node = instance_from_id(instance_id)
 ## 説明
 
 データを指定されたファイル名の `Json` ファイルとして保存します。
-
-`data_dictionary`が空の場合、[`data_to_save`](#savemanagerdata_to_save)のデータが保存されます。
 
 ---
 

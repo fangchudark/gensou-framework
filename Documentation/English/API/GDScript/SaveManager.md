@@ -214,8 +214,6 @@ Returns the number of save files with the specified extension if they exist, oth
 
 Saves the data as a binary file with the specified file name.
 
-If `data_dictionary` is null, it will use [`data_to_save`](#savemanagerdata_to_save) for saving.
-
 ---
 
 # SaveManager.load_from_binary
@@ -274,7 +272,6 @@ Retrieves data from the specified binary file.
 
 If the file exists and contains the specified key, it returns the corresponding data; otherwise, it returns `null`.
 
-
 ---
 
 # SaveManager.delete_data_from_binary
@@ -306,8 +303,6 @@ Deletes the data from the binary file if it exists and contains the specified ke
 ## Description
 
 Saves the data as a `Json` file with the specified file name.
-
-If `data_dictionary` is null, it will use [`data_to_save`](#savemanagerdata_to_save) for saving.
 
 ---
 

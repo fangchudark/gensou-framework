@@ -214,8 +214,6 @@ var node = instance_from_id(instance_id)
 
 保存数据为指定文件名的二进制文件。
 
-如果`data_dictionary`为空则使用[`data_to_save`](#savemanagerdata_to_save)保存数据。
-
 ---
 
 # SaveManager.load_from_binary
@@ -305,8 +303,6 @@ var node = instance_from_id(instance_id)
 ## 描述
 
 保存数据为指定文件名的`Json`文件。
-
-如果`data_dictionary`为空则使用[`data_to_save`](#savemanagerdata_to_save)保存数据。
 
 ---
 
