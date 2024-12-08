@@ -54,6 +54,8 @@
 
         - [ConditionInterpreter](API/GDScript/ConditionInterpreter.md)
 
+        - [SaveManager](API/GDScript/SaveManager.md)
+
         - [ScriptExecutor](API/GDScript/ScriptExecutor.md)
 
         - [ScriptReader](API/GDScript/ScriptReader.md)
