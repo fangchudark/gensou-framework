@@ -1,28 +1,41 @@
-# UIBase
-
-继承：[Node](https://docs.godotengine.org/zh-cn/stable/classes/class_node.html)
+# UIManager
 
 ## 描述
 
-UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法。
+UI管理器，提供打开和关闭UI，以及绑定按钮回调的方法。
+
+## 静态属性
+
+|[ResPath](#uimanagerrespath)|资源路径。|
+|:---|:---|
 
 ## 静态方法
 
-|[OpenUI](#uibaseopenui)|打开指定UI。|
+|[OpenUI](#uimanageropenui)|打开指定UI。|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|关闭指定UI。|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|获取已实例化的UI|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|为按钮按下信号绑定回调方法|
+|[CloseUI](#uimanagercloseui)|关闭指定UI。|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|获取已实例化的UI|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|为按钮按下信号绑定回调方法|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.ResPath
+
+`public static string ResPath`
+
+## 描述
+
+资源路径，默认为`res://UI/`，将在该路径下加载UI场景文件。
+
+---
+
+# UIManager.OpenUI
 
 `public static Control OpenUI(string ui, Node node)`
 
 ## 参数
 
-|`ui`|要打开的UI，UI应在`res://UI/`下。传入UI场景的文件名，不包含扩展名。|
+|`ui`|要打开的UI。传入UI场景的文件名，不包含扩展名。|
 |:---|:---|
 |`node`|目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用`GetTree().CurrentScene`。|
 
@@ -36,13 +49,13 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
 ## 参数
 
-|`ui`|要关闭的 UI。UI应在`res://UI/`下。传入UI场景的文件名，不包含扩展名。|
+|`ui`|要关闭的 UI。传入UI场景的文件名，不包含扩展名。|
 |:---|:---|
 |`destroy`|（可选）是否销毁 UI 实例，默认为  `false`。设置为 `true` 将销毁 UI 并释放其资源。|
 
@@ -52,7 +65,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static Control GetInstantiatedUI(string ui)`
 
@@ -71,7 +84,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(Button button, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 

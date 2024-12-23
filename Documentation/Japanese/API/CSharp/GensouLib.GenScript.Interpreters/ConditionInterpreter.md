@@ -4,7 +4,7 @@
 
 ## 説明
 
-`ConditionInterpreter`は、`Genscript`の[条件パラメータ](../../../Genscript/KeyWords/when.md)インタープリタで、条件式を解析し、評価結果を返します。
+`ConditionInterpreter`は、`Genscript`の[条件パラメーター](../../../Genscript/KeyWords/when.md)インタープリタで、条件式を解析し、評価結果を返します。
 
 ## 静的メソッド
 
@@ -17,7 +17,7 @@
 
 `public static bool CheckCondition(string condition)`
 
-## パラメータ
+## パラメーター
 
 |condition|評価する条件式。|
 |:---|:---|
@@ -45,7 +45,7 @@
 
 上記の規則を満たさない場合、単純な条件（ブール値またはブール変数）として評価されます。
 
-単純な条件がブール値でもブール変数でもない場合、無効なパラメータとして扱い、`false`を返します。
+単純な条件がブール値でもブール変数でもない場合、無効なパラメーターとして扱い、`false`を返します。
 
 評価規則については、[Genscriptドキュメント](../../../Genscript/Category/Condition.md/#条件式演算子)を参照してください。
 

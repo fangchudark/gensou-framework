@@ -24,7 +24,7 @@ namespace GensouLib.Unity.Tools
         private readonly Dictionary<string, HashSet<string>> validExtensions = new()
         {
             { "UI", new HashSet<string> { ".prefab" } },
-            { "Audio", new HashSet<string> { ".mp3", ".wav" } },
+            { "Audio", new HashSet<string> { ".mp3", ".wav", ".ogg" } },
             { "Backgrounds", new HashSet<string> { ".png", ".jpg" } },
             { "Characters", new HashSet<string> { ".png", ".jpg" } }
         };
@@ -114,6 +114,11 @@ namespace GensouLib.Unity.Tools
             foreach (string guid in assetGUIDs)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+                if (Directory.Exists(assetPath))
+                {
+                    continue; // 跳过文件夹
+                }
 
                 // 验证资源文件的扩展名
                 if (!IsValidAssetExtension(assetPath, typeDescription))

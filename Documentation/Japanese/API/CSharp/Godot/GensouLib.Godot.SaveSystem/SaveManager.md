@@ -107,7 +107,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void CreateDirectory(string directory, bool createAtLocalLow = false)`
 
-## パラメータ
+## パラメーター
 
 | `directory` | 作成するディレクトリのパス。 |
 |:---|:---|
@@ -117,7 +117,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 ディレクトリを作成し、現在のセーブディレクトリを変更します。
 
-`createAtLocalLow` が `true` の場合、`C:\Users\ユーザー名\AppData\LocalLow` にディレクトリを作成します。この場合、`directory` パラメータは相対パスで指定する必要があります。
+`createAtLocalLow` が `true` の場合、`C:\Users\ユーザー名\AppData\LocalLow` にディレクトリを作成します。この場合、`directory` パラメーターは相対パスで指定する必要があります。
 
 ---
 
@@ -135,7 +135,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static bool SaveExists(string fileName)`
 
-## パラメータ
+## パラメーター
 
 | `fileName` | チェックするセーブファイル名（拡張子込み）。 |
 |:---|:---|
@@ -154,7 +154,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void DeleteSaveFile(string fileName)`
 
-## パラメータ
+## パラメーター
 
 | `fileName` | 削除するセーブファイル名（拡張子込み）。 |
 |:---|:---|
@@ -169,7 +169,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void DeleteAllSaveFiles(string extension = ".sav")`
 
-## パラメータ
+## パラメーター
 
 | `extension` | 削除するセーブファイルの拡張子。デフォルトは `.sav`。 |
 |:---|:---|
@@ -184,7 +184,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static int GetSaveFilesCount(string extension = ".sav")`
 
-## パラメータ
+## パラメーター
 
 | `extension` | 数を取得するセーブファイルの拡張子。デフォルトは `.sav`。 |
 |:---|:---|
@@ -203,7 +203,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void SaveAsBinary(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
-## パラメータ
+## パラメーター
 
 | `dataDictionary` | 保存するデータの辞書。デフォルトは [`DataToSave`](#savemanagerdatatosave)。 |
 |:---|:---|
@@ -221,7 +221,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void LoadFromBinary(string fileName = "SaveData.sav")`
 
-## パラメータ
+## パラメーター
 
 | `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
 |:---|:---|
@@ -240,7 +240,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void AddDataToBinary(string fileName, string key, Variant newData)`
 
-## パラメータ
+## パラメーター
 
 |`fileName`|データが追加されるバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -259,7 +259,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static T GetDataFromBinary<[MustBeVariant] T>(string fileName, string key)`
 
-## パラメータ
+## パラメーター
 
 |`T`|取得するデータのタイプ。 |
 |:---|:---|
@@ -280,7 +280,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void DeleteDataFromBinary(string fileName, string key)`
 
-## パラメータ
+## パラメーター
 
 |`fileName`|データを削除するバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -296,7 +296,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void SaveAsJson(Dictionary<string, Variant> dataDictionary = null, string fileName = "SaveData.sav")`
 
-## パラメータ
+## パラメーター
 
 | `dataDictionary` | 保存するデータの辞書。デフォルトは [`DataToSave`](#savemanagerdatatosave)。 |
 |:---|:---|
@@ -314,7 +314,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void LoadFromJson(string fileName = "SaveData.sav")`
 
-## パラメータ
+## パラメーター
 
 | `fileName` | 読み込むファイル名（拡張子込み）。デフォルトは `SaveData.sav`。 |
 |:---|:---|
@@ -333,7 +333,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void AddDataToJson(string fileName, string key, Variant newData)`
 
-## パラメータ
+## パラメーター
 
 |`fileName`|データが追加される `Json` ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -352,7 +352,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static T GetDataFromJson<[MustBeVariant] T>(string fileName, string key)`
 
-## パラメータ
+## パラメーター
 
 |`T`|取得するデータのタイプ。 |
 |:---|:---|
@@ -373,7 +373,7 @@ Node node = (Node)GodotObject.InstanceFromId(objectId);
 
 `public static void DeleteDataFromJson(string fileName, string key)`
 
-## パラメータ
+## パラメーター
 
 | `fileName` | 削除するファイル名（拡張子込み）。|
 |:---|:---|

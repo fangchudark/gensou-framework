@@ -1,4 +1,4 @@
-# UIBase
+# UIManager
 
 継承: [MonoBehaviour](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/MonoBehaviour.html)
 
@@ -8,19 +8,19 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ## 静的メソッド
 
-|[OpenUI](#uibaseopenui)|指定したUIを開く。|
+|[OpenUI](#uimanageropenui)|指定したUIを開く。|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|指定したUIを閉じる。|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|インスタンス化されたUIを取得する。|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|ボタンが押されたイベントにコールバックメソッドをバインドする。|
+|[CloseUI](#uimanagercloseui)|指定したUIを閉じる。|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|インスタンス化されたUIを取得する。|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|ボタンが押されたイベントにコールバックメソッドをバインドする。|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.OpenUI
 
 `public static GameObject OpenUI(string ui)`
 
-## パラメータ
+## パラメーター
 
 | `ui` | 開くUI。AddressablesでUIプレハブのアドレスを手動で変更した場合、そのアドレスを渡します。変更していない場合は、拡張子を除いたUIプレハブのファイル名を渡します。 |
 | :---  | ---                                                                                              |
@@ -35,11 +35,11 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
-## パラメータ
+## パラメーター
 
 | `ui`     | 閉じるUI。AddressablesでUIプレハブのアドレスを手動で変更した場合、そのアドレスを渡します。変更していない場合は、拡張子を除いたUIプレハブのファイル名を渡します。 |
 | :-------  | :---                                                                                                  |
@@ -51,11 +51,11 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static GameObject GetInstantiatedUI(string ui)`
 
-## パラメータ
+## パラメーター
 
 | `ui` | 取得するUI。AddressablesでUIプレハブのアドレスを手動で変更した場合、そのアドレスを渡します。変更していない場合は、拡張子を除いたUIプレハブのファイル名を渡します。 |
 | :---  | :---                                                                                              |
@@ -70,7 +70,7 @@ UIが見つかった場合、そのインスタンスを返します。それ以
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(GameObject buttonObject, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 
@@ -84,7 +84,7 @@ UIが見つかった場合、そのインスタンスを返します。それ以
 | `BindButtonPressedCallback(Button button, string methodName, object target, bool includeButtonInstance, params object[] parameters)` | ボタンのコンポーネントインスタンスでボタン押下イベントにコールバックをバインドします。 |
 | `BindButtonPressedCallback(Button[] buttons, string methodName, object target, bool includeButtonInstance, params object[] parameters)` | 複数のボタンコンポーネントインスタンスで押下イベントに同一のコールバックをバインドします。 |
 
-## パラメータ
+## パラメーター
 
 | `buttonName`    | ボタンの名前。                                 |
 | :--------------- | :---------------------------------------------- |
@@ -95,8 +95,8 @@ UIが見つかった場合、そのインスタンスを返します。それ以
 | `buttons`       | ボタンコンポーネントインスタンスの配列。       |
 | `methodName`    | ターゲットメソッドの名前。                     |
 | `target`        | ターゲットメソッドを含むクラスのインスタンス。`this` を使う場合は現在のクラスインスタンスを渡します。 |
-| `includeButtonInstance` | ボタンのGameObjectインスタンスをターゲットメソッドの最初のパラメータとして渡すかどうか。`true` にすると、ターゲットメソッドの最初のパラメータは `GameObject` 型でなければなりません。 |
-| `parameters`    | ターゲットメソッドで必要なパラメータ。          |
+| `includeButtonInstance` | ボタンのGameObjectインスタンスをターゲットメソッドの最初のパラメーターとして渡すかどうか。`true` にすると、ターゲットメソッドの最初のパラメーターは `GameObject` 型でなければなりません。 |
+| `parameters`    | ターゲットメソッドで必要なパラメーター。          |
 
 ## 説明
 

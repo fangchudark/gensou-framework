@@ -11,10 +11,10 @@ namespace GensouLib.Unity.UI
     /// UI Manager
     /// </summary>
     /// <remarks>
-    /// UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法。<br/>
-    /// Base class for UI management, providing methods to open and close UI elements and bind button callbacks.
+    /// 提供打开和关闭UI，以及绑定按钮回调的方法。<br/>
+    /// Providing methods to open and close UI elements and bind button callbacks.
     /// </remarks>
-    public class UIBase : MonoBehaviour
+    public class UIManager : MonoBehaviour
     {
         // 已实例化的UI
         private static readonly Dictionary<string, GameObject> InstantiatedUI = new();

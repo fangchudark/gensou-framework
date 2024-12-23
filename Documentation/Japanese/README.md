@@ -20,13 +20,17 @@
 
             - [VariableInterpreter](API/CSharp/GensouLib.GenScript.Interpreters/VariableInterpreter.md)
 
+        - ### GensouLib.Godot.Audio
+
+            - [AudioManager](API/CSharp/Godot/GensouLib.Godot.Audio/AudioManager.md)
+
         - ### GensouLib.Godot.SaveSystem
 
             - [SaveManager](API/CSharp/Godot/GensouLib.Godot.SaveSystem/SaveManager.md)
-            
+
         - ### GensouLib.Godot.UI 
 
-            - [UIBase](API/CSharp/Godot/GensouLib.Godot.UI/UIBase.md)
+            - [UIManager](API/CSharp/Godot/GensouLib.Godot.UI/UIManager.md)
 
         - ### GensouLib.Unity.ResourceLoader
 
@@ -46,9 +50,11 @@
 
         - ### GensouLib.Unity.UI
 
-            - [UIBase](API/CSharp/Unity/GensouLib.Unity.UI/UIBase.md)
+            - [UIManager](API/CSharp/Unity/GensouLib.Unity.UI/UIManager.md)
 
     - ## GDScript
+
+        - [AudioManager](API/GDScript/AudioManager.md)
 
         - [BaseInterpreter](API/GDScript/BaseInterpreter.md)
 
@@ -60,7 +66,7 @@
 
         - [ScriptReader](API/GDScript/ScriptReader.md)
 
-        - [UIBase](API/GDScript/UIBase.md)
+        - [UIManager](API/GDScript/UIManager.md)
 
         - [VariableInterpreter](API/GDScript/VariableInterpreter.md)
 

@@ -52,7 +52,7 @@
 
 `public static void HandleVariableAssignment(string code)`
 
-## パラメータ
+## パラメーター
 
 |`code`|[コマンド実行器](ScriptExecutor.md)によって解析されたコマンドライン。|
 |:---|:---|
@@ -67,7 +67,7 @@
 
 `public static void HandleVariableDeclaration(string code)`
 
-## パラメータ
+## パラメーター
 
 |`code`|[コマンド実行器](ScriptExecutor.md)によって解析されたコマンドライン。|
 |:---|:---|
@@ -82,7 +82,7 @@
 
 `public static bool CheckExpression(string expression)`
 
-## パラメータ
+## パラメーター
 
 |`expression`|検証する文字列。|
 |:---|:---|
@@ -107,7 +107,7 @@
 
 `public static void ReleaseVariable(string variable)`
 
-## パラメータ
+## パラメーター
 
 |`variable`|変数辞書から削除する変数。|
 |:---|:---|
@@ -122,7 +122,7 @@
 
 `public static bool CheckVariableName(string name)`
 
-## パラメータ
+## パラメーター
 
 |`name`|検証する文字列。|
 |:---|:---|
@@ -150,7 +150,7 @@
 
 `public static bool TryGetVariableValue(string variable, out object value)`
 
-## パラメータ
+## パラメーター
 
 |`variable`|値を取得する変数名。|
 |:---|:---|
@@ -170,7 +170,7 @@
 
 `public static List<string> InfixToPostfix(string input)`
 
-## パラメータ
+## パラメーター
 
 |`input`|中置記法の数式。|
 |:---|:---|
@@ -201,7 +201,7 @@
 
 `public static string EvaluatePostfix(List<string> postfix)`
 
-## パラメータ
+## パラメーター
 
 |`postfix`|後置記法の式。|
 |:---|:---|

@@ -1,28 +1,41 @@
-# UIBase
-
-Inherits: [Node](https://docs.godotengine.org/en/stable/classes/class_node.html)
+# UIManager
 
 ## Description
 
-The base class for UI management, providing methods to open and close UIs, and bind button callbacks.
+UI Manager , providing methods to open and close UIs, and bind button callbacks.
+
+## Static properties
+
+|[ResPath](#uimanagerrespath)| Resource path. |
+|:---|:---|
 
 ## Static Methods
 
-|[OpenUI](#uibaseopenui)|Open the specified UI.|
+|[OpenUI](#uimanageropenui)|Open the specified UI.|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|Close the specified UI.|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|Get the instantiated UI.|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|Bind the callback method for button press signal.|
+|[CloseUI](#uimanagercloseui)|Close the specified UI.|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|Get the instantiated UI.|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|Bind the callback method for button press signal.|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.ResPath
+
+`public static string ResPath`
+
+## Description
+
+Resource path, defaults to `res://UI/` , where the UI scene files will be loaded.
+
+---
+
+# UIManager.OpenUI
 
 `public static Control OpenUI(string ui, Node node)`
 
 ## Parameters
 
-|`ui`|The UI to open. The UI should be located under `res://UI/`. Pass the UI scene file name without extension.|
+|`ui`|The UI to open. Pass the UI scene file name without extension.|
 |:---|:---|
 |`node`|The target root node. The UI will be added as a child of this node. For adding to the current scene, use `GetTree().CurrentScene`.|
 
@@ -36,13 +49,13 @@ Returns the instance of the UI if instantiation is successful or the UI is alrea
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
 ## Parameters
 
-|`ui`|The UI to close. The UI should be located under `res://UI/`. Pass the UI scene file name without extension.|
+|`ui`|The UI to close. Pass the UI scene file name without extension.|
 |:---|:---|
 |`destroy`|(Optional) Whether to destroy the UI instance. Defaults to `false`. Set to `true` to destroy the UI and free its resources.|
 
@@ -52,7 +65,7 @@ When `destroy` is `false`, the specified UI is hidden from the scene. Otherwise,
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static Control GetInstantiatedUI(string ui)`
 
@@ -71,7 +84,7 @@ Returns the instance if the UI is found; otherwise, returns `null`.
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(Button button, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 

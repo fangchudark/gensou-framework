@@ -17,7 +17,7 @@ Here’s the current development roadmap, sorted by priority:
 - [x] Basic Genscript commands
 - [x] UI Manager
 - [x] Save/Load system
-- [ ] Audio Control
+- [x] Audio Control
 - [ ] Writing dialogues
 - [ ] Creating branching story options
 - [ ] Switching character portraits and backgrounds

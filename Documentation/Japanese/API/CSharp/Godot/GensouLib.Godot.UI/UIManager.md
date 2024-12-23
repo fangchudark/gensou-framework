@@ -1,28 +1,41 @@
-# UIBase
-
-継承: [Node](https://docs.godotengine.org/ja/stable/classes/class_node.html)
+# UIManager
 
 ## 説明
 
-UI管理の基底クラスで、UIを開閉したり、ボタンのコールバックメソッドをバインドするためのメソッドを提供します。
+UI管理器、UIを開閉したり、ボタンのコールバックメソッドをバインドするためのメソッドを提供します。
+
+## 静的プロパティ
+
+|[ResPath](#uimanagerrespath)| リソースパス。 |
+|:---|:---|
 
 ## 静的メソッド
 
-|[OpenUI](#uibaseopenui)|指定したUIを開く。|
+|[OpenUI](#uimanageropenui)|指定したUIを開く。|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|指定したUIを閉じる。|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|インスタンス化されたUIを取得する。|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|ボタンが押されたシグナルにコールバックメソッドをバインドする。|
+|[CloseUI](#uimanagercloseui)|指定したUIを閉じる。|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|インスタンス化されたUIを取得する。|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|ボタンが押されたシグナルにコールバックメソッドをバインドする。|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.ResPath
+
+`public static string ResPath`
+
+## 説明
+
+リソース パス。デフォルトは `res://UI/` です。UI シーン ファイルはこのパスにロードされます。
+
+---
+
+# UIManager.OpenUI
 
 `public static Control OpenUI(string ui, Node node)`
 
-## パラメータ
+## パラメーター
 
-|`ui`|開くUI。UIは`res://UI/`下に配置してください。拡張子を除いたUIシーンのファイル名を渡します。|
+|`ui`|開くUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
 |`node`|ターゲットのルートノード。UIはこのノードの子として追加されます。現在のシーンに追加する場合は`GetTree().CurrentScene`を使用します。|
 
@@ -36,13 +49,13 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
-## パラメータ
+## パラメーター
 
-|`ui`|閉じるUI。UIは`res://UI/`下に配置してください。拡張子を除いたUIシーンのファイル名を渡します。|
+|`ui`|閉じるUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
 |`destroy`|（オプション）UIインスタンスを破棄するかどうか。デフォルトは`false`。`true`を設定すると、UIを破棄し、そのリソースを解放します。|
 
@@ -52,11 +65,11 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static Control GetInstantiatedUI(string ui)`
 
-## パラメータ
+## パラメーター
 
 |`ui`|取得したいUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
@@ -71,7 +84,7 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(Button button, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 
@@ -83,7 +96,7 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 |`public static void BindButtonPressedCallback(Button button, string methodName, object target, bool includeButtonInstance, params object[] parameters)`|ボタンインスタンスに基づいてボタン押下シグナルにコールバックメソッドをバインドする。|
 |`public static void BindButtonPressedCallback(Button[] buttons, string methodName, object target, bool includeButtonInstance, params object[] parameters)`|ボタンインスタンスに基づいて複数のボタン押下シグナルに同じコールバックメソッドをバインドする。|
 
-## パラメータ
+## パラメーター
 
 |`buttonName`|ボタンの名前。|
 |:---|:---|
@@ -92,8 +105,8 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 |`buttons`|複数のボタンノードインスタンスを含む配列。|
 |`methodName`|ターゲットメソッドの名前。|
 |`target`|ターゲットメソッドを所有するクラスのインスタンス。現在のクラスでは`this`を使用し、他のクラスではそのインスタンスを渡します。名前に基づくオーバーロードを使用する場合、ターゲットクラスは`Node`を継承している必要があります。|
-|`includeButtonInstance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメータとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメータは`Button`型である必要があります。|
-|`parameters`|ターゲットメソッドに必要なパラメータ。|
+|`includeButtonInstance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメーターとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメーターは`Button`型である必要があります。|
+|`parameters`|ターゲットメソッドに必要なパラメーター。|
 
 ## 説明
 

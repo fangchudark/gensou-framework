@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://7inw68htahus"]
+
+[node name="AudioManager" type="Node"]
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="VoicePlayer" type="AudioStreamPlayer" parent="."]

@@ -80,7 +80,7 @@
 
 `static func handle_variable_assignment(code: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`code`|[コマンド実行器](ScriptExecutor.md)によって解析されたコマンドライン。|
 |:---|:---|
@@ -95,7 +95,7 @@
 
 `static func handle_variable_declaration(code: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`code`|[コマンド実行器](ScriptExecutor.md)によって解析されたコマンドライン。|
 |:---|:---|
@@ -110,7 +110,7 @@
 
 `static func release_variable(variable: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`variable`|変数辞書から削除する変数。|
 |:---|:---|
@@ -125,7 +125,7 @@
 
 `static func intfix_to_postfix(input: String) -> Array[String]`
 
-## パラメータ
+## パラメーター
 
 |`input`|中置記法の数式。|
 |:---|:---|
@@ -156,7 +156,7 @@
 
 `static func evaluate_postfix(postfix: Array[String]) -> String`
 
-## パラメータ
+## パラメーター
 
 |`postfix`|後置記法の式。|
 |:---|:---|
@@ -185,7 +185,7 @@
 
 `static func check_int_overflow(value: String) -> bool`
 
-## パラメータ
+## パラメーター
 
 |`value`|チェックする文字列。|
 |:---|:---|
@@ -204,7 +204,7 @@
 
 `static func check_variable_name(name: String) -> bool`
 
-## パラメータ
+## パラメーター
 
 |`name`|検証する文字列。|
 |:---|:---|
@@ -232,7 +232,7 @@
 
 `static func check_expression(expression: String) -> bool`
 
-## パラメータ
+## パラメーター
 
 |`expression`|検証する文字列。|
 |:---|:---|
@@ -257,7 +257,7 @@
 
 `static func try_get_variable_value(variable: String) -> Dictionary`
 
-## パラメータ
+## パラメーター
 
 |`variable`|値を取得する変数名。|
 |:---|:---|

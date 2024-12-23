@@ -1,31 +1,46 @@
-# UIBase
+# UIManager
 
 継承: [Object](https://docs.godotengine.org/ja/stable/classes/class_object.html)
 
 ## 説明
 
-UI管理の基底クラスで、UIを開閉したり、ボタンのコールバックメソッドをバインドするためのメソッドを提供します。
+UI管理器、UIを開閉したり、ボタンのコールバックメソッドをバインドするためのメソッドを提供します。
+
+## 静的プロパティ
+
+|[res_path](#uimanagerres_path)| リソースパス。 |
+|:---|:---|
 
 ## 静的メソッド
 
-|[open_ui](#uibaseopen_ui)|指定したUIを開く。|
+|[open_ui](#uimanageropen_ui)|指定したUIを開く。|
 |:---|:---|
-|[close_ui](#uibaseclose_ui)|指定したUIを閉じる。|
-|[get_instantiated_ui](#uibaseget_instantiated_ui)|インスタンス化されたUIを取得する。|
-|[bind_button_pressed_callback_byname](#uibasebind_button_pressed_callback_byname)|ボタン名に基づいてボタン押下シグナルにコールバックメソッドをバインドする。|
-|[bind_buttons_pressed_callback_byname](#uibasebind_buttons_pressed_callback_byname)|ボタン名に基づいて複数のボタン押下シグナルに同じコールバックメソッドをバインドする。|
-|[bind_button_pressed_callback](#uibasebind_button_pressed_callback)|ボタンインスタンスに基づいてボタン押下シグナルにコールバックメソッドをバインドする。|
-|[bind_buttons_pressed_callback](#uibasebind_buttons_pressed_callback)|ボタンインスタンスに基づいて複数のボタン押下シグナルに同じコールバックメソッドをバインドする。|
+|[close_ui](#uimanagerclose_ui)|指定したUIを閉じる。|
+|[get_instantiated_ui](#uimanagerget_instantiated_ui)|インスタンス化されたUIを取得する。|
+|[bind_button_pressed_callback_byname](#uimanagerbind_button_pressed_callback_byname)|ボタン名に基づいてボタン押下シグナルにコールバックメソッドをバインドする。|
+|[bind_buttons_pressed_callback_byname](#uimanagerbind_buttons_pressed_callback_byname)|ボタン名に基づいて複数のボタン押下シグナルに同じコールバックメソッドをバインドする。|
+|[bind_button_pressed_callback](#uimanagerbind_button_pressed_callback)|ボタンインスタンスに基づいてボタン押下シグナルにコールバックメソッドをバインドする。|
+|[bind_buttons_pressed_callback](#uimanagerbind_buttons_pressed_callback)|ボタンインスタンスに基づいて複数のボタン押下シグナルに同じコールバックメソッドをバインドする。|
 
 ---
 
-# UIBase.open_ui
+# UIManager.res_path
+
+`static var res_path: String`
+
+## 説明
+
+リソース パス。デフォルトは `res://UI/` です。UI シーン ファイルはこのパスにロードされます。
+
+---
+
+# UIManager.open_ui
 
 `static func open_ui(ui: String, node: Node) -> Control`
 
-## パラメータ
+## パラメーター
 
-|`ui`|開くUI。UIは`res://UI/`下に配置してください。拡張子を除いたUIシーンのファイル名を渡します。|
+|`ui`|開くUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
 |`node`|ターゲットのルートノード。UIはこのノードの子として追加されます。現在のシーンに追加する場合は`get_tree().current_scene`を使用します。|
 
@@ -39,13 +54,13 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.close_ui
+# UIManager.close_ui
 
 `static func close_ui(ui: String, destroy: bool = false) -> void`
 
-## パラメータ
+## パラメーター
 
-|`ui`|閉じるUI。UIは`res://UI/`下に配置してください。拡張子を除いたUIシーンのファイル名を渡します。|
+|`ui`|閉じるUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
 |`destroy`|（オプション）UIインスタンスを破棄するかどうか。デフォルトは`false`。`true`を設定すると、UIを破棄し、そのリソースを解放します。|
 
@@ -55,11 +70,11 @@ UI管理の基底クラスで、UIを開閉したり、ボタンのコールバ�
 
 ---
 
-# UIBase.get_instantiated_ui
+# UIManager.get_instantiated_ui
 
 `static func get_instantiated_ui(ui: String) -> Control`
 
-## パラメータ
+## パラメーター
 
 |`ui`|取得したいUI。拡張子を除いたUIシーンのファイル名を渡します。|
 |:---|:---|
@@ -74,18 +89,18 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 
 ---
 
-# UIBase.bind_button_pressed_callback_byname
+# UIManager.bind_button_pressed_callback_byname
 
 `static func bind_button_pressed_callback_byname(button_name: String, method_name: String, target: Node, include_button_instance: bool, parameters: Array = []) -> void`
 
-## パラメータ
+## パラメーター
 
 |`button_name`|ボタンの名前。|
 |:---|:---|
 |`method_name`|ターゲットメソッドの名前。|
 |`target`|ターゲットメソッドを所有するクラスのインスタンス。現在のクラスでは `self`を使用し、他のクラスではそのインスタンスを渡します。ターゲットクラスは`Node`を継承している必要があります。|
-|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメータとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメータは`Button`型である必要があります。|
-|`parameters`|ターゲットメソッドに必要なパラメータ。|
+|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメーターとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメーターは`Button`型である必要があります。|
+|`parameters`|ターゲットメソッドに必要なパラメーター。|
 
 ## 説明
 
@@ -97,18 +112,18 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 
 ---
 
-# UIBase.bind_buttons_pressed_callback_byname
+# UIManager.bind_buttons_pressed_callback_byname
 
 `static func bind_buttons_pressed_callback_byname(button_names: Array[String], method_name: String, target: Node, include_button_instance: bool, parameters: Array = []) -> void`
 
-## パラメータ
+## パラメーター
 
 |`button_names`|複数のボタン名を含む文字列の配列。|
 |:---|:---|
 |`method_name`|ターゲットメソッドの名前。|
 |`target`|ターゲットメソッドを所有するクラスのインスタンス。現在のクラスでは `self`を使用し、他のクラスではそのインスタンスを渡します。ターゲットクラスは`Node`を継承している必要があります。|
-|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメータとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメータは`Button`型である必要があります。|
-|`parameters`|ターゲットメソッドに必要なパラメータ。|
+|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメーターとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメーターは`Button`型である必要があります。|
+|`parameters`|ターゲットメソッドに必要なパラメーター。|
 
 ## 説明
 
@@ -120,18 +135,18 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 
 ---
 
-# UIBase.bind_button_pressed_callback
+# UIManager.bind_button_pressed_callback
 
 `static func bind_button_pressed_callback(button: Button, method_name: String, target: Object, include_button_instance: bool, parameters: Array = []) -> void`
 
-## パラメータ
+## パラメーター
 
 |`button`|ボタンノードインスタンス。|
 |:---|:---|
 |`method_name`|ターゲットメソッドの名前。|
 |`target`|ターゲットメソッドを所有するクラスのインスタンス。現在のクラスでは `self`を使用し、他のクラスではそのインスタンスを渡します。|
-|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメータとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメータは`Button`型である必要があります。|
-|`parameters`|ターゲットメソッドに必要なパラメータ。|
+|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメーターとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメーターは`Button`型である必要があります。|
+|`parameters`|ターゲットメソッドに必要なパラメーター。|
 
 ## 説明
 
@@ -139,18 +154,18 @@ UIが見つかればそのインスタンスを返します。見つからなけ
 
 ---
 
-# UIBase.bind_buttons_pressed_callback
+# UIManager.bind_buttons_pressed_callback
 
 `static func bind_buttons_pressed_callback(buttons: Array[Button], method_name: String, target: Object, include_button_instance: bool, parameters: Array = []) -> void`
 
-## パラメータ
+## パラメーター
 
 |`buttons`|複数のボタンノードインスタンスを含む配列。|
 |:---|:---|
 |`method_name`|ターゲットメソッドの名前。|
 |`target`|ターゲットメソッドを所有するクラスのインスタンス。現在のクラスでは `self`を使用し、他のクラスではそのインスタンスを渡します。|
-|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメータとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメータは`Button`型である必要があります。|
-|`parameters`|ターゲットメソッドに必要なパラメータ。|
+|`include_button_instance`|ターゲットメソッドにボタンノードインスタンスを最初のパラメーターとして渡すかどうか。`true`の場合、ターゲットメソッドの最初のパラメーターは`Button`型である必要があります。|
+|`parameters`|ターゲットメソッドに必要なパラメーター。|
 
 ## 説明
 

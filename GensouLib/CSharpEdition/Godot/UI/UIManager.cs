@@ -9,21 +9,29 @@ namespace GensouLib.Godot.UI
     /// UI Manager
     /// </summary>
     /// <remarks>
-    /// UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法。<br/>
-    /// Base class for UI management, providing methods to open and close UI elements and bind button callbacks.
+    /// 提供打开和关闭UI，以及绑定按钮回调的方法。<br/>
+    /// Providing methods to open and close UI elements and bind button callbacks.
     /// </remarks>
-    public partial class UIBase : Node
+    public class UIManager
     {
         /// 已实例化的UI
         private static readonly Dictionary<string, Control> InstantiatedUI = new();
+
+        /// <summary>
+        /// 资源路径<br/>
+        /// Resource path.
+        /// </summary>
+        public static string ResPath {get; set;} = "res://UI/";
 
         /// <summary>
         /// 打开指定UI,添加到指定节点。<br/>
         /// Opens the specified UI and adds it to the specified node.
         /// </summary>
         /// <param name="ui">
-        /// 要打开的UI，UI应在<c>res://UI/</c>下<br/>
-        /// The filename of the UI to open,The UI UI should be located at <c>res://UI/</c>
+        /// 要打开的UI，传入UI场景的文件名，不包含扩展名。<br/>
+        /// The filename of the UI to open, Pass the UI scene file name without extension.<br/>
+        /// 修改 <see cref="ResPath"/> 属性来更改资源路径<br/>
+        /// Modify the <see cref="ResPath"/> property to change the resource path.
         /// </param>
         /// <param name="node">
         /// 目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用<c>GetTree().CurrentScene</c>。<br/>
@@ -47,7 +55,7 @@ namespace GensouLib.Godot.UI
                 }
                 return existingInstance;
             }
-            string path = "res://UI/"+ui+".tscn";
+            string path = $"{ResPath}{ui}.tscn";
             PackedScene packedScene = ResourceLoader.Load<PackedScene>(path);
 
             if (packedScene == null)
@@ -74,8 +82,8 @@ namespace GensouLib.Godot.UI
         /// Closes the specified UI.
         /// </summary>
         /// <param name="ui">
-        /// 要关闭的 UI 。<br/>
-        /// The filename of the UI to close.
+        /// 要关闭的 UI，传入UI场景的文件名，不包含扩展名。<br/>
+        /// The filename of the UI to close, Pass the UI scene file name without extension.
         /// </param>
         /// <param name="destroy">
         /// 是否销毁 UI 实例，默认为 false。设置为 true 将销毁 UI 并释放其资源。<br/>
@@ -112,8 +120,8 @@ namespace GensouLib.Godot.UI
         /// Gets the instantiated UI
         /// </summary>
         /// <param name="ui">
-        /// 要获取实例的 UI <br/>
-        /// The filename of the UI to get the UI instance.
+        /// 要获取实例的 UI，传入UI场景的文件名，不包含扩展名。<br/>
+        /// The filename of the UI to get the UI instance, Pass the UI scene file name without extension.
         /// </param>
         /// <returns>
         /// 如果获取到UI，则返回其实例，否则返回null <br/>

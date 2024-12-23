@@ -109,7 +109,7 @@ var node = instance_from_id(instance_id)
 
 `static func create_directory(directory: String, create_at_localLow: bool = false) -> void`
 
-## パラメータ
+## パラメーター
 
 | `directory` | 作成するディレクトリのパス。 |
 |:---|:---|
@@ -119,7 +119,7 @@ var node = instance_from_id(instance_id)
 
 ディレクトリを作成し、現在のセーブディレクトリを変更します。
 
-`create_at_localLow` が `true` の場合、`C:\Users\ユーザー名\AppData\LocalLow` にディレクトリを作成します。この場合、`directory` パラメータは相対パスで指定する必要があります。
+`create_at_localLow` が `true` の場合、`C:\Users\ユーザー名\AppData\LocalLow` にディレクトリを作成します。この場合、`directory` パラメーターは相対パスで指定する必要があります。
 
 ---
 
@@ -137,7 +137,7 @@ var node = instance_from_id(instance_id)
 
 `static func save_exists(file_name: String) -> bool`
 
-## パラメータ
+## パラメーター
 
 |`file_name`| チェックするセーブファイル名（拡張子込み）。 |
 |:---|:---|
@@ -156,7 +156,7 @@ var node = instance_from_id(instance_id)
 
 `static func delete_save_file(file_name: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`| 削除するセーブファイル名（拡張子込み）。 |
 |:---|:---|
@@ -171,7 +171,7 @@ var node = instance_from_id(instance_id)
 
 `static func delete_all_save_files(extension: String = ".sav") -> void`
 
-## パラメータ
+## パラメーター
 
 | `extension` | 削除するセーブファイルの拡張子。デフォルトは `.sav`。 |
 |:---|:---|
@@ -186,7 +186,7 @@ var node = instance_from_id(instance_id)
 
 `static func get_save_files_count(extension: String = ".sav") -> int`
 
-## パラメータ
+## パラメーター
 
 | `extension` | 数を取得するセーブファイルの拡張子。デフォルトは `.sav`。 |
 |:---|:---|
@@ -205,7 +205,7 @@ var node = instance_from_id(instance_id)
 
 `static func save_as_binary(data_dictionary: Dictionary = data_to_save, file_name: String = "SaveData.sav") -> void`
 
-## パラメータ
+## パラメーター
 
 |`data_dictionary`|保存するデータの辞書。デフォルトは[`data_to_save`](#savemanagerdata_to_save)。|
 |:---|:---|
@@ -221,7 +221,7 @@ var node = instance_from_id(instance_id)
 
 `static func load_from_binary(file_name: String = "SaveData.sav") -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|読み込むファイル名（拡張子込み）。デフォルトは`SaveData.sav`。|
 |:---|:---|
@@ -240,7 +240,7 @@ var node = instance_from_id(instance_id)
 
 `static func add_data_to_binary(file_name: String, key: String, new_data: Variant) -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|データが追加されるバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -259,7 +259,7 @@ var node = instance_from_id(instance_id)
 
 `static func get_data_from_binary(file_name: String, key: String) -> Variant`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|データを取得するバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -279,7 +279,7 @@ var node = instance_from_id(instance_id)
 
 `static func delete_data_from_binary(file_name: String, key: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|データを削除するバイナリ ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -295,7 +295,7 @@ var node = instance_from_id(instance_id)
 
 `static func save_as_json(data_dictionary: Dictionary = data_to_save, file_name: String = "SaveData.sav") -> void`
 
-## パラメータ
+## パラメーター
 
 |`data_dictionary`|保存するデータの辞書。デフォルトは[`data_to_save`](#savemanagerdata_to_save)。|
 |:---|:---|
@@ -311,7 +311,7 @@ var node = instance_from_id(instance_id)
 
 `static func load_from_json(file_name: String = "SaveData.sav") -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|読み込むファイル名（拡張子込み）。デフォルトは`SaveData.sav`。|
 |:---|:---|
@@ -330,7 +330,7 @@ var node = instance_from_id(instance_id)
 
 `static func add_data_to_json(file_name: String, key: String, new_data: Variant) -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|データが追加される`Json`ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -349,7 +349,7 @@ var node = instance_from_id(instance_id)
 
 `static func get_data_from_json(file_name: String, key: String, is_object: bool = false) -> Variant`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|データを取得する`Json`ファイルの名前 (拡張子を含む)。 |
 |:---|:---|
@@ -376,7 +376,7 @@ var node = instance_from_id(instance_id)
 
 `static func delete_data_from_json(file_name: String, key: String) -> void`
 
-## パラメータ
+## パラメーター
 
 |`file_name`|削除するファイル名（拡張子込み）。|
 |:---|:---|

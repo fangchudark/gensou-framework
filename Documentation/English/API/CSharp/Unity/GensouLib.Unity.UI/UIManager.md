@@ -1,4 +1,4 @@
-# UIBase
+# UIManager
 
 Inherits: [MonoBehaviour](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/MonoBehaviour.html)
 
@@ -8,15 +8,15 @@ The base class for UI management, providing methods to open and close UIs, and b
 
 ## Static Methods
 
-|[OpenUI](#uibaseopenui)|Open the specified UI.|
+|[OpenUI](#uimanageropenui)|Open the specified UI.|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|Close the specified UI.|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|Get the instantiated UI.|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|Bind the callback method for button press events.|
+|[CloseUI](#uimanagercloseui)|Close the specified UI.|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|Get the instantiated UI.|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|Bind the callback method for button press events.|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.OpenUI
 
 `public static GameObject OpenUI(string ui)`
 
@@ -35,7 +35,7 @@ Returns the instance of the UI if instantiation is successful or the UI is alrea
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
@@ -51,7 +51,7 @@ When `destroy` is `false`, hides the specified UI from the scene. Otherwise, des
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static GameObject GetInstantiatedUI(string ui)`
 
@@ -70,7 +70,7 @@ Returns the instance if the UI is found; otherwise, returns `null`.
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(GameObject buttonObject, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 

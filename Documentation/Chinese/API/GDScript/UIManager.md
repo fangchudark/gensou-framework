@@ -1,31 +1,46 @@
-# UIBase
+# UIManager
 
 继承：[Object](https://docs.godotengine.org/zh-cn/stable/classes/class_object.html)
 
 ## 描述
 
-UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法。
+UI管理器，提供打开和关闭UI，以及绑定按钮回调的方法。
+
+## 静态属性
+
+|[res_path](#uimanagerres_path)|资源路径。|
+|:---|:---|
 
 ## 静态方法
 
-|[open_ui](#uibaseopen_ui)|打开指定UI。|
+|[open_ui](#uimanageropen_ui)|打开指定UI。|
 |:---|:---|
-|[close_ui](#uibaseclose_ui)|关闭指定UI。|
-|[get_instantiated_ui](#uibaseget_instantiated_ui)|获取已实例化的UI。|
-|[bind_button_pressed_callback_byname](#uibasebind_button_pressed_callback_byname)|根据按钮名称为按钮按下信号绑定回调方法。|
-|[bind_buttons_pressed_callback_byname](#uibasebind_buttons_pressed_callback_byname)|根据按钮名称为多个按钮的按下信号绑定到同一个回调方法。|
-|[bind_button_pressed_callback](#uibasebind_button_pressed_callback)|根据按钮实例为按钮按下信号绑定回调方法。|
-|[bind_buttons_pressed_callback](#uibasebind_buttons_pressed_callback)|根据按钮实例为多个按钮按下信号绑定到同一个回调方法。|
+|[close_ui](#uimanagerclose_ui)|关闭指定UI。|
+|[get_instantiated_ui](#uimanagerget_instantiated_ui)|获取已实例化的UI。|
+|[bind_button_pressed_callback_byname](#uimanagerbind_button_pressed_callback_byname)|根据按钮名称为按钮按下信号绑定回调方法。|
+|[bind_buttons_pressed_callback_byname](#uimanagerbind_buttons_pressed_callback_byname)|根据按钮名称为多个按钮的按下信号绑定到同一个回调方法。|
+|[bind_button_pressed_callback](#uimanagerbind_button_pressed_callback)|根据按钮实例为按钮按下信号绑定回调方法。|
+|[bind_buttons_pressed_callback](#uimanagerbind_buttons_pressed_callback)|根据按钮实例为多个按钮按下信号绑定到同一个回调方法。|
 
 ---
 
-# UIBase.open_ui
+# UIManager.res_path
+
+`static var res_path: String`
+
+## 描述
+
+资源路径，默认为`res://UI/`，将在该路径下加载UI场景文件。
+
+---
+
+# UIManager.open_ui
 
 `static func open_ui(ui: String, node: Node) -> Control`
 
 ## 参数
 
-|`ui`|要打开的UI，UI应在`res://UI/`下。传入UI场景的文件名，不包含扩展名。|
+|`ui`|要打开的UI。传入UI场景的文件名，不包含扩展名。|
 |:---|:---|
 |`node`|目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用`get_tree().current_scene`。|
 
@@ -39,13 +54,13 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.close_ui
+# UIManager.close_ui
 
 `static func close_ui(ui: String, destroy: bool = false) -> void`
 
 ## 参数
 
-|`ui`|要关闭的 UI。UI应在`res://UI/`下。传入UI场景的文件名，不包含扩展名。|
+|`ui`|要关闭的 UI。传入UI场景的文件名，不包含扩展名。|
 |:---|:---|
 |`destroy`|（可选）是否销毁 UI 实例，默认为  `false`。设置为 `true` 将销毁 UI 并释放其资源。|
 
@@ -55,7 +70,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.get_instantiated_ui
+# UIManager.get_instantiated_ui
 
 `static func get_instantiated_ui(ui: String) -> Control`
 
@@ -74,7 +89,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.bind_button_pressed_callback_byname
+# UIManager.bind_button_pressed_callback_byname
 
 `static func bind_button_pressed_callback_byname(button_name: String, method_name: String, target: Node, include_button_instance: bool, parameters: Array = []) -> void`
 
@@ -97,7 +112,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.bind_buttons_pressed_callback_byname
+# UIManager.bind_buttons_pressed_callback_byname
 
 `static func bind_buttons_pressed_callback_byname(button_names: Array[String], method_name: String, target: Node, include_button_instance: bool, parameters: Array = []) -> void`
 
@@ -120,7 +135,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.bind_button_pressed_callback
+# UIManager.bind_button_pressed_callback
 
 `static func bind_button_pressed_callback(button: Button, method_name: String, target: Object, include_button_instance: bool, parameters: Array = []) -> void`
 
@@ -139,7 +154,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.bind_buttons_pressed_callback
+# UIManager.bind_buttons_pressed_callback
 
 `static func bind_buttons_pressed_callback(buttons: Array[Button], method_name: String, target: Object, include_button_instance: bool, parameters: Array = []) -> void`
 

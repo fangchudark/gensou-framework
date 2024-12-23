@@ -1,4 +1,4 @@
-# UIBase
+# UIManager
 
 继承：[MonoBehaviour](https://docs.unity.cn/cn/2022.3/ScriptReference/MonoBehaviour.html)
 
@@ -8,15 +8,15 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ## 静态方法
 
-|[OpenUI](#uibaseopenui)|打开指定UI。|
+|[OpenUI](#uimanageropenui)|打开指定UI。|
 |:---|:---|
-|[CloseUI](#uibasecloseui)|关闭指定UI。|
-|[GetInstantiatedUI](#uibasegetinstantiatedui)|获取已实例化的UI|
-|[BindButtonPressedCallback](#uibasebindbuttonpressedcallback)|为按钮按下事件绑定回调方法|
+|[CloseUI](#uimanagercloseui)|关闭指定UI。|
+|[GetInstantiatedUI](#uimanagergetinstantiatedui)|获取已实例化的UI|
+|[BindButtonPressedCallback](#uimanagerbindbuttonpressedcallback)|为按钮按下事件绑定回调方法|
 
 ---
 
-# UIBase.OpenUI
+# UIManager.OpenUI
 
 `public static GameObject OpenUI(string ui)`
 
@@ -35,7 +35,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.CloseUI
+# UIManager.CloseUI
 
 `public static void CloseUI(string ui, bool destroy = false)`
 
@@ -51,7 +51,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.GetInstantiatedUI
+# UIManager.GetInstantiatedUI
 
 `public static GameObject GetInstantiatedUI(string ui)`
 
@@ -70,7 +70,7 @@ UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法�
 
 ---
 
-# UIBase.BindButtonPressedCallback
+# UIManager.BindButtonPressedCallback
 
 `public static void BindButtonPressedCallback(GameObject buttonObject, string methodName, object target, bool includeButtonInstance, params object[] parameters)`
 

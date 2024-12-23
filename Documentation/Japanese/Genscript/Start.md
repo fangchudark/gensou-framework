@@ -28,7 +28,7 @@ Genscriptを使用するには、まず[Genscriptの初期化スクリプトを�
   
   * **[when](KeyWords/when.md)**
 
-    * パラメータ：コマンド実行条件
+    * パラメーター：コマンド実行条件
 
   * **[release](KeyWords/release.md)**
 

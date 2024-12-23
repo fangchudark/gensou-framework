@@ -27,7 +27,7 @@
 
 `public static string GetResourcePath(string category, string name)`
 
-## パラメータ
+## パラメーター
 
 | `category` | リソースのカテゴリ、例: "UI"、"Backgrounds"。          |
 |------------|--------------------------------------------------------|
@@ -49,7 +49,7 @@
 `public static T GetLoadedAsset<T>(string address) where T : UnityEngine.Object`  
 `public static T GetLoadedAsset<T>(string path) where T : UnityEngine.Object`
 
-## パラメータ
+## パラメーター
 
 | `T`        | リソースの型（例: GameObject、Texture など）。         |
 |------------|--------------------------------------------------------|
@@ -58,7 +58,7 @@
 
 ## 説明
 
-読み込まれたリソースを取得し、その型を指定します。使用するローダーによって異なるパラメータを渡します。
+読み込まれたリソースを取得し、その型を指定します。使用するローダーによって異なるパラメーターを渡します。
 
 ## 戻り値
 
@@ -71,7 +71,7 @@
 `public static GameObject Instantiate(string address, bool load = false)`  
 `public static GameObject Instantiate(string path, bool load = false)`
 
-## パラメータ
+## パラメーター
 
 | `address`  | （`Addressables` 用）Addressables に定義されたリソースアドレス。|
 |------------|------------------------------------------------------------------|
@@ -93,7 +93,7 @@
 `public static async Task<GameObject> InstantiateAsync(string address, bool load = false)`  
 `public static async Task<GameObject> InstantiateAsync(string path, bool load = false)`
 
-## パラメータ
+## パラメーター
 
 | `address`  | （`Addressables` 用）Addressables に定義されたリソースアドレス。|
 |------------|------------------------------------------------------------------|
@@ -115,7 +115,7 @@
 `public static void LoadResource<T>(string address) where T : UnityEngine.Object`  
 `public static void LoadResource<T>(string path) where T : UnityEngine.Object`
 
-## パラメータ
+## パラメーター
 
 | `T`        | リソースの型（例: GameObject、Texture など）。         |
 |------------|--------------------------------------------------------|
@@ -133,7 +133,7 @@
 `public static async Task LoadResourceAsync<T>(string address) where T : UnityEngine.Object`  
 `public static async Task LoadResourceAsync<T>(string path) where T : UnityEngine.Object`
 
-## パラメータ
+## パラメーター
 
 | `T`        | リソースの型（例: GameObject、Texture など）。         |
 |------------|--------------------------------------------------------|
@@ -155,7 +155,7 @@
 `public static void ReleaseResource(string address)`  
 `public static void ReleaseResource(string path)`
 
-## パラメータ
+## パラメーター
 
 | `address`  | （`Addressables` 用）解放する読み込まれたリソースのアドレス。|
 |------------|------------------------------------------------------------|

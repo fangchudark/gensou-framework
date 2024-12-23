@@ -1,20 +1,25 @@
 ## UI管理器[br]
 ## UI Manager
 ##
-## UI管理的基类，提供打开和关闭UI，以及绑定按钮回调的方法。[br]
-## Base class for UI management, providing methods to open and close UI elements and bind button callbacks.
-class_name UIBase extends Object
+## 提供打开和关闭UI，以及绑定按钮回调的方法。[br]
+## Providing methods to open and close UI elements and bind button callbacks.
+class_name UIManager extends Object
 
 # 已实例化的UI
 static var _instantiated_ui: Dictionary = {}
 
+## 资源路径。[br]
+## Resource path. [br]
+static var res_path: String = "res://UI/"
 
 ## 打开指定UI,添加到指定节点。[br]
 ## Opens the specified UI and adds it to the specified node. [br]
 ## [br]
 ## [param ui] : [br]
-## 要打开的UI，UI应在[code]res://UI/[/code]下[br]
-## The filename of the UI to open,The UI UI should be located at [code]res://UI/[/code][br]
+## 要打开的UI，传入UI场景的文件名，不包含扩展名。[br]
+## The filename of the UI to open, Pass the UI scene file name without extension.[br]
+## 修改 [member res_path] 属性来更改资源路径[br]
+## Modify the [member res_path] property to change the resource path.[br]
 ## [param node] : [br]
 ## 目标根节点,UI将被添加为该节点的子节点。添加到当前场景使用[code]get_tree().current_scene[/code]。[br]
 ## The target root node. The UI will be added as a child of this node. To add it to the current scene, use [code]get_tree().current_scene[/code].[br]
@@ -28,7 +33,7 @@ static func open_ui(ui: String, node: Node) -> Control:
 		else:
 			push_error("UI: %s exists and is active. (UI: %s 已存在且处于激活状态)" % [ui,ui])
 		return _instantiated_ui[ui]
-	var path = "res://UI/"+ui+".tscn"
+	var path = res_path + ui + ".tscn"
 	var packed_scence = ResourceLoader.load(path)
 	if packed_scence == null:
 		push_error("UI failed to load, possibly with wrong path: %s. (UI加载失败，可能路径错误或资源未加载：%s)" % [ui,ui])
@@ -48,8 +53,8 @@ static func open_ui(ui: String, node: Node) -> Control:
 ## Closes the specified UI. [br]
 ## [br]
 ## [param ui] : [br] 
-## 要关闭的 UI。[br]
-## The filename of the UI to close. [br]
+## 要关闭的 UI，传入UI场景的文件名，不包含扩展名。[br]
+## The filename of the UI to close, Pass the UI scene file name without extension.[br]
 ## [param destroy] : [br]
 ## 是否销毁 UI 实例，默认为 false。设置为 true 将销毁 UI 并释放其资源。[br]
 ## Whether to destroy the UI instance. Default is false. Set to true to destroy and release its resources.[br]
@@ -72,8 +77,8 @@ static func close_ui(ui: String, destroy: bool = false) -> void:
 ## Gets the instantiated UI [br]
 ## [br]
 ## [param ui"] : [br]
-## 要获取实例的 UI [br]
-## The filename of the UI to get instance. [br]
+## 要获取实例的 UI，传入UI场景的文件名，不包含扩展名。 [br]
+## The filename of the UI to get instance, Pass the UI scene file name without extension.[br]
 ## [br]
 ## 如果获取到UI，则返回其实例，否则返回null [br]
 ## If UI is retrieved, the instance is returned; otherwise, null is returned
