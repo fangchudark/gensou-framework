@@ -7,11 +7,11 @@ public class GenScriptInitialization : MonoBehaviour
     {
         if (FindObjectsOfType<GenScriptInitialization>().Length > 1)
         {
-            Destroy(gameObject); // 防止创建多个实例
+            Destroy(gameObject);
             return;
         }
 
-        DontDestroyOnLoad(gameObject); // 保持在场景切换时不被销毁
-        ScriptReader.Initialization();        
+        DontDestroyOnLoad(gameObject);
+        ScriptReader.ReadAndExecute();        
     }
 }
