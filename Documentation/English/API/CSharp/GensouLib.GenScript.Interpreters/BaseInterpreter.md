@@ -4,13 +4,12 @@ Inherited By: [ConditionInterpreter](ConditionInterpreter.md), [VariableInterpre
 
 ## Description
 
-`BaseInterpreter` is the core interpreter class of `Genscript`, primarily responsible for splitting script content into commands and removing comments. It also provides the capability to handle [console commands](../../../Genscript/Category/Console.md) and includes some common string processing utility methods.
+`BaseInterpreter` is the core interpreter class of `Genscript`, primarily responsible for splitting script content into commands and removing comments. It also provides some common string processing utility methods.
 
 ## Static Methods
 
 |[ParseScript](#baseinterpreterparsescript)|Splits the entire script file into commands, excluding the comment content.|
 |:--|:--|
-|[HandleDebugOutput](#baseinterpreterhandledebugoutput)|Handles console output commands.|
 |[ReplacePlaceholders](#baseinterpreterreplaceplaceholders)|Replaces escape characters and variables in the text.|
 |[TryParseNumeric](#baseinterpretertryparsenumeric)|Attempts to parse a string as a number.|
 
@@ -32,21 +31,6 @@ Inherited By: [ConditionInterpreter](ConditionInterpreter.md), [VariableInterpre
 Responsible for splitting the provided script content into individual commands and processing each line. Comments are removed, and each line of code is passed to the [command executor](ScriptExecutor.md) for further execution. Specifically, the method handles [multi-line log commands](../../../Genscript/Category/Console.md/#-n), continuing to process the commands only after exiting the multi-line log mode.
 
 If used on the **Godot** platform, the `node` parameter should be passed as a `Node` object mounted on the auto-loaded script initializer node, providing context for subsequent script execution. Generally, it should be the auto-loaded script initializer node or any other node mounted as auto-loaded.
-
----
-
-# BaseInterpreter.HandleDebugOutput
-
-`public static void HandleDebugOutput(string code)`
-
-## Parameters
-
-|`code`|The command line further parsed by the [command executor](ScriptExecutor.md).|
-|---|---|
-
-## Description
-
-Console command interpreter for `Genscript`, responsible for parsing and executing console commands. It supports multi-line log output, escape character replacement, mathematical expression evaluation (for single-line console output only), and variable interpolation.
 
 ---
 

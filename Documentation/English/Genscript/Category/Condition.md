@@ -8,11 +8,11 @@ Conditional parameter are generally used to handle different situations that ari
 
 ## Syntax
 
-- **[[Command] -when=[Condition]](#command--whencondition)**
+- **[Command -when=Condition](#command--whencondition)**
 
 ## Details
 
-### **[Command] -when=[Condition]**
+### **Command -when=Condition**
 
 This parameter is used to execute the command on the left side when the specified condition is true. The command will only be executed if the condition is satisfied; otherwise, it will be skipped.
 
@@ -21,18 +21,18 @@ Conditions can either be a Boolean variable or a conditional expression.
 When the condition is a Boolean variable:
 
 ```gs
--a=true         |: Defines a Boolean variable a with the value true
--b=false        |: Defines a Boolean variable b with the value false
--a=10 -when=a   |: a will be assigned 10 because a is true before the assignment
--a=100 -when=b  |: a will not be assigned 100 because b is false
+var:a=true; // Defines a Boolean variable a with the value true
+var:b=false; // Defines a Boolean variable b with the value false
+var:a=10 -when=a; // a will be assigned 10 because a is true before the assignment
+var:a=100 -when=b; // a will not be assigned 100 because b is false
 ```
 
 When the condition is a conditional expression:
 
 ```gs
--a=100 -when=1+1>2  |: a will not be assigned 100 because 1+1 is not greater than 2
--a=100 -when=1+1==2 |: a will be assigned 100 because 1+1 equals 2
--b=a -when=a>=100   |: b will be assigned the value of a because a is 100
+var:a=100 -when=1+1>2; // a will not be assigned 100 because 1+1 is not greater than 2
+var:a=100 -when=1+1==2; // a will be assigned 100 because 1+1 equals 2
+var:b=a -when=a>=100; // b will be assigned the value of a because a is 100
 ```
 
 > #### **Conditional Expression Operators**

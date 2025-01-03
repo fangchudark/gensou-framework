@@ -4,13 +4,12 @@
 
 ## 説明
 
-`BaseInterpreter`は`Genscript`のコアインタープリタークラスで、主にスクリプト内容をコマンドに分割し、コメントを削除する役割を担います。また、コマンドラインでの[コンソールコマンド](../../../Genscript/Category/Console.md)の処理を提供します、いくつかの一般的な文字列処理ユーティリティメソッドを含んでいます。
+`BaseInterpreter`は`Genscript`のコアインタープリタークラスで、主にスクリプト内容をコマンドに分割し、コメントを削除する役割を担います。また、いくつかの一般的な文字列処理ユーティリティメソッドを含んでいます。
 
 ## 静的メソッド
 
 |[ParseScript](#baseinterpreterparsescript)|スクリプトファイル全体をコマンドに分割し、コメントを除外します。|
 |:--|:--|
-|[HandleDebugOutput](#baseinterpreterhandledebugoutput)|コンソール出力コマンドを処理します。|
 |[ReplacePlaceholders](#baseinterpreterreplaceplaceholders)|テキスト中のエスケープ文字と変数を置換します。|
 |[TryParseNumeric](#baseinterpretertryparsenumeric)|文字列を数値として解析しようとします。|
 
@@ -32,21 +31,6 @@
 渡されたスクリプトの内容をコマンドに分割し、各行を処理します。コメントは削除され、各コマンド行は[コマンド実行器](ScriptExecutor.md)に渡され、さらに実行されます。特に、[マルチラインログコマンド](../../../Genscript/Category/Console.md/#-n)を処理し、マルチラインログモードが終了するまで各コマンドを処理し続けます。
 
 **Godot**プラットフォームで使用する場合、`node`パラメーターは自動読み込みスクリプト初期化ノードにマウントされた`Node`オブジェクトとして渡す必要があります。これにより、後続のスクリプト実行コンテキストをサポートします。通常は、自動読み込みスクリプト初期化ノード、または他の自動読み込みノードとしてマウントされた任意のノードを渡すべきです。
-
----
-
-# BaseInterpreter.HandleDebugOutput
-
-`public static void HandleDebugOutput(string code)`
-
-## パラメーター
-
-|`code`|[コマンド実行器](ScriptExecutor.md)によってさらに解析されたコマンド行。|
-|---|---|
-
-## 説明
-
-`Genscript`のコンソール命令インタープリターで、コンソール命令を解析して実行します。マルチラインログ出力、エスケープ文字の置換、数学的な式の計算（単一行コンソール出力のみ）、および変数のインターポレーションをサポートします。
 
 ---
 

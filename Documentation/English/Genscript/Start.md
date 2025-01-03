@@ -17,9 +17,7 @@ This directory lists all commands and keywords documentation for Genscript, maki
 ---
 
 * **Categories**  
-  
-  * **[Console Commands](Category/Console.md)**  
-    
+
   * **[Variable Commands](Category/Variable.md)**  
     
   * **[Condition Commands](Category/Condition.md)**  

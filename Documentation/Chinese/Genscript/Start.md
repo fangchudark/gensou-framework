@@ -17,8 +17,6 @@
   
 * **类别**  
   
-  * **[控制台命令](Category/Console.md)**
-    
   * **[变量命令](Category/Variable.md)**  
     
   * **[条件命令](Category/Condition.md)**  

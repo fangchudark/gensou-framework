@@ -26,17 +26,17 @@ A special type used in conditional statements, with only two possible values: `f
   
 ## Syntax  
 
-- **[-[variable name]](#-variable-name)**  
+- **[var:variableName](#varvariablename)**  
   
-- **[-[variable name]=[value]](#-variable-namevalue)**  
+- **[var:variableName=value](#varvariablenamevalue)**  
   
-- **[-[variable name]=[valid mathematical expression]](#-variable-namevalid-mathematical-expression)**  
+- **[var:variableName=validMathematicalExpression](#varvariablenamevalidmathematicalexpression)**  
 
-- **[release:[varibale name]](#releasevariable-name)**
+- **[release:[varibale name]](#releasevariablename)**
 
 ## Details  
   
-### **\-[variable name]**  
+### **var:variableName**  
   
 Declares a variable without initializing it.  
   
@@ -66,16 +66,15 @@ If not initialized, the variable's default type is a string, and its value is em
   
 ---
 
-### **\-[variable name]=[value]**  
+### **var:variableName=value**  
   
 Assigns a value to a variable. This can modify the value of an existing variable or declare and initialize a new one with a value, which could also be another variable.  
   
 ```gs
--a=0    |: Declares variable a and initializes it to 0  
--b=a    |: Declares variable b and initializes it to the value of a (0)  
--c="c"  |: Declares variable c and initializes it to the string "c"  
--b=c    |: Assigns the value of c to b, so b now holds the string "c"  
--@{b}   |: Outputs the value of b; console prints: c  
+var:a=0; // Declares variable a and initializes it to 0  
+var:b=a; // Declares variable b and initializes it to the value of a (0)  
+var:c="c"; // Declares variable c and initializes it to the string "c"  
+var:b=c; // Assigns the value of c to b, so b now holds the string "c"  
 ```  
   
 > #### **Variables Can Auto-Convert Types**  
@@ -83,14 +82,14 @@ Assigns a value to a variable. This can modify the value of an existing variable
 > Variables don’t require type specification upon declaration, as they auto-convert types when assigned a value:  
 >  
 > ```gs
-> -string="string"         |: Declares a string variable  
-> -integer=0               |: Declares an integer variable  
-> -floating_point=0.0      |: Declares a floating-point variable  
-> -boolean=true            |: Declares a boolean variable  
-> -boolean=string          |: Assigns the value of string to boolean, making boolean a string type  
-> -floating_point=integer  |: Assigns the value of integer to floating_point, making it an integer type  
-> -string=false            |: Changes string to boolean type with value false  
-> -integer=1.0             |: Changes integer to floating-point with value 1.0  
+> var:string="string"; // Declares a string variable  
+> var:integer=0; // Declares an integer variable  
+> var:floating_point=0.0; // Declares a floating-point variable  
+> var:boolean=true; // Declares a boolean variable  
+> var:boolean=string; // Assigns the value of string to boolean, making boolean a string type  
+> var:floating_point=integer; // Assigns the value of integer to floating_point, making it an integer type  
+> var:string=false; // Changes string to boolean type with value false  
+> var:integer=1.0; // Changes integer to floating-point with value 1.0  
 > ```  
 >  
 > ---  
@@ -106,23 +105,23 @@ Assigns a value to a variable. This can modify the value of an existing variable
 > > The following assignments are all valid:
 > >  
 > > ```gs
-> > -a=a     |: The value of variable a is "a"  
-> > -b=c     |: The value of variable b is "c"  
-> > -c={a}   |: The value of variable c is "{a}"  
-> > -d=""d"" |: The value of variable d is the string "d" (including quotes)  
+> > var:a=a; // The value of variable a is "a"  
+> > var:b=c; // The value of variable b is "c"  
+> > var:c={a}; // The value of variable c is "{a}"  
+> > var:d=""d""; // The value of variable d is the string "d" (including quotes)  
 > > ```
 
 ---
 
-### **\-[variable name]=[valid mathematical expression]**  
+### **var:variableName=validMathematicalExpression**  
   
 This command assigns the result of an expression to a variable, with automatic type conversion:  
 
 ```gs
--a=10   |: Integer 10  
--b=5.5  |: Floating-point 5.5  
--c=a+b  |: Floating-point 15.5  
--a=b-c  |: Integer -10  
+var:a=10; // Integer 10  
+var:b=5.5; // Floating-point 5.5  
+var:c=a+b; // Floating-point 15.5  
+var:a=b-c; // Integer -10  
 ```
 
 > #### **What is a Mathematical Expression?**
@@ -160,7 +159,7 @@ This command assigns the result of an expression to a variable, with automatic t
 
 ---
 
-### **release:[variable name]**
+### **release:VariableName**
 
 This command is used to release a variable from memory, effectively deleting it from memory.
 
@@ -174,7 +173,7 @@ You need to manually instruct Genscript to know which variable to delete.
 
 Example:
 
-```genscript
--a = 10     |: Declare variable 'a' and assign it the value 10
--@{a} is 10 |: Print the value to the console
-release:a   |: Delete the variable 'a'
+```gs
+var:a = 10; // Declare variable 'a' and assign it the value 10
+release:a; // Delete the variable 'a'
+```

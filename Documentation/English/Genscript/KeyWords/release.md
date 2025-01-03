@@ -17,9 +17,9 @@ Genscript does not have automatic garbage collection, so it requires the develop
 ## Example
 
 ```genscript
--a = 10     |: Declare variable a and set it to 10
--@{a} is 10 |: Print the value of a
-release:a   |: Release variable a from memory
+-a = 10; // Declare variable a and set it to 10
+-@{a} is 10; // Print the value of a
+release:a; // Release variable a from memory
 ```
 
 ## Notes

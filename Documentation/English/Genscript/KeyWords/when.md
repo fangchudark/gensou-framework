@@ -22,5 +22,5 @@ The value can be any of the following types:
 ```genscript
 -a = 10
 -b = 100
--@1000 -when=a * b == 1000  |: Prints 1000 only when a * b equals 1000
+-@1000 -when=a * b == 1000; // Prints 1000 only when a * b equals 1000
 ```
