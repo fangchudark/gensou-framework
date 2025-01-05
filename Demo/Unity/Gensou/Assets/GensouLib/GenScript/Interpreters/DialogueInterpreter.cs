@@ -1,10 +1,13 @@
 #if UNITY_5_3_OR_NEWER
-using System;
-using System.Text.RegularExpressions;
 using GensouLib.Unity.Core;
 using GensouLib.Unity.ResourceLoader;
 using UnityEngine;
+#else
+using Godot;
+using GensouLib.Godot.Core;
 #endif
+using System;
+using System.Text.RegularExpressions;
 
 namespace GensouLib.GenScript.Interpreters
 {
@@ -112,7 +115,11 @@ namespace GensouLib.GenScript.Interpreters
             string param, 
             float alpha, 
             string pathPrefix, 
+#if UNITY_5_3_OR_NEWER
             Action<Sprite, float, bool> changeImageAction, 
+#else
+            Action<Texture2D, float, bool> changeImageAction, 
+#endif
             bool isHideOnNone = true)
         {
             if (param == "none")
@@ -128,10 +135,16 @@ namespace GensouLib.GenScript.Interpreters
             path = string.Join("/", pathPrefix, param); // 资源路径
 #endif
             AssetLoader.LoadResource<Sprite>(path); // 加载资源
-            Sprite image = AssetLoader.GetLoadedAsset<Sprite>(path);
-            if (image == null)
+            if (AssetLoader.GetLoadedAsset<Sprite>(path) is not Sprite image)
             {
                 Debug.LogError($"Failed to load image {path} (无法加载图片{path}).");
+                return;
+            }
+#else
+            path = string.Join("/", pathPrefix, param); // 资源路径
+            if (ResourceLoader.Load(path) is not Texture2D image)
+            {
+                GD.PushError($"Failed to load image {path} (无法加载图片{path}).");
                 return;
             }
 #endif

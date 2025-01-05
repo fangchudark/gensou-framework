@@ -5,7 +5,7 @@ using GensouLib.Unity.Core;
 
 public class SaveLoad : MonoBehaviour
 {
-    public int MaxSolts = 20;
+    public int MaxSlots = 20;
     public GameObject SaveSlotPrefab;
     public Button CloseButton;
     public TextMeshProUGUI PanelTitle;
@@ -19,7 +19,7 @@ public class SaveLoad : MonoBehaviour
             CloseButton,
             PanelTitle,
             SaveSlotContainer,
-            MaxSolts,
+            MaxSlots,
             TimestampGameObjectName,
             DialogueGameObjectName,
             ScreenshotGameObjectName
@@ -29,7 +29,7 @@ public class SaveLoad : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
-       await SaveLoadGame.CreateSolts();
+       await SaveLoadGame.CreateSlots();
     }
 
     // Update is called once per frame

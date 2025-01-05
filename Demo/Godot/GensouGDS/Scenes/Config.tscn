@@ -1,0 +1,181 @@
+[gd_scene load_steps=2 format=3 uid="uid://c53u155qfivoj"]
+
+[ext_resource type="Script" path="res://Scripts/config_menu.gd" id="1_1172e"]
+
+[node name="Config" type="Control" node_paths=PackedStringArray("master_volume_slider", "bgm_volume_slider", "bgs_volume_slider", "se_volume_slider", "voice_volume_slider", "auto_play_speed_slider", "text_display_speed_slider", "display_mode_option_button", "close", "save")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1172e")
+master_volume_slider = NodePath("Panel/Audio/MasterVolume/HSlider")
+bgm_volume_slider = NodePath("Panel/Audio/BgmVolume/HSlider")
+bgs_volume_slider = NodePath("Panel/Audio/BgsVolume/HSlider")
+se_volume_slider = NodePath("Panel/Audio/SeVolume/HSlider")
+voice_volume_slider = NodePath("Panel/Audio/VoiceVolume/HSlider")
+auto_play_speed_slider = NodePath("Panel/Display/AutoPlaySpeed/HSlider")
+text_display_speed_slider = NodePath("Panel/Display/TextDisplaySpeed/HSlider")
+display_mode_option_button = NodePath("Panel/Display/Screen/OptionButton")
+close = NodePath("Close")
+save = NodePath("Save")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Audio" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 118.0
+offset_bottom = 66.0
+scale = Vector2(2.5, 2.5)
+theme_override_constants/separation = 20
+
+[node name="MasterVolume" type="Label" parent="Panel/Audio"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="HSlider" type="HSlider" parent="Panel/Audio/MasterVolume"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+max_value = 1.0
+step = 0.01
+
+[node name="BgmVolume" type="Label" parent="Panel/Audio"]
+layout_mode = 2
+text = "BGM Volume"
+
+[node name="HSlider" type="HSlider" parent="Panel/Audio/BgmVolume"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+max_value = 1.0
+step = 0.01
+
+[node name="BgsVolume" type="Label" parent="Panel/Audio"]
+layout_mode = 2
+text = "BGS Volume"
+
+[node name="HSlider" type="HSlider" parent="Panel/Audio/BgsVolume"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+max_value = 1.0
+step = 0.01
+
+[node name="SeVolume" type="Label" parent="Panel/Audio"]
+layout_mode = 2
+text = "SE Volume"
+
+[node name="HSlider" type="HSlider" parent="Panel/Audio/SeVolume"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+max_value = 1.0
+step = 0.01
+
+[node name="VoiceVolume" type="Label" parent="Panel/Audio"]
+layout_mode = 2
+text = "Voice Volume"
+
+[node name="HSlider" type="HSlider" parent="Panel/Audio/VoiceVolume"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+max_value = 1.0
+step = 0.01
+
+[node name="Display" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 752.0
+offset_top = 4.0
+offset_right = 1032.0
+offset_bottom = 204.0
+scale = Vector2(2.5, 2.5)
+theme_override_constants/separation = 20
+
+[node name="AutoPlaySpeed" type="Label" parent="Panel/Display"]
+layout_mode = 2
+text = "Auto Play Speed"
+
+[node name="HSlider" type="HSlider" parent="Panel/Display/AutoPlaySpeed"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="TextDisplaySpeed" type="Label" parent="Panel/Display"]
+layout_mode = 2
+text = "Text Display Speed"
+
+[node name="HSlider" type="HSlider" parent="Panel/Display/TextDisplaySpeed"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 288.0
+offset_bottom = 39.0
+min_value = 0.01
+max_value = 0.05
+step = 0.01
+value = 0.01
+
+[node name="Screen" type="Label" parent="Panel/Display"]
+layout_mode = 2
+text = "Display Mode"
+
+[node name="OptionButton" type="OptionButton" parent="Panel/Display/Screen"]
+layout_mode = 2
+offset_top = 26.0
+offset_right = 280.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 21
+selected = 1
+item_count = 2
+popup/item_0/text = "Fullscreen"
+popup/item_1/text = "Windowed"
+popup/item_1/id = 1
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_bottom = 107.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 72
+text = "Close"
+
+[node name="Save" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -107.0
+offset_right = 320.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 72
+text = "Save
+"
+
+[connection signal="value_changed" from="Panel/Audio/MasterVolume/HSlider" to="." method="set_master_volume"]
+[connection signal="value_changed" from="Panel/Audio/BgmVolume/HSlider" to="." method="set_bgm_volume"]
+[connection signal="value_changed" from="Panel/Audio/BgsVolume/HSlider" to="." method="set_bgs_volume"]
+[connection signal="value_changed" from="Panel/Audio/SeVolume/HSlider" to="." method="set_se_volume"]
+[connection signal="value_changed" from="Panel/Audio/VoiceVolume/HSlider" to="." method="set_voice_volume"]
+[connection signal="value_changed" from="Panel/Display/AutoPlaySpeed/HSlider" to="." method="set_auto_play_speed"]
+[connection signal="value_changed" from="Panel/Display/TextDisplaySpeed/HSlider" to="." method="set_text_display_speed"]
+[connection signal="item_selected" from="Panel/Display/Screen/OptionButton" to="." method="set_display"]

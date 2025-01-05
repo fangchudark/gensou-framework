@@ -3,7 +3,7 @@ using System.Linq;
 namespace GensouLib.GenScript.Interpreters
 {
     /// <summary>
-    /// 命令关键词
+    /// 命令关键字
     /// </summary>
     public static class CommandKeywords
     {
@@ -68,7 +68,7 @@ namespace GensouLib.GenScript.Interpreters
         public const string SetTextbox = "setTextbox"; // 隐藏或显示对话框
 
         /// <summary>
-        /// 所有命令关键词
+        /// 所有命令关键字
         /// </summary>
         public static readonly string[] AllCommandKeywords = 
         { 
@@ -88,7 +88,7 @@ namespace GensouLib.GenScript.Interpreters
     }
 
     /// <summary>
-    /// 可选参数关键词
+    /// 可选参数关键字
     /// </summary>
     public static class ParamKeywords
     {
@@ -153,7 +153,7 @@ namespace GensouLib.GenScript.Interpreters
         public const string FontSize = "fontSize"; // 字体大小
 
         /// <summary>
-        /// 所有可选参数关键词
+        /// 所有可选参数关键字
         /// </summary>
         public static readonly string[] AllParamKeywords = 
         { 
@@ -172,7 +172,7 @@ namespace GensouLib.GenScript.Interpreters
         };
 
         /// <summary>
-        /// 带值的可选参数关键词
+        /// 带值的可选参数关键字
         /// </summary>
         public static readonly string[] AllParamWithValueKeywords = 
         {
@@ -193,7 +193,7 @@ namespace GensouLib.GenScript.Interpreters
     public static class KeywordsHelper
     {
         /// <summary>
-        /// 判断输入是否是任一命令关键词
+        /// 判断输入是否是任一命令关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>匹配结果</returns>
@@ -203,7 +203,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
 
         /// <summary>
-        /// 从字符串中获取第一个匹配的命令关键词
+        /// 从字符串中获取第一个匹配的命令关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>查找结果</returns>
@@ -213,7 +213,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
 
         /// <summary>
-        /// 判断输入是否是任一可选参数关键词
+        /// 判断输入是否是任一可选参数关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>匹配结果</returns>
@@ -223,7 +223,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
 
         /// <summary>
-        /// 从字符串中获取第一个匹配的可选参数关键词
+        /// 从字符串中获取第一个匹配的可选参数关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>查找结果</returns>
@@ -233,7 +233,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
         
         /// <summary>
-        /// 判断输入是否是任一带值的可选参数关键词
+        /// 判断输入是否是任一带值的可选参数关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>匹配结果</returns>
@@ -243,7 +243,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
 
         /// <summary>
-        /// 从字符串中获取第一个匹配的带值的可选参数关键词
+        /// 从字符串中获取第一个匹配的带值的可选参数关键字
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -253,7 +253,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals);
 
         /// <summary>
-        /// 判断输入是否是带值的可选参数关键词
+        /// 判断输入是否是带值的可选参数关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <returns>匹配结果</returns>
@@ -265,7 +265,7 @@ namespace GensouLib.GenScript.Interpreters
                                 .Equals(keyword)); // 匹配关键字
 
         /// <summary>
-        /// 判断输入是否是指定带值的可选参数关键词
+        /// 判断输入是否是指定带值的可选参数关键字
         /// </summary>
         /// <param name="input">字符串</param>
         /// <param name="keyword">关键字</param>

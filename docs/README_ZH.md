@@ -16,13 +16,6 @@
 - 剧情分支选项
 - 立绘背景切换
 
-## 加入我们  
-
- - [QQ群：765338218](https://qm.qq.com/q/4i8yIyGcHS)  
-   
- - [Discord 群](https://discord.gg/TfYFWKY3uH)
-
-
 ## License  
   
 本项目遵从`MIT`开源协议

@@ -188,6 +188,9 @@ namespace GensouLib.Unity.SaveSystem
         /// <param name="fileName">
         /// 文件名
         /// </param>
+        /// <returns>
+        /// 若存在则返回数据，否则返回空字典
+        /// </returns>
         public static Dictionary<string, object> LoadFromBinary(string fileName = "SaveData.sav")
         {
             _TempDataBinary.Clear();
@@ -342,6 +345,9 @@ namespace GensouLib.Unity.SaveSystem
         /// <param name="fileName">
         /// 文件名
         /// </param>
+        /// <returns>
+        /// 若存在则返回数据，否则返回空字典
+        /// </returns>
         public static Dictionary<string, object> LoadFromJson(string fileName = "SaveData.sav")
         {
             _TempDataJson.Clear();

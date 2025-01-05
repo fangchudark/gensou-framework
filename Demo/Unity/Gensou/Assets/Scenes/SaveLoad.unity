@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a079e6c9e1e0945b59c49f38c03e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSolts: 10
+  MaxSlots: 10
   SaveSlotPrefab: {fileID: 2797373784814383447, guid: dd8a6c577e7238949be1606e1606b732, type: 3}
   CloseButton: {fileID: 4916268438668507546}
   PanelTitle: {fileID: 7756665494031592325}

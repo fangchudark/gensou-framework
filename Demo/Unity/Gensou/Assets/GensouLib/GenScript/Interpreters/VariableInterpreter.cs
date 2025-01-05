@@ -1,7 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+#if GODOT
+using GdCollections = Godot.Collections;
+using Godot;
+#endif
 
 namespace GensouLib.GenScript.Interpreters
 {
@@ -35,6 +39,123 @@ namespace GensouLib.GenScript.Interpreters
         public static Dictionary<string, object> GetLocalVariables()
             => VariableList.Where(x =>!GlobalVariableList.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
 
+#if GODOT
+        /// <summary>
+        /// 获取全局变量，并转换为Godot字典
+        /// </summary>
+        /// <returns>全局变量字典</returns>
+        public static GdCollections.Dictionary<string, Variant> GetGlobalVariablesGD()
+        {
+            // 创建一个新的 Dictionary<string, Variant> 来存储结果
+            var result = new GdCollections.Dictionary<string, Variant>();
+
+            // 遍历全局变量列表并将其转换为 Variant
+            foreach (var key in GlobalVariableList)
+            {
+                if (VariableList.ContainsKey(key))
+                {
+                    var value = VariableList[key];
+                    // 将 object 类型的值转换为 Variant 类型
+                    result[key] = ToVariant(value);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取局部变量，并转换为Godot字典
+        /// </summary>
+        /// <returns>局部变量字典</returns>
+        public static GdCollections.Dictionary<string, Variant> GetLocalVariablesGD()
+        {
+            // 创建一个新的 Dictionary<string, Variant> 来存储结果
+            var result = new GdCollections.Dictionary<string, Variant>();
+
+            // 遍历局部变量列表并将其转换为 Variant
+            foreach (var key in VariableList.Keys)
+            {
+                if (!GlobalVariableList.Contains(key))
+                {
+                    object value = VariableList[key];
+                    // 将 object 类型的值转换为 Variant 类型
+                    result[key] = ToVariant(value);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将Godot字典转换为C#字典
+        /// </summary>
+        /// <param name="gdDict">Godot字典</param>
+        /// <returns>C#字典</returns>
+        public static Dictionary<string, object> CovertGdDictToSysDict(GdCollections.Dictionary<string, Variant> gdDict)
+        {
+            var result = new Dictionary<string, object>();
+            foreach (var key in gdDict.Keys)
+            {
+                result[key] = ToObject(gdDict[key]);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将C#字典转换为Godot字典
+        /// </summary>
+        /// <param name="sysDict">C#字典</param>
+        /// <returns>Godot字典</returns>
+        public static GdCollections.Dictionary<string, Variant> CovertSysDictToGdDict(Dictionary<string, object> sysDict)
+        {
+            var result = new GdCollections.Dictionary<string, Variant>();
+            foreach (var key in sysDict.Keys)
+            {
+                result[key] = ToVariant(sysDict[key]);
+            }
+            return result;
+        }
+
+        private static object ToObject(Variant variant)
+        {
+            if (variant.Obj is long or int)
+            {
+                return variant.AsInt64();
+            }
+            if (variant.Obj is double or float)
+            {
+                return variant.AsDouble();
+            }
+            if (variant.Obj is bool)
+            {
+                return variant.AsBool();
+            }
+            if (variant.Obj is string)
+            {
+                return variant.AsString();
+            }
+            return null;
+        }
+
+        private static Variant ToVariant(object value)
+        {
+            if (value is long l)
+            {
+                return Variant.CreateFrom(l);
+            }
+            if (value is double d)
+            {
+                return Variant.CreateFrom(d);
+            }
+            if (value is bool b)
+            {
+                return Variant.CreateFrom(b);
+            }
+            if (value is string s)
+            {
+                return Variant.CreateFrom(s);
+            }
+            return default;
+        }
+#endif        
         // 有表达式的变量赋值
         private static void ProcessExpressionAssignment(string varName, string valueExpression, bool isGlobal = false)
         {
@@ -342,7 +463,7 @@ namespace GensouLib.GenScript.Interpreters
             // 操作符栈
             var operators = new Stack<string>();
             // 操作符优先级字典
-            var precedence = new Dictionary<string, int>
+            var precedence = new System.Collections.Generic.Dictionary<string, int>
             {
                 { "+", 1 },
                 { "-", 1 },

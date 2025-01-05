@@ -1,7 +1,9 @@
 #if UNITY_5_3_OR_NEWER
 using GensouLib.Unity.Audio;
 using GensouLib.Unity.Core;
-
+#else
+using GensouLib.Godot.Audio;
+using GensouLib.Godot.Core;
 #endif
 using System;
 
@@ -28,7 +30,7 @@ namespace GensouLib.GenScript.Interpreters
                 volume,
                 duration,
                 VisualNoveCore.BgmPath,
-                async (v, d) => await AudioManager.FadeBgm(v, d),
+                (v, d) => AudioManager.FadeBgm(v, d),
                 filePath => AudioManager.PlayBgm(filePath),
                 vol => AudioManager.BgmVolume = vol
             );
@@ -49,7 +51,7 @@ namespace GensouLib.GenScript.Interpreters
                 volume,
                 duration,
                 VisualNoveCore.VocalPath,
-                async (v, d) => await AudioManager.FadeBgs(v, d),
+                (v, d) => AudioManager.FadeBgs(v, d),
                 filePath => AudioManager.PlayBgs(filePath),
                 vol => AudioManager.BgsVolume = vol
             );
@@ -96,6 +98,8 @@ namespace GensouLib.GenScript.Interpreters
 #if ENABLE_ADDRESSABLES == false
             path = string.Join("/", pathPrefix, param); // 拼接路径
 #endif
+#else
+            path = string.Join("/", pathPrefix, param); // 拼接路径
 #endif
             setVolume(volume);
             playAudio(path);
@@ -114,10 +118,6 @@ namespace GensouLib.GenScript.Interpreters
             
             if (param == "none")
             {
-                if (AudioManager.Fading)
-                {
-                    AudioManager.StopFade();
-                }
                 // 淡出音乐
                 fadeAudio(0.0f, duration);
                 return;
@@ -128,6 +128,8 @@ namespace GensouLib.GenScript.Interpreters
 #if ENABLE_ADDRESSABLES == false
             path = string.Join("/", pathPrefix, param); // 拼接路径
 #endif
+#else
+            path = string.Join("/", pathPrefix, param); // 拼接路径
 #endif
 
             if (duration > 0.0f)
@@ -135,10 +137,6 @@ namespace GensouLib.GenScript.Interpreters
                 // 淡入音乐
                 setVolume(0.0f); // 初始音量设为0
                 playAudio(path); // 播放音乐
-                if (AudioManager.Fading)
-                {
-                    AudioManager.StopFade();
-                }
                 fadeAudio(volume, duration); // 开始淡入
             }
             else

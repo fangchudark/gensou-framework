@@ -1,14 +1,9 @@
-using System;
 using GensouLib.GenScript.Interpreters;
-using System.Linq;
-
-
-#if GODOT
-using Godot;
-#elif UNITY_5_3_OR_NEWER
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
-using System.IO;
 using GensouLib.Unity.ResourceLoader;
+#else
+using Godot;
 #endif
 
 namespace GensouLib.GenScript
@@ -22,7 +17,7 @@ namespace GensouLib.GenScript
         /// <summary>
         /// 脚本路径
         /// </summary>
-        public static string ScriptPath { get; set; } = "res://Stories";
+        public static string ScriptPath { get; set; } = "res://Story";
 #elif UNITY_5_3_OR_NEWER && !ENABLE_ADDRESSABLES
         /// <summary>
         /// 脚本路径
@@ -63,7 +58,7 @@ namespace GensouLib.GenScript
                 GD.PushError("Cannot reading file");
                 return null;
             }
-            CurrentScriptName = filePath;
+            CurrentScriptPath = filePath;
             CurrentRawScriptData = file.GetAsText();
             return CurrentRawScriptData;
 #elif UNITY_5_3_OR_NEWER
@@ -79,7 +74,7 @@ namespace GensouLib.GenScript
             return CurrentRawScriptData;
 #endif
         }
-#if UNITY_5_3_OR_NEWER
+        
         /// <summary>
         /// 读取并执行脚本。
         /// </summary>
@@ -92,48 +87,21 @@ namespace GensouLib.GenScript
         public static void ReadAndExecute(string script, int lineIndex = 0)
         {
             CurrentScriptName = script;
+#if UNITY_5_3_OR_NEWER
 #if ENABLE_ADDRESSABLES == false
             string filePath = string.Join('/', ScriptPath, script);
 #else
             string filePath = script;
 #endif
+#elif GODOT      
+            string filePath = string.Join('/', ScriptPath, script + ".txt");
+#endif
+
             string scriptContent = ReadScript(filePath);
             if (scriptContent != null)
             {
                 BaseInterpreter.Init(scriptContent, lineIndex);
             }
         }
-#elif GODOT
-        /// <summary>
-        /// 读取并执行脚本。<br/>
-        /// Read and execute the script. 
-        /// </summary>
-        /// <param name="node">
-        /// 挂载到自动加载的脚本初始化器节点。<br/>
-        /// Mount to the autoloaded script initializer node.
-        /// </param>
-        /// <param name="script">
-        /// 脚本文件名 <br/>
-        /// Script file name
-        /// </param>
-        /// <remarks>         
-        /// 默认读取入口脚本: start.gs <br/>
-        /// By default, reads the entry script: start.gs  <br/>
-        /// Godot平台脚本应在: res://Scripts/scriptfile.gs <br/>      
-        /// Godot platform scripts should be located at: res://Scripts/scriptfile.gs <br/>
-        /// Unity平台脚本应在: Assets/Scripts/scriptfile.gs <br/>
-        /// Unity platform scripts should be located at: Assets/Scripts/scriptfile.gs 
-        /// </remarks>
-        public static void ReadAndExecute(Node node, string script = "start")
-        {
-            string filePath = "res://Scripts/"+script+".gs";
-
-            string scriptContent = ReadScript(filePath);
-            if (scriptContent != null)
-            {
-                BaseInterpreter.ParseScript(scriptContent, node);
-            }
-        }
-#endif
     }
 }

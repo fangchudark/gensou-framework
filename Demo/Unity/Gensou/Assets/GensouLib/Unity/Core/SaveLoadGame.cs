@@ -20,7 +20,7 @@ namespace GensouLib.Unity.Core
         /// <summary>
         /// 最大存档槽位数
         /// </summary>
-        public static int MaxSolts { get; set; } = 10;
+        public static int MaxSlots { get; set; } = 10;
         
         /// <summary>
         /// 存档槽位预制体
@@ -73,7 +73,7 @@ namespace GensouLib.Unity.Core
         /// <param name="closeButton">关闭存档界面的按钮</param>
         /// <param name="panelTitle">存档界面的标题</param>
         /// <param name="saveSlotContainer">存档槽位容器</param>
-        /// <param name="maxSolts">最大存档槽位数</param>
+        /// <param name="maxSlots">最大存档槽位数</param>
         /// <param name="timestampGameObjectName">显示时间戳的游戏对象名</param>
         /// <param name="dialogueGameObjectName">显示当前对话文本的游戏对象名</param>
         /// <param name="screenShotGameObjectName">显示当前截图的游戏对象名</param>
@@ -82,7 +82,7 @@ namespace GensouLib.Unity.Core
             Button closeButton,
             TextMeshProUGUI panelTitle,
             RectTransform saveSlotContainer,
-            int maxSolts = 10,
+            int maxSlots = 10,
             string timestampGameObjectName = "Timestamp",
             string dialogueGameObjectName = "Dialogue",
             string screenShotGameObjectName = "Screenshot"
@@ -92,7 +92,7 @@ namespace GensouLib.Unity.Core
             CloseButton = closeButton;
             PanelTitle = panelTitle;
             SaveSlotContainer = saveSlotContainer;
-            MaxSolts = maxSolts;
+            MaxSlots = maxSlots;
             TimestampGameObjectName = timestampGameObjectName;
             DialogueGameObjectName = dialogueGameObjectName;
             ScreenShotGameObjectName = screenShotGameObjectName;
@@ -103,7 +103,7 @@ namespace GensouLib.Unity.Core
         /// 创建存档槽位
         /// </summary>
         /// <returns>异步任务</returns>
-        public static async Task CreateSolts()
+        public static async Task CreateSlots()
         {
             PanelTitle.text = IsSave? "Save Game" : "Load Game";
             foreach (GameObject saveSlot in SaveSlots)
@@ -112,25 +112,20 @@ namespace GensouLib.Unity.Core
                 await Task.Yield();
             }
             SaveSlots.Clear();
-            for (int i = 0; i < MaxSolts; i++)
+            for (int i = 0; i < MaxSlots; i++)
             {
                 GameObject saveSlot = Instantiate(SaveSlotPrefab, SaveSlotContainer); // 创建槽位对象
                 SaveSlots.Add(saveSlot); // 添加到槽位列表
                 int slotIndex = i; // 保存槽位索引
-                RawImage screenshot = saveSlot.transform.Find(ScreenShotGameObjectName).GetComponent<RawImage>(); // 获取截图对象
-                if (IsSave) saveSlot.GetComponent<Button>().onClick.AddListener(() => SaveGame(slotIndex, screenshot)); // 绑定槽位按钮事件
+                if (IsSave) saveSlot.GetComponent<Button>().onClick.AddListener(() => SaveGame(slotIndex)); // 绑定槽位按钮事件
                 else saveSlot.GetComponent<Button>().onClick.AddListener(() => LoadGame(slotIndex)); // 绑定槽位按钮事件
                 ReadSaves(
-                    slotIndex, 
-                    screenshot, 
-                    saveSlot.transform.Find(TimestampGameObjectName).GetComponent<TextMeshProUGUI>(), 
-                    saveSlot.transform.Find(DialogueGameObjectName).GetComponent<TextMeshProUGUI>()
-                ); // 读取存档位信息
+                    slotIndex); // 读取存档位信息
                 await Task.Yield();
             }
         }
 
-        private static void ReadSaves(int slotIndex, RawImage screenshot, TextMeshProUGUI time, TextMeshProUGUI dialogue)
+        private static void ReadSaves(int slotIndex)
         {
 
 #if ENABLE_JSONNET == false
@@ -140,6 +135,10 @@ namespace GensouLib.Unity.Core
 #endif
             if (SaveManager.SaveExists(saveName))
             {
+                GameObject slot = SaveSlots[slotIndex]; // 获取槽位对象
+                RawImage screenshot = slot.transform.Find(ScreenShotGameObjectName).GetComponent<RawImage>();
+                TextMeshProUGUI time = slot.transform.Find(TimestampGameObjectName).GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI dialogue = slot.transform.Find(DialogueGameObjectName).GetComponent<TextMeshProUGUI>();
 #if ENABLE_JSONNET == false
                 screenshot.texture = ScreenshotToRawImage.LoadScreenshotFormBytes( // 加载截图并赋值给RawImage
                                         SaveManager.GetDataFromBinary<byte[]>(saveName, "screenshot") // 从json文件中读取截图数据
@@ -158,13 +157,14 @@ namespace GensouLib.Unity.Core
             }
         }
 
-        private static void SaveGame(int slotIndex, RawImage screenshot)
+        private static void SaveGame(int slotIndex)
         {
+            GameObject slot = SaveSlots[slotIndex]; // 获取槽位对象
+            RawImage screenshot = slot.transform.Find(ScreenShotGameObjectName).GetComponent<RawImage>();
             screenshot.texture = ScreenshotToRawImage.Screenshot; // 获取截图并赋值给RawImage
-            GameObject solt = SaveSlots[slotIndex]; // 获取槽位对象
-            TextMeshProUGUI time = solt.transform.Find(TimestampGameObjectName).GetComponent<TextMeshProUGUI>(); // 获取时间戳对象
+            TextMeshProUGUI time = slot.transform.Find(TimestampGameObjectName).GetComponent<TextMeshProUGUI>(); // 获取时间戳对象
             time.text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // 设置时间戳
-            TextMeshProUGUI dialogue = solt.transform.Find(DialogueGameObjectName).GetComponent<TextMeshProUGUI>(); // 获取对话框信息对象
+            TextMeshProUGUI dialogue = slot.transform.Find(DialogueGameObjectName).GetComponent<TextMeshProUGUI>(); // 获取对话框信息对象
             dialogue.text = DialogueInterpreter.CurrentDialogue; // 设置对话框内容
 
             // 需要存储的数据：脚本的变量、截图、脚本的当前执行行总行数等信息、对话框的文本内容、主场景音频、立绘等
@@ -186,7 +186,7 @@ namespace GensouLib.Unity.Core
 
             Data.Add("currentSpeaker", DialogueInterpreter.CurrentSpeaker); // 保存当前对话者
 
-            Data.Add("OnChoosing", ChoiceInterpreter.OnChoosing); // 保存是否处于选择状态
+            Data.Add("onChoosing", ChoiceInterpreter.OnChoosing); // 保存是否处于选择状态
 
             if (AudioManager.BgmClip == null) Data.Add("currentBgm", ""); // 保存当前BGM
             else Data.Add("currentBgm", AudioManager.BgmClip.name);
@@ -249,7 +249,6 @@ namespace GensouLib.Unity.Core
                     {
                         SaveLoadUiActive = false; // 关闭存档界面
                         RecoverData(saveName); // 加载存档数据
-                        BaseInterpreter.ExecuteNextLine(); // 继续执行脚本
                     };
                 }
                 

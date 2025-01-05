@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://d3erl6k6g7265"]
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(512, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -32.0
+offset_right = 256.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2

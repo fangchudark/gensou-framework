@@ -1,0 +1,2 @@
+The value of variable a is {a}
+The value of variable b is {b}

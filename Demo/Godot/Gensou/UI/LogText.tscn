@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b6kbon71kr0gg"]
+
+[node name="LogText" type="Label"]
+custom_minimum_size = Vector2(0, 32)
+theme_override_font_sizes/font_size = 24
+text = "Text"
+vertical_alignment = 1
+autowrap_mode = 3

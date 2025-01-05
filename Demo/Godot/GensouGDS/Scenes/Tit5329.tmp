@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqe46yok7nd0x"]
+
+[ext_resource type="Script" path="res://Scripts/start.gd" id="1_xlb12"]
+
+[node name="Title" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xlb12")
+
+[node name="BackGround" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -145.0
+offset_top = -252.0
+offset_right = 143.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Start" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "New Game"
+
+[node name="Load" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Load"
+
+[node name="Config" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Config"
+
+[node name="Exit" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Exit"
+
+[connection signal="pressed" from="Menu/Start" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Menu/Load" to="." method="OnLoadButtonPressed"]
+[connection signal="pressed" from="Menu/Config" to="." method="OnConfigButtonPressed"]
+[connection signal="pressed" from="Menu/Exit" to="." method="OnQuitButtonPressed"]

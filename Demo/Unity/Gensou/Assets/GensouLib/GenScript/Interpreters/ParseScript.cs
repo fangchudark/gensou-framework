@@ -1,5 +1,5 @@
 #if GODOT
-using Godot;
+using GensouLib.Godot.Core;
 #elif UNITY_5_3_OR_NEWER
 using GensouLib.Unity.Core;
 using UnityEngine.SceneManagement;
@@ -24,31 +24,20 @@ namespace GensouLib.GenScript.Interpreters
         /// </summary>
         public static bool ScriptHidedTextbox {get; private set; } = false;
 
-#if GODOT
         /// <summary>
-        /// 执行命令
+        /// 解析命令 
         /// </summary>
-        /// <param name="command">
-        /// 命令。
-        /// </param>
-        /// <param name="node">
-        /// 挂载到自动加载的脚本初始化器节点。
-        /// </param>
-        public static void ParseCommand(string command, Node node)
-#elif UNITY_5_3_OR_NEWER
-        /// <summary>
-        /// 执行命令 
-        /// </summary>
-        /// <param name="command">
-        /// 命令。
+        /// <param name="raw">
+        /// 原始命令字符串。
         /// </param>
         public static void ParseCommand(string raw)
-#endif
         {
             if (raw == CommandKeywords.End)
             {
 #if UNITY_5_3_OR_NEWER
                 SceneManager.LoadScene(VisualNoveCore.TitleScene);
+#else
+                VisualNoveCore.GameManagerNode.GetTree().ChangeSceneToFile(VisualNoveCore.TitleScenePath);
 #endif
                 return;
             }
@@ -76,7 +65,7 @@ namespace GensouLib.GenScript.Interpreters
             }
 
             // 临时调试用
-            //ScriptConsole.PrintLog("keyword: " + keyword + " commandParam: " + commandParam + " optionalParam: " + optionalParam);
+            // ScriptConsole.PrintLog("keyword: " + keyword + " commandParam: " + commandParam + " optionalParam: " + optionalParam);
 
             if (string.IsNullOrEmpty(optionalParam)) // 无可选参数
             {
@@ -134,7 +123,7 @@ namespace GensouLib.GenScript.Interpreters
             string[] paramKeywords = optionalParam.Split(" -", StringSplitOptions.RemoveEmptyEntries);
 
             // 临时调试用
-            //ScriptConsole.PrintLog("paramKeywords: " + string.Join(",", paramKeywords));
+            // ScriptConsole.PrintLog("paramKeywords: " + string.Join(",", paramKeywords));
 
             // 如果可选参数列表不为空，但是没有能够解析的关键字，则视作对话命令
             if (
@@ -159,7 +148,7 @@ namespace GensouLib.GenScript.Interpreters
             if (paramKeywords.Any(keyWord => keyWord.StartsWith(ParamKeywords.When) && !ProcessConditionCommand(keyWord)))
             {
                 // 临时调试用
-                ScriptConsole.PrintLog("condition not met: " + commandAndParam);
+                // ScriptConsole.PrintLog("condition not met: " + commandAndParam);
 
                 // 条件命令未通过，不再继续执行后续命令，直接执行下一行
                 BaseInterpreter.ExecuteNextLine();

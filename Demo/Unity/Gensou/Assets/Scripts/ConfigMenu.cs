@@ -91,7 +91,6 @@ public class ConfigMenu : MonoBehaviour
 
     public void SetMasterVolume(float value)
     {
-        Debug.Log("SetMasterVolume: " + value);
         AudioManager.MasterVolume = value;
     }
 

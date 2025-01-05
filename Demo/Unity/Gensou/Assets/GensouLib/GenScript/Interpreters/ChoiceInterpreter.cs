@@ -1,5 +1,7 @@
 #if UNITY_5_3_OR_NEWER
 using GensouLib.Unity.Core;
+#else
+using GensouLib.Godot.Core;
 #endif
 using System.Collections.Generic;
 

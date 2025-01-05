@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
 #if GODOT
+using GensouLib.Godot.Core;
 using Godot;
 #elif UNITY_5_3_OR_NEWER
 using GensouLib.Unity.Core;
@@ -33,22 +32,8 @@ namespace GensouLib.GenScript.Interpreters
         /// 当前脚本内容
         /// </summary>
         public static string[] CurrentScriptContent {get; set; } = null; // 当前脚本内容
-#if GODOT
-        private static Node interpreterNode;
-#endif
 
-#if GODOT
-        /// <summary> 
-        /// 初始化解释器
-        /// </summary>
-        /// <param name="scriptContent"> 
-        /// 读取到的脚本内容
-        /// </param>
-        /// <param name="node">
-        /// 挂载到自动加载的脚本初始化器节点。
-        /// </param>
-        public static void Init(string scriptContent, Node node)
-#elif UNITY_5_3_OR_NEWER
+
         /// <summary> 
         /// 初始化解释器
         /// </summary>
@@ -56,12 +41,8 @@ namespace GensouLib.GenScript.Interpreters
         /// 读取到的脚本内容
         /// </param>
         public static void Init(string scriptContent, int initialLineIndex)
-#endif
         {
             CurrentScriptContent = scriptContent.Split(new[] {'\n', '\r'},StringSplitOptions.RemoveEmptyEntries);
-#if GODOT
-            interpreterNode = node;
-#endif
             CurrentLine = initialLineIndex; // 初始化当前行号
             CurrentMaxLine = CurrentScriptContent.Length; // 初始化最大行号
             ExecuteNextLine(); // 执行第一行
@@ -93,11 +74,7 @@ namespace GensouLib.GenScript.Interpreters
                 }
                 CurrentLine++; // 增加行号(此时从索引变为执行行行号)
 
-#if GODOT
-                ParseScript.ParseCommand(trimmedLine, node); // 执行代码部分
-#elif UNITY_5_3_OR_NEWER
                 ParseScript.ParseCommand(trimmedLine); // 执行代码部分
-#endif
             }
         }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using GensouLib.Unity.ResourceLoader;
 using System.Collections;
 using System.Threading.Tasks;
+using System.Threading;
 using System;
 
 namespace GensouLib.Unity.Audio
@@ -11,6 +12,17 @@ namespace GensouLib.Unity.Audio
     /// </summary>
     public class AudioManager
     {
+        public static Task FadeBgmTask { get; private set; } = null;
+        
+        public static Task FadeBgsTask { get; private set; } = null;
+        
+        public static Task FadeVoiceTask { get; private set; } = null;
+        
+        private static CancellationTokenSource fadeBgmCancellationTokenSource = null;
+        
+        private static CancellationTokenSource fadeBgsCancellationTokenSource = null;
+        
+        private static CancellationTokenSource fadeVoiceCancellationTokenSource = null;
         /// <summary>
         /// 主音量 
         /// </summary>
@@ -55,7 +67,7 @@ namespace GensouLib.Unity.Audio
             }
         }
 
-        private static float bgmVolume = 1.0f;
+        private static float bgmVolume = 1.0f; // 音乐播放器未初始化时，使用的占位符音量
 
         /// <summary>
         /// 环境音音量 
@@ -74,7 +86,7 @@ namespace GensouLib.Unity.Audio
             }
         }
 
-        private static float bgsVolume = 1.0f;
+        private static float bgsVolume = 1.0f; // 音乐播放器未初始化时，使用的占位符音量
 
         /// <summary>
         /// 音效音量
@@ -93,7 +105,7 @@ namespace GensouLib.Unity.Audio
             }
         }
         
-        private static float seVolume = 1.0f;
+        private static float seVolume = 1.0f; // 音乐播放器未初始化时，使用的占位符音量
 
         /// <summary>
         /// 语音音量
@@ -112,7 +124,7 @@ namespace GensouLib.Unity.Audio
             }
         }
 
-        private static float voiceVolume = 1.0f;
+        private static float voiceVolume = 1.0f; // 音乐播放器未初始化时，使用的占位符音量
         
         /// <summary>
         /// 背景音乐音源
@@ -158,8 +170,6 @@ namespace GensouLib.Unity.Audio
         /// 是否处于静音
         /// </summary>
         public static bool IsMuted { get; private set; } = false;
-
-        private static bool Stop = false;
 
         /// <summary>
         /// 只读，是否在淡入淡出
@@ -240,47 +250,46 @@ namespace GensouLib.Unity.Audio
             }
         }
         
-        /// <summary>
-        /// 淡出并播放新背景音乐
-        /// </summary>
-        /// <param name="newMusicName">
-        /// 新音乐资源地址或路径，视资源加载方式而定。
-        /// </param>
-        /// <param name="duration">
-        /// 淡出时间，单位：秒。
-        /// </param>
-        /// <returns>
-        /// 异步任务，不被打断完成时返回 true，否则返回 false。
-        /// </returns>
-        public static async Task<bool> FadeOutAndPlayNewMusic(string newMusicName, float duration)
-        {
-            Fading = true;
-            float startVolume = BgmSource.volume;
-            AssetLoader.LoadResource<AudioClip>(newMusicName);
-            AudioClip clip = AssetLoader.GetLoadedAsset<AudioClip>(newMusicName);
-            if (clip == null)
-            {
-                Debug.LogError($"Music clip : {newMusicName} not found");
-                return false;
-            }
+        // /// <summary>
+        // /// 淡出并播放新背景音乐
+        // /// </summary>
+        // /// <param name="newMusicName">
+        // /// 新音乐资源地址或路径，视资源加载方式而定。
+        // /// </param>
+        // /// <param name="duration">
+        // /// 淡出时间，单位：秒。
+        // /// </param>
+        // /// <returns>
+        // /// 异步任务，不被打断完成时返回 true，否则返回 false。
+        // /// </returns>
+        // public static async Task<bool> FadeOutAndPlayNewMusic(string newMusicName, float duration)
+        // {
+        //     Fading = true;
+        //     float startVolume = BgmSource.volume;
+        //     AssetLoader.LoadResource<AudioClip>(newMusicName);
+        //     AudioClip clip = AssetLoader.GetLoadedAsset<AudioClip>(newMusicName);
+        //     if (clip == null)
+        //     {
+        //         Debug.LogError($"Music clip : {newMusicName} not found");
+        //         return false;
+        //     }
 
-            while (BgmSource.volume > 0)
-            {
-                if (Stop) return false;
-                BgmSource.volume -= startVolume * Time.deltaTime / duration;
-                await Task.Yield();
-            }
+        //     while (BgmSource.volume > 0)
+        //     {
+        //         BgmSource.volume -= startVolume * Time.deltaTime / duration;
+        //         await Task.Yield();
+        //     }
             
-            BgmSource.Stop();
-            BgmSource.clip = clip;
-            BgmClip = clip;
-            BgmSource.volume = startVolume;
-            BgmSource.Play();
-            Fading = false;
-            return true;
-        }
+        //     BgmSource.Stop();
+        //     BgmSource.clip = clip;
+        //     BgmClip = clip;
+        //     BgmSource.volume = startVolume;
+        //     BgmSource.Play();
+        //     Fading = false;
+        //     return true;
+        // }
         
-        private static async Task<bool> FadeAudioSource(AudioSource audioSource, float targetVolume, float duration)
+        private static async Task FadeAudioSource(AudioSource audioSource, float targetVolume, float duration, CancellationToken cancellationToken)
         {
             Fading = true;
             float startVolume = audioSource.volume;
@@ -288,7 +297,7 @@ namespace GensouLib.Unity.Audio
 
             while (elapsed < duration)
             {
-                if (Stop) return false;
+                if (cancellationToken.IsCancellationRequested) return;
                 elapsed += Time.deltaTime;
                 audioSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / duration);
                 await Task.Yield();
@@ -296,7 +305,7 @@ namespace GensouLib.Unity.Audio
 
             audioSource.volume = targetVolume;
             Fading = false;
-            return true;
+            return;
         }
         
         /// <summary>
@@ -308,10 +317,14 @@ namespace GensouLib.Unity.Audio
         /// <param name="duration">
         /// 淡出时间，单位：秒。
         /// </param>
-        /// <returns>
-        /// 异步任务，不被打断完成时返回 true，否则返回 false。
-        /// </returns>
-        public static async Task<bool> FadeBgm(float targetVolume, float duration) => await FadeAudioSource(BgmSource, targetVolume, duration);
+        public static void FadeBgm(float targetVolume, float duration)
+        {
+            fadeBgmCancellationTokenSource?.Cancel();
+            fadeBgmCancellationTokenSource = new CancellationTokenSource();
+            var token = fadeBgmCancellationTokenSource.Token;
+
+            FadeBgmTask = FadeAudioSource(BgmSource, targetVolume, duration, token);
+        }
         
         /// <summary>
         /// 淡出环境音
@@ -322,10 +335,14 @@ namespace GensouLib.Unity.Audio
         /// <param name="duration">
         /// 淡出时间，单位：秒。
         /// </param>
-        /// <returns>
-        /// 异步任务，不被打断完成时返回 true，否则返回 false。
-        /// </returns>
-        public static async Task<bool> FadeBgs(float targetVolume, float duration) => await FadeAudioSource(BgsSource, targetVolume, duration);
+        public static void FadeBgs(float targetVolume, float duration)
+        {
+            fadeBgsCancellationTokenSource?.Cancel();
+            fadeBgsCancellationTokenSource = new CancellationTokenSource();
+            var token = fadeBgsCancellationTokenSource.Token;
+
+            FadeBgsTask = FadeAudioSource(BgsSource, targetVolume, duration, token);
+        }
         
         /// <summary>
         /// 淡出语音 
@@ -336,10 +353,14 @@ namespace GensouLib.Unity.Audio
         /// <param name="duration">
         /// 淡出时间，单位：秒。
         /// </param>
-        /// <returns>
-        /// 异步任务，不被打断完成时返回 true，否则返回 false。
-        /// </returns>
-        public static async Task<bool> FadeVoice(float targetVolume, float duration) => await FadeAudioSource(VoiceSource, targetVolume, duration);
+        public static void FadeVoice(float targetVolume, float duration)
+        {
+            fadeVoiceCancellationTokenSource?.Cancel();
+            fadeVoiceCancellationTokenSource = new CancellationTokenSource();
+            var token = fadeVoiceCancellationTokenSource.Token;
+
+            FadeVoiceTask = FadeAudioSource(VoiceSource, targetVolume, duration, token);
+        }
         
         /// <summary>
         /// 停止播放背景音乐 
@@ -371,13 +392,5 @@ namespace GensouLib.Unity.Audio
             VoiceSource.mute = mute;
         }
 
-        /// <summary>
-        /// 停止淡入淡出
-        /// </summary>
-        public static void StopFade()
-        {
-            Stop = true; //停止淡入淡出
-            Stop = false; // 重置状态
-        }
     }
 }

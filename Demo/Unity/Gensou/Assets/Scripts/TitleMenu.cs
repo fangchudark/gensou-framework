@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class TitleMenu : MonoBehaviour
 {
-    public string CurrentScene { get; private set; } = "Title";
-
-    // Note add references to the following fields in Unity editor
-
     public Button NewGameButton;
 
     public Button LoadButton;

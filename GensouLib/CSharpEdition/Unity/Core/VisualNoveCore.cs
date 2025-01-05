@@ -309,6 +309,7 @@ namespace GensouLib.Unity.Core
 
             DialogueInterpreter.CurrentDialogue = SaveManager.GetDataFromBinary<string>(saveName, "currentDialogue"); // 恢复对话内容
             DialogueText.text = DialogueInterpreter.CurrentDialogue;
+            DialogueText.maxVisibleCharacters = DialogueInterpreter.CurrentDialogue.Length;
 
             DialogueInterpreter.CurrentSpeaker = SaveManager.GetDataFromBinary<string>(saveName, "currentSpeaker"); // 恢复对话人物
             CharacterName.text = DialogueInterpreter.CurrentSpeaker;
@@ -320,7 +321,13 @@ namespace GensouLib.Unity.Core
 
             string bgmName = SaveManager.GetDataFromBinary<string>(saveName, "currentBgm"); // 恢复BGM
 
-            if (bgmName != "")
+            string bgsName = SaveManager.GetDataFromBinary<string>(saveName, "currentBgs"); // 恢复BGS
+
+            string seName = SaveManager.GetDataFromBinary<string>(saveName, "currentSe"); // 恢复SE
+
+            string voiceName = SaveManager.GetDataFromBinary<string>(saveName, "currentVoice"); // 恢复语音
+            
+            if (!string.IsNullOrEmpty(bgmName))
             {
 #if ENABLE_ADDRESSABLES == false
                 bgmName = string.Join("/", BgmPath, bgmName);
@@ -331,12 +338,8 @@ namespace GensouLib.Unity.Core
             {
                 AudioManager.StopBgm();
             }
-                
-            AudioManager.BgmVolume = SaveManager.GetDataFromBinary<float>(saveName, "bgmVolume"); // 恢复BGM音量
 
-            string bgsName = SaveManager.GetDataFromBinary<string>(saveName, "currentBgs"); // 恢复BGS
-
-            if (bgsName != "")
+            if (!string.IsNullOrEmpty(bgsName))
             {
 #if ENABLE_ADDRESSABLES == false
                 bgsName = string.Join("/", VocalPath, bgsName);
@@ -347,12 +350,8 @@ namespace GensouLib.Unity.Core
             {
                 AudioManager.StopBgs();
             }
-                
-            AudioManager.BgsVolume = SaveManager.GetDataFromBinary<float>(saveName, "bgsVolume"); // 恢复BGS音量
 
-            string seName = SaveManager.GetDataFromBinary<string>(saveName, "currentSe"); // 恢复SE
-
-            if (seName != "")
+            if (!string.IsNullOrEmpty(seName))
             {
 #if ENABLE_ADDRESSABLES == false
                 seName = string.Join("/", VocalPath, seName);
@@ -360,11 +359,7 @@ namespace GensouLib.Unity.Core
                 AudioManager.PlaySe(seName);
             }
                 
-            AudioManager.SeVolume = SaveManager.GetDataFromBinary<float>(saveName, "seVolume"); // 恢复SE音量
-                
-            string voiceName = SaveManager.GetDataFromBinary<string>(saveName, "currentVoice"); // 恢复语音
-
-            if (voiceName != "")
+            if (!string.IsNullOrEmpty(voiceName))
             {
 #if ENABLE_ADDRESSABLES == false
                 voiceName = string.Join("/", VocalPath, voiceName);
@@ -386,7 +381,7 @@ namespace GensouLib.Unity.Core
 
             string backgroundName = SaveManager.GetDataFromBinary<string>(saveName, "background"); // 恢复背景
 
-            if (leftFigureName != "")
+            if (!string.IsNullOrEmpty(leftFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 leftFigureName = string.Join("/", FigurePath, leftFigureName);
@@ -394,8 +389,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(leftFigureName);
                 FigureLeft.sprite = AssetLoader.GetLoadedAsset<Sprite>(leftFigureName);
             }
+            else
+            {
+                FigureLeft.sprite = null;
+            }
                 
-            if (rightFigureName != "")
+            if (!string.IsNullOrEmpty(centerFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 rightFigureName = string.Join("/", FigurePath, rightFigureName);
@@ -403,8 +402,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(rightFigureName);
                 FigureRight.sprite = AssetLoader.GetLoadedAsset<Sprite>(rightFigureName);
             }
+            else
+            {
+                FigureRight.sprite = null;
+            }
                 
-            if (centerFigureName != "")
+            if (!string.IsNullOrEmpty(rightFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 centerFigureName = string.Join("/", FigurePath, centerFigureName);
@@ -412,8 +415,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(centerFigureName);
                 FigureCenter.sprite = AssetLoader.GetLoadedAsset<Sprite>(centerFigureName);
             }
+            else
+            {
+                FigureCenter.sprite = null;
+            }
                 
-            if (portraitName != "")
+            if (!string.IsNullOrEmpty(portraitName))
             {
 #if ENABLE_ADDRESSABLES == false
                 portraitName = string.Join("/", PortraitPath, portraitName);
@@ -421,8 +428,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(portraitName);
                 Portrait.sprite = AssetLoader.GetLoadedAsset<Sprite>(portraitName);
             }
+            else
+            {
+                Portrait.sprite = null;
+            }
 
-            if (backgroundName != "")
+            if (!string.IsNullOrEmpty(backgroundName))
             {
 #if ENABLE_ADDRESSABLES == false
                 backgroundName = string.Join("/", BackgroundPath, backgroundName);
@@ -430,7 +441,10 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(backgroundName);
                 Background.sprite = AssetLoader.GetLoadedAsset<Sprite>(backgroundName);
             }
-            
+            else
+            {
+                Background.sprite = null;
+            }
 #else
             string scriptName = SaveManager.GetDataFromJson<string>(saveName, "currentScript");
             int lineIdex = (int)SaveManager.GetDataFromJson<long>(saveName, "currentLine");
@@ -442,6 +456,7 @@ namespace GensouLib.Unity.Core
 
             DialogueInterpreter.CurrentDialogue = SaveManager.GetDataFromJson<string>(saveName, "currentDialogue"); // 恢复对话内容
             DialogueText.text = DialogueInterpreter.CurrentDialogue;
+            DialogueText.maxVisibleCharacters = DialogueInterpreter.CurrentDialogue.Length;
 
             DialogueInterpreter.CurrentSpeaker = SaveManager.GetDataFromJson<string>(saveName, "currentSpeaker"); // 恢复对话人物
             CharacterName.text = DialogueInterpreter.CurrentSpeaker;
@@ -449,11 +464,15 @@ namespace GensouLib.Unity.Core
             ChoiceInterpreter.OnChoosing = SaveManager.GetDataFromJson<bool>(saveName, "onChoosing"); // 恢复是否处于选择状态
             if (!ChoiceInterpreter.OnChoosing) ClearChoiceButtons(); // 清除选择按钮
 
-            AudioManager.MasterVolume = (float)SaveManager.GetDataFromJson<double>(saveName, "masterVolume"); // 恢复音量
-
             string bgmName = SaveManager.GetDataFromJson<string>(saveName, "currentBgm"); // 恢复BGM
 
-            if (bgmName != "")
+            string bgsName = SaveManager.GetDataFromJson<string>(saveName, "currentBgs"); // 恢复BGS
+            
+            string seName = SaveManager.GetDataFromJson<string>(saveName, "currentSe"); // 恢复SE
+            
+            string voiceName = SaveManager.GetDataFromJson<string>(saveName, "currentVoice"); // 恢复语音
+            
+            if (!string.IsNullOrEmpty(bgmName))
             {
 #if ENABLE_ADDRESSABLES == false
                 bgmName = string.Join("/", BgmPath, bgmName);
@@ -464,12 +483,9 @@ namespace GensouLib.Unity.Core
             {
                 AudioManager.StopBgm();
             }
-                
-            AudioManager.BgmVolume = (float)SaveManager.GetDataFromJson<double>(saveName, "bgmVolume"); // 恢复BGM音量
 
-            string bgsName = SaveManager.GetDataFromJson<string>(saveName, "currentBgs"); // 恢复BGS
 
-            if (bgsName != "")
+            if (!string.IsNullOrEmpty(bgsName))
             {
 #if ENABLE_ADDRESSABLES == false
                 bgsName = string.Join("/", VocalPath, bgsName);
@@ -480,12 +496,9 @@ namespace GensouLib.Unity.Core
             {
                 AudioManager.StopBgs();
             }
-                
-            AudioManager.BgsVolume = (float)SaveManager.GetDataFromJson<double>(saveName, "bgsVolume"); // 恢复BGS音量
 
-            string seName = SaveManager.GetDataFromJson<string>(saveName, "currentSe"); // 恢复SE
 
-            if (seName != "")
+            if (!string.IsNullOrEmpty(seName))
             {
 #if ENABLE_ADDRESSABLES == false
                 seName = string.Join("/", VocalPath, seName);
@@ -493,11 +506,8 @@ namespace GensouLib.Unity.Core
                 AudioManager.PlaySe(seName);
             }
                 
-            AudioManager.SeVolume = (float)SaveManager.GetDataFromJson<double>(saveName, "seVolume"); // 恢复SE音量
-                
-            string voiceName = SaveManager.GetDataFromJson<string>(saveName, "currentVoice"); // 恢复语音
 
-            if (voiceName != "")
+            if (!string.IsNullOrEmpty(voiceName))
             {
 #if ENABLE_ADDRESSABLES == false
                 voiceName = string.Join("/", VocalPath, voiceName);
@@ -519,7 +529,7 @@ namespace GensouLib.Unity.Core
 
             string backgroundName = SaveManager.GetDataFromJson<string>(saveName, "background"); // 恢复背景
 
-            if (leftFigureName != "")
+            if (!string.IsNullOrEmpty(leftFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 leftFigureName = string.Join("/", FigurePath, leftFigureName);
@@ -528,7 +538,7 @@ namespace GensouLib.Unity.Core
                 FigureLeft.sprite = AssetLoader.GetLoadedAsset<Sprite>(leftFigureName);
             }
                 
-            if (rightFigureName != "")
+            if (!string.IsNullOrEmpty(rightFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 rightFigureName = string.Join("/", FigurePath, rightFigureName);
@@ -536,8 +546,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(rightFigureName);
                 FigureRight.sprite = AssetLoader.GetLoadedAsset<Sprite>(rightFigureName);
             }
-                
-            if (centerFigureName != "")
+            else
+            {
+                FigureRight.sprite = null;
+            }
+
+            if (!string.IsNullOrEmpty(centerFigureName))
             {
 #if ENABLE_ADDRESSABLES == false
                 centerFigureName = string.Join("/", FigurePath, centerFigureName);
@@ -545,8 +559,12 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(centerFigureName);
                 FigureCenter.sprite = AssetLoader.GetLoadedAsset<Sprite>(centerFigureName);
             }
+            else
+            {
+                FigureCenter.sprite = null;
+            }
                 
-            if (portraitName != "")
+            if (!string.IsNullOrEmpty(portraitName))
             {
 #if ENABLE_ADDRESSABLES == false
                 portraitName = string.Join("/", PortraitPath, portraitName);
@@ -554,14 +572,22 @@ namespace GensouLib.Unity.Core
                 AssetLoader.LoadResource<Sprite>(portraitName);
                 Portrait.sprite = AssetLoader.GetLoadedAsset<Sprite>(portraitName);
             }
+            else
+            {
+                Portrait.sprite = null;
+            }
 
-            if (backgroundName != "")
+            if (!string.IsNullOrEmpty(backgroundName))
             {
 #if ENABLE_ADDRESSABLES == false
                 backgroundName = string.Join("/", BackgroundPath, backgroundName);
 #endif
                 AssetLoader.LoadResource<Sprite>(backgroundName);
                 Background.sprite = AssetLoader.GetLoadedAsset<Sprite>(backgroundName);
+            }
+            else
+            {
+                Background.sprite = null;
             }
 #endif  
         }
@@ -758,7 +784,7 @@ namespace GensouLib.Unity.Core
         }
 
         /// <summary>
-        /// 是否应该显示配置界面
+        /// 是否应该切换对话框可见性
         /// </summary>
         public static bool ShouldSwitchTextboxVisibility()
         {

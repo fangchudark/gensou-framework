@@ -8,8 +8,6 @@ Lightweight Visual Novel framework
 
 Use text commands to drive the game
 
-**Note：Unity part already completed, now working on the Godot part.**
-
 ## Features
 
 - Basic Visual Novel Features
@@ -17,11 +15,6 @@ Use text commands to drive the game
 - Audio Control
 - Creating branching story options
 - Switching character portraits and backgrounds
-
-## Join/Contact Us  
-
-- [QQ Group: 765338218](https://qm.qq.com/q/4i8yIyGcHS)  
-- [Discord Group](https://discord.gg/TfYFWKY3uH)
 
 ## License  
 

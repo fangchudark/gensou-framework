@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cksalaxc6dang"]
+
+[node name="SaveSlot" type="Button"]
+custom_minimum_size = Vector2(896, 123)
+
+[node name="Screenshot" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 116.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Timestamp" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -688.0
+offset_bottom = 24.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 24
+clip_text = true
+
+[node name="Dialogue" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -688.0
+offset_top = -83.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "NO DATA"
+autowrap_mode = 3
+clip_text = true
